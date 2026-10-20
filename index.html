@@ -216,10 +216,66 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .bar .sum-label { display: block; }
 .bar strong { font: 700 22px/1.1 var(--display); font-variant-numeric: tabular-nums; }
 
+/* Pestañas */
+.tabs { display: flex; gap: 4px; padding: 4px; width: fit-content; max-width: 100%; margin-bottom: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.tab { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border: 0; border-radius: 8px; background: transparent; color: var(--mute); font: 600 14.5px var(--body); cursor: pointer; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--surface); }
+.count { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: 600 12px/20px var(--body); text-align: center; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn.sm { height: 34px; padding: 0 12px; font-size: 13.5px; }
+#wait-link { margin-top: 6px; }
+
+/* Tu negocio */
+#view-negocio { display: grid; gap: 20px; }
+#view-negocio[hidden] { display: none; }
+.jump { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.jump button { flex: none; height: 34px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font: 500 13.5px var(--body); cursor: pointer; }
+.jump button:hover { border-color: var(--mute); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.stat { display: block; width: 100%; min-width: 0; padding: 16px; text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
+.stat:hover { border-color: var(--mute); }
+.stat b { display: block; margin: 6px 0 2px; font: 700 28px/1.1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat small { color: var(--mute); font-size: 13px; }
+.stat.alert b { color: var(--accent); }
+.items { display: grid; margin-top: 8px; }
+.item { display: grid; gap: 8px; padding: 14px 0; border-top: 1px solid var(--line); min-width: 0; }
+.item:first-child { border-top: 0; }
+.item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; }
+.item-title { font-weight: 600; overflow-wrap: anywhere; }
+.item-meta { font-size: 13px; color: var(--mute); overflow-wrap: anywhere; }
+.item-amount { font: 600 15px var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.item-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.item-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.item-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.item-grid input, .item-grid select { height: 36px; font-size: 14px; }
+.item-grid .field > span { font-size: 12px; }
+.item ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--mute); }
+.empty { margin-top: 10px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: 10px; color: var(--mute); font-size: 14px; }
+.tag.warn { background: var(--accent-soft); color: var(--accent); }
+.tag.info { background: var(--field); color: var(--ink); border: 1px solid var(--line); }
+.addform { margin-top: 14px; padding: 14px; display: grid; gap: 12px; background: var(--field); border: 1px solid var(--line); border-radius: 10px; }
+.addform input, .addform select { background: var(--surface); }
+.addbox { margin-top: 16px; }
+.addbox > summary { list-style: none; width: fit-content; }
+.addbox > summary::-webkit-details-marker { display: none; }
+.stock-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.stock-row .inp { width: 130px; }
+.stock-row .inp input { height: 36px; }
+.stepper { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.stepper button { width: 36px; height: 36px; border: 0; background: var(--field); color: var(--ink); font: 600 17px var(--body); cursor: pointer; }
+.stepper input { width: 60px; height: 36px; border: 0; border-radius: 0; text-align: center; padding: 0 4px; }
+.confirming { border-color: var(--danger) !important; color: var(--danger) !important; }
+
 @media (max-width: 520px) {
   .panel { padding: 16px; }
   .fil { padding: 12px; }
   .mat { grid-template-columns: minmax(0, 1fr) 112px auto; }
+  .tabs { width: 100%; }
+  .tab { flex: 1; justify-content: center; padding: 0 10px; }
+  .bar-actions { gap: 6px; }
+  .bar-actions .btn { padding: 0 11px; }
+  .bar strong { font-size: 20px; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn, input, select, textarea { transition: border-color .15s, filter .15s; }
@@ -233,12 +289,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   <header class="top">
     <div>
       <h1>Presupuestos 3D</h1>
-      <p>Elige tu impresora y el filamento de cada pieza; los precios de Macrotec se cargan solos. Descarga el PDF y envíalo a tu cliente.</p>
+      <p>Calcula con precios de Macrotec, envía el PDF a tu cliente y lleva el control de tus presupuestos, trabajos y stock.</p>
     </div>
     <div class="top-actions">
       <button class="btn ghost" type="button" id="btn-install" hidden>Instalar app</button>
       <a class="btn ghost" id="app-link" target="_blank" rel="noopener" hidden>Instalar como app</a>
-      <button class="btn ghost" type="button" id="btn-new">Nuevo presupuesto</button>
     </div>
   </header>
   <div class="install-hint" id="ios-hint" hidden>
@@ -246,11 +301,20 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
     <button class="link plain" type="button" id="ios-hint-close">Entendido</button>
   </div>
 
+  <div class="tabs" role="tablist" aria-label="Secciones de la app">
+    <button class="tab" type="button" role="tab" id="tab-calculadora" data-tab="calculadora" aria-controls="view-calculadora" aria-selected="true">Calculadora</button>
+    <button class="tab" type="button" role="tab" id="tab-negocio" data-tab="negocio" aria-controls="view-negocio" aria-selected="false">Tu negocio <span class="count" data-bind="waitCount" hidden></span></button>
+  </div>
+
+  <div id="view-calculadora" role="tabpanel" aria-labelledby="tab-calculadora">
   <div class="layout">
     <div class="main">
 
       <section class="panel" aria-labelledby="h-cliente">
-        <h2 id="h-cliente">Cliente y presupuesto</h2>
+        <div class="panel-head">
+          <h2 id="h-cliente">Cliente y presupuesto</h2>
+          <button class="btn ghost sm" type="button" id="btn-new">Nuevo presupuesto</button>
+        </div>
         <div class="grid wide" style="margin-top:16px">
           <label class="field"><span>Cliente</span><input type="text" id="client" data-s="client" placeholder="Nombre o empresa"></label>
           <label class="field"><span>Proyecto o referencia</span><input type="text" id="project" data-s="project" placeholder="Ej: Soportes para stand"></label>
@@ -334,22 +398,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
         <label class="field" style="margin-top:14px"><span style="position:absolute;left:-9999px">Condiciones del presupuesto</span><textarea id="notes" data-s="notes" rows="4"></textarea></label>
       </section>
 
-      <details class="panel" open>
-        <summary><h2>Tu negocio</h2></summary>
-        <div>
-          <div class="grid wide">
-            <label class="field"><span>Nombre</span><input type="text" id="bizName" data-s="bizName" placeholder="Nombre de tu taller"></label>
-            <label class="field"><span>Contacto</span><textarea id="bizContact" data-s="bizContact" rows="3" style="min-height:76px" placeholder="Teléfono, correo, web o dirección (una línea por dato)"></textarea></label>
-          </div>
-          <div class="logo-row" style="margin-top:16px">
-            <img class="logo-prev" id="logo-prev" alt="Logo cargado" hidden>
-            <label class="file field"><span>Logo (PNG o JPG, hasta 2 MB)</span><input type="file" id="logo-file" accept="image/png,image/jpeg"></label>
-            <button class="link" type="button" id="logo-del" hidden>Quitar logo</button>
-          </div>
-          <p class="status err" id="logo-msg" style="margin-top:8px"></p>
-          <p class="sub">Tus datos y precios quedan guardados en este dispositivo.</p>
-        </div>
-      </details>
     </div>
 
     <aside>
@@ -369,8 +417,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
         <div style="display:grid;gap:8px">
           <button class="btn block" type="button" data-act="pdf">Descargar PDF</button>
           <button class="btn ghost block" type="button" data-act="share" hidden>Compartir PDF</button>
+          <button class="btn ghost block" type="button" data-act="save-quote">Guardar en espera</button>
         </div>
         <p class="status" id="status" role="status" aria-live="polite"></p>
+        <button class="link plain" type="button" data-goto="sec-espera" id="wait-link" hidden></button>
 
         <div class="own">
           <div class="sum-label">Solo para ti, no sale en el PDF</div>
@@ -386,12 +436,109 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
       </div>
     </aside>
   </div>
+  </div>
+
+  <div id="view-negocio" role="tabpanel" aria-labelledby="tab-negocio" hidden>
+    <nav class="jump" aria-label="Ir a">
+      <button type="button" data-goto="sec-espera">Presupuestos en espera</button>
+      <button type="button" data-goto="sec-trabajos">Trabajos</button>
+      <button type="button" data-goto="sec-fil">Stock de filamentos</button>
+      <button type="button" data-goto="sec-piezas">Stock de piezas</button>
+      <button type="button" data-goto="sec-datos">Datos y respaldo</button>
+    </nav>
+
+    <div class="stats" id="biz-stats"></div>
+
+    <section class="panel" id="sec-espera" aria-labelledby="h-espera">
+      <h2 id="h-espera">Presupuestos en espera</h2>
+      <p class="sub">Los que enviaste y todavía no sabes si se concretan. Guárdalos desde la calculadora con "Guardar en espera".</p>
+      <div class="items" id="quotes"></div>
+      <details class="changes" id="quotes-hist-box" hidden><summary>Historial de aceptados y rechazados</summary><div class="items" id="quotes-hist"></div></details>
+      <p class="status" id="quote-msg" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="sec-trabajos" aria-labelledby="h-trabajos">
+      <h2 id="h-trabajos">Trabajos</h2>
+      <p class="sub">Un presupuesto aceptado pasa a "Por realizar". Al marcarlo terminado se descuenta el filamento de tu stock.</p>
+      <h3 class="sec-title">Por realizar</h3>
+      <div class="items" id="jobs-todo"></div>
+      <h3 class="sec-title">Realizados</h3>
+      <div class="items" id="jobs-done"></div>
+      <details class="addbox" id="job-add-box">
+        <summary class="btn ghost sm">+ Agregar trabajo sin presupuesto</summary>
+        <div class="addform">
+          <div class="grid">
+            <label class="field"><span>Cliente</span><input type="text" id="nj-client" placeholder="Nombre"></label>
+            <label class="field"><span>Trabajo</span><input type="text" id="nj-desc" placeholder="Ej: 20 llaveros con logo"></label>
+            <label class="field"><span>Entrega</span><input type="date" id="nj-due"></label>
+            <label class="field"><span>Total (<b data-cur></b>)</span><input type="number" inputmode="decimal" min="0" step="any" id="nj-total" placeholder="0"></label>
+          </div>
+          <div><button class="btn sm" type="button" id="nj-add">Agregar trabajo</button></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="sec-fil" aria-labelledby="h-fil">
+      <h2 id="h-fil">Stock de filamentos</h2>
+      <p class="sub">Los gramos que te quedan de cada rollo. Avisa cuando quedan menos de <span data-bind="lowG"></span> g.</p>
+      <div class="items" id="fstock"></div>
+      <div class="addform">
+        <div class="fil-row" id="fs-pick"></div>
+        <div class="grid">
+          <label class="field"><span>Cantidad</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="fs-g"><i>g</i></div><small>Un rollo nuevo: el peso del rollo.</small></label>
+        </div>
+        <div><button class="btn sm" type="button" id="fs-add">Agregar al stock</button></div>
+      </div>
+    </section>
+
+    <section class="panel" id="sec-piezas" aria-labelledby="h-piezas-stock">
+      <h2 id="h-piezas-stock">Stock de piezas</h2>
+      <p class="sub">Piezas impresas listas para vender y repuestos de tus impresoras.</p>
+      <div class="items" id="pstock"></div>
+      <div class="addform">
+        <div class="grid">
+          <label class="field"><span>Pieza</span><input type="text" id="ps-name" placeholder="Ej: Maceta geométrica chica"></label>
+          <label class="field"><span>Tipo</span><select id="ps-kind"><option value="producto">Producto para vender</option><option value="repuesto">Repuesto o insumo</option></select></label>
+          <label class="field"><span>Cantidad</span><input type="number" inputmode="numeric" min="0" step="1" id="ps-qty" value="1"></label>
+          <label class="field"><span>Precio de venta (<b data-cur></b>)</span><input type="number" inputmode="decimal" min="0" step="any" id="ps-price" placeholder="Opcional"></label>
+          <label class="field span"><span>Nota</span><input type="text" id="ps-note" placeholder="Ej: estante 2, color blanco"></label>
+        </div>
+        <div><button class="btn sm" type="button" id="ps-add">Agregar pieza</button></div>
+      </div>
+    </section>
+
+    <section class="panel" id="sec-datos" aria-labelledby="h-datos">
+      <h2 id="h-datos">Datos del negocio</h2>
+      <p class="sub">Aparecen en el encabezado de cada PDF.</p>
+      <div class="grid wide" style="margin-top:16px">
+        <label class="field"><span>Nombre</span><input type="text" id="bizName" data-s="bizName" placeholder="Nombre de tu taller"></label>
+        <label class="field"><span>Contacto</span><textarea id="bizContact" data-s="bizContact" rows="3" style="min-height:76px" placeholder="Teléfono, correo, web o dirección (una línea por dato)"></textarea></label>
+        <label class="field"><span>Avisar poco stock de filamento</span><div class="inp"><input type="number" inputmode="numeric" min="0" step="1" id="lowStock" data-s="lowStock"><i>g</i></div></label>
+      </div>
+      <div class="logo-row" style="margin-top:16px">
+        <img class="logo-prev" id="logo-prev" alt="Logo cargado" hidden>
+        <label class="file field"><span>Logo (PNG o JPG, hasta 2 MB)</span><input type="file" id="logo-file" accept="image/png,image/jpeg"></label>
+        <button class="link" type="button" id="logo-del" hidden>Quitar logo</button>
+      </div>
+      <p class="status err" id="logo-msg" style="margin-top:8px"></p>
+
+      <h3 class="sec-title">Respaldo</h3>
+      <p class="sub">Todo se guarda en este dispositivo. Para pasarlo a otro (de la computadora al celular, por ejemplo), exporta un respaldo aquí e impórtalo allá.</p>
+      <div class="item-actions" style="margin-top:12px">
+        <button class="btn ghost sm" type="button" id="bk-export">Exportar respaldo</button>
+        <button class="btn ghost sm" type="button" id="bk-import">Importar respaldo</button>
+        <input type="file" id="bk-file" accept="application/json,.json" hidden>
+      </div>
+      <p class="status" id="bk-msg" role="status" aria-live="polite"></p>
+    </section>
+  </div>
 </div>
 
-<div class="bar">
+<div class="bar" id="calc-bar">
   <div><span class="sum-label">Total</span><strong data-bind="total"></strong></div>
   <div class="bar-actions">
-    <button class="btn ghost" type="button" data-act="share" hidden>Compartir</button>
+    <button class="btn ghost" type="button" data-act="save-quote">Guardar</button>
+    <button class="btn ghost" type="button" data-act="share" hidden>Enviar</button>
     <button class="btn" type="button" data-act="pdf">PDF</button>
   </div>
 </div>
@@ -963,7 +1110,7 @@ if (typeof module !== 'undefined' && module.exports) {
 /* ---- Aplicación ---- */
 (function () {
   const IN_CLAUDE = !!(window.claude && typeof window.claude.use === 'function');
-  const APP_URL = '';
+  const APP_URL = 'https://delprestitotiki-sketch.github.io/presupuestos-3d/';
   const KEY = 'presupuestos3d.v2';
   const OLD_KEY = 'presupuestos3d.v1';
   const $ = function (s, r) { return (r || document).querySelector(s); };
@@ -1003,7 +1150,8 @@ if (typeof module !== 'undefined' && module.exports) {
       client: '', clientContact: '', project: '', number: nextNumber(''), date: today(), validity: 15,
       notes: 'Pago: 50% de anticipo y 50% contra entrega.\nPlazo de entrega estimado: 5 días hábiles.\nLos precios pueden cambiar si se modifica el diseño o el material.',
       materials: [{ id: uid(), name: 'Filamento propio', price: 950 }],
-      lines: exampleLines()
+      lines: exampleLines(),
+      quotes: [], jobs: [], fstock: [], pstock: [], lowStock: 250
     };
   }
 
@@ -1034,12 +1182,18 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 
   let state = load();
-  if (!state.rates || typeof state.rates !== 'object') state.rates = {};
-  if (String(state.rates.UYU) === '40.13') delete state.rates.UYU; /* era el valor por defecto: pasa a cotización automática */
-  if (!state.overrides || typeof state.overrides !== 'object') state.overrides = {};
-  if (!Array.isArray(state.materials) || !state.materials.length) state.materials = defaults().materials;
-  if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
-  if (!printerById(state.printerModel)) { state.printerBrand = 'Bambu Lab'; state.printerModel = 'bl-p1s'; }
+  if (state.rates && String(state.rates.UYU) === '40.13') delete state.rates.UYU; /* era el valor por defecto: pasa a cotización automática */
+  function normalizeState() {
+    if (!state.rates || typeof state.rates !== 'object') state.rates = {};
+    if (!state.overrides || typeof state.overrides !== 'object') state.overrides = {};
+    if (!Array.isArray(state.materials) || !state.materials.length) state.materials = defaults().materials;
+    if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
+    if (!printerById(state.printerModel)) { state.printerBrand = 'Bambu Lab'; state.printerModel = 'bl-p1s'; }
+    ['quotes', 'jobs', 'fstock', 'pstock'].forEach(function (k) {
+      state[k] = Array.isArray(state[k]) ? state[k].filter(function (x) { return x && typeof x === 'object'; }) : [];
+    });
+  }
+  normalizeState();
 
   function blankLine() {
     const fid = DEFAULT_FIL[state.printerBrand] || 'bl-pla-basic';
@@ -1081,6 +1235,7 @@ if (typeof module !== 'undefined' && module.exports) {
       state[el.dataset.s] = el.type === 'checkbox' ? el.checked : el.value;
       if (el.id === 'currency') { $('#usdRate').value = state.rates[state.currency] == null ? '' : state.rates[state.currency]; renderLines(); }
       update();
+      if ((el.id === 'currency' || el.id === 'lowStock') && !$('#view-negocio').hidden) renderBiz();
     };
     el.addEventListener('input', h);
     el.addEventListener('change', h);
@@ -1369,6 +1524,12 @@ if (typeof module !== 'undefined' && module.exports) {
       } else {
         html = '<span>Precio por kg: <b>' + money2(c.perKg) + '</b>. Edítalo en Mis materiales.</span>';
       }
+      if (state.fstock.length) {
+        const st = stockFor(l.brand, l.fil, l.color);
+        const need = c.gTotal * (1 + num(state.fail) / 100);
+        if (!st) html += '<span class="tag info">No lo tienes en stock</span>';
+        else html += '<span class="tag ' + (num(st.g) < need ? 'warn' : 'sale') + '">En tu stock: ' + Math.round(num(st.g)).toLocaleString('es-UY') + ' g' + (num(st.g) < need ? ', no alcanza' : '') + '</span>';
+      }
       info.innerHTML = html;
       $('[data-calc]', row).innerHTML = '<span>Costo unitario <b>' + m(c.cost) + '</b></span><span>Precio unitario <b>' + m(c.unit) + '</b></span><span>Total <b>' + m(c.total) + '</b></span>';
     });
@@ -1388,6 +1549,7 @@ if (typeof module !== 'undefined' && module.exports) {
     $('[data-row="discount"]').hidden = !(t.discount > 0);
     $('[data-row="shipping"]').hidden = !(t.shipping > 0);
     $('[data-row="iva"]').hidden = !(num(state.iva) > 0);
+    updateWaitBadge();
     save();
   }
 
@@ -1446,73 +1608,84 @@ if (typeof module !== 'undefined' && module.exports) {
     }, function () { downloadsAnswered = true; });
   }
 
-  function fileName() {
-    const clean = function (s) { return String(s || '').replace(/[^\wÀ-ſ\- ]+/g, '').trim().replace(/\s+/g, '-'); };
-    const parts = ['Presupuesto', clean(state.number), clean(state.client)].filter(Boolean);
+  function cleanName(s) { return String(s || '').replace(/[^\wÀ-ſ\- ]+/g, '').trim().replace(/\s+/g, '-'); }
+  function fileName(src) {
+    src = src || state;
+    const parts = ['Presupuesto', cleanName(src.number), cleanName(src.client)].filter(Boolean);
     return parts.join('-') + '.pdf';
   }
 
-  /* Genera el PDF; devuelve null y muestra el motivo si no se puede */
-  function makePdf() {
-    setStatus('');
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      setStatus('No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a abrir la app.', 'err');
-      return null;
-    }
-    if (state.currency !== 'USD' && !(usdRate(state) > 0)) {
-      setStatus('Ingresa la cotización del dólar en Costos y márgenes antes de descargar.', 'err');
-      return null;
-    }
-    return buildPdf(window.jspdf.jsPDF, state, calcTotals(state), state.logo).output('arraybuffer');
-  }
-
-  async function exportPdf() {
+  /* Guarda un archivo: en Claude con la confirmación de descarga, en la app como descarga directa */
+  async function saveFile(name, data, mime, say) {
     if (IN_CLAUDE) {
       if (!downloads) {
-        setStatus(downloadsAnswered
-          ? 'La descarga de PDF solo funciona al abrir esta página en claude.ai.'
+        say(downloadsAnswered
+          ? 'La descarga solo funciona al abrir esta página en claude.ai.'
           : 'Un momento, la página aún se está preparando. Intenta de nuevo.', 'err');
-        return;
+        return false;
       }
-      const buf = makePdf();
-      if (!buf) return;
       try {
-        await downloads.save({ filename: fileName(), data: buf });
-        setStatus('PDF listo.', 'ok');
+        await downloads.save({ filename: name, data: data });
+        return true;
       } catch (e) {
-        if (e && e.code === 'declined') setStatus('Descarga cancelada.');
-        else if (e && e.code === 'rate_limited') setStatus('Ya hay una descarga esperando tu confirmación.', 'err');
-        else setStatus('No se pudo guardar el PDF. Intenta de nuevo.', 'err');
+        if (e && e.code === 'declined') say('Descarga cancelada.');
+        else if (e && e.code === 'rate_limited') say('Ya hay una descarga esperando tu confirmación.', 'err');
+        else say('No se pudo guardar el archivo. Intenta de nuevo.', 'err');
+        return false;
       }
-      return;
     }
-    const buf = makePdf();
-    if (!buf) return;
     try {
-      const url = URL.createObjectURL(new Blob([buf], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([data], { type: mime }));
       const a = document.createElement('a');
       a.href = url;
-      a.download = fileName();
+      a.download = name;
       document.body.appendChild(a);
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
-      setStatus('PDF descargado.', 'ok');
+      return true;
     } catch (e) {
-      setStatus('No se pudo guardar el PDF. Intenta de nuevo.', 'err');
+      say('No se pudo guardar el archivo. Intenta de nuevo.', 'err');
+      return false;
     }
   }
 
-  async function sharePdf() {
-    const buf = makePdf();
+  /* Genera el PDF de src (el presupuesto en pantalla o uno guardado); devuelve null y avisa si no se puede */
+  function makePdf(src, say) {
+    src = src || state;
+    say = say || setStatus;
+    say('');
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      say('No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a abrir la app.', 'err');
+      return null;
+    }
+    if (src.currency !== 'USD' && !(usdRate(src) > 0)) {
+      say('Ingresa la cotización del dólar en Costos y márgenes antes de descargar.', 'err');
+      return null;
+    }
+    return buildPdf(window.jspdf.jsPDF, src, calcTotals(src), state.logo).output('arraybuffer');
+  }
+
+  async function exportPdf(src, say) {
+    src = src && src.lines ? src : state;
+    say = say || setStatus;
+    const buf = makePdf(src, say);
     if (!buf) return;
-    const file = new File([buf], fileName(), { type: 'application/pdf' });
+    if (await saveFile(fileName(src), buf, 'application/pdf', say)) say(IN_CLAUDE ? 'PDF listo.' : 'PDF descargado.', 'ok');
+  }
+
+  async function sharePdf(src, say) {
+    src = src && src.lines ? src : state;
+    say = say || setStatus;
+    const buf = makePdf(src, say);
+    if (!buf) return;
+    const file = new File([buf], fileName(src), { type: 'application/pdf' });
     try {
-      await navigator.share({ files: [file], title: 'Presupuesto ' + (state.number || '') });
-      setStatus('PDF compartido.', 'ok');
+      await navigator.share({ files: [file], title: 'Presupuesto ' + (src.number || '') });
+      say('PDF compartido.', 'ok');
     } catch (e) {
-      if (e && e.name === 'AbortError') setStatus('');
-      else setStatus('No se pudo compartir. Usa Descargar PDF.', 'err');
+      if (e && e.name === 'AbortError') say('');
+      else say('No se pudo compartir. Usa Descargar PDF.', 'err');
     }
   }
 
@@ -1520,8 +1693,9 @@ if (typeof module !== 'undefined' && module.exports) {
   try {
     canShareFiles = !IN_CLAUDE && !!navigator.canShare && navigator.canShare({ files: [new File(['%PDF'], 'prueba.pdf', { type: 'application/pdf' })] });
   } catch (e) { canShareFiles = false; }
-  $$('[data-act="pdf"]').forEach(function (b) { b.addEventListener('click', exportPdf); });
-  $$('[data-act="share"]').forEach(function (b) { b.hidden = !canShareFiles; b.addEventListener('click', sharePdf); });
+  $$('[data-act="pdf"]').forEach(function (b) { b.addEventListener('click', function () { exportPdf(); }); });
+  $$('[data-act="share"]').forEach(function (b) { b.hidden = !canShareFiles; b.addEventListener('click', function () { sharePdf(); }); });
+  $$('[data-act="save-quote"]').forEach(function (b) { b.addEventListener('click', saveQuote); });
 
   /* ---- Instalación como app ---- */
   if (IN_CLAUDE) {
@@ -1549,6 +1723,546 @@ if (typeof module !== 'undefined' && module.exports) {
       navigator.serviceWorker.register('sw.js').catch(function () { /* la app funciona igual, sin modo sin conexión */ });
     }
   }
+
+  /* ================= Tu negocio ================= */
+  const QUOTE_KEYS = ['client', 'clientContact', 'project', 'number', 'date', 'validity', 'notes', 'lines', 'currency', 'rates',
+    'kwh', 'laborRate', 'fail', 'margin', 'discount', 'iva', 'shipping', 'round',
+    'printerBrand', 'printerModel', 'printerPrice', 'watts', 'life', 'maint', 'overrides', 'materials'];
+  const KEEP_GLOBAL = ['rates', 'overrides', 'materials'];
+  const JOB_STATES = [['hacer', 'Por hacer'], ['imprimiendo', 'Imprimiendo'], ['terminado', 'Terminado'], ['entregado', 'Entregado']];
+  const PAY_STATES = [['sin', 'Sin pagar'], ['sena', 'Con seña'], ['pagado', 'Pagado']];
+  function isDone(s) { return s === 'terminado' || s === 'entregado'; }
+  function clone(v) { return v == null ? v : JSON.parse(JSON.stringify(v)); }
+  function nowIso() { return new Date().toISOString(); }
+  function dmy(d) { return isNaN(d) ? '' : pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear(); }
+  function isoToLocal(iso) { return iso ? dmy(new Date(iso)) : ''; }
+  function moneyIn(cur, v, round) { return money({ currency: cur || state.currency, round: !!round }, num(v)); }
+  function startOfToday() { const d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+  function expiry(s) {
+    const p = String(s.date || '').split('-').map(Number);
+    if (p.length !== 3 || !p[0]) return null;
+    return new Date(p[0], p[1] - 1, p[2] + Math.round(num(s.validity)));
+  }
+  function isLate(j) { return !isDone(j.status) && !!j.due && new Date(j.due + 'T23:59:59') < new Date(); }
+  function sayIn(sel) {
+    return function (msg, kind) { const el = $(sel); el.textContent = msg || ''; el.className = 'status' + (kind ? ' ' + kind : ''); };
+  }
+  const quoteSay = sayIn('#quote-msg');
+  const bkSay = sayIn('#bk-msg');
+
+  /* Botones que piden un segundo toque para confirmar */
+  function confirmTwice(btn, text) {
+    if (btn.dataset.armed === '1') { clearTimeout(btn._t); btn.dataset.armed = ''; return true; }
+    btn.dataset.armed = '1';
+    btn.dataset.label = btn.textContent;
+    btn.textContent = text;
+    btn.classList.add('confirming');
+    btn._t = setTimeout(function () { btn.dataset.armed = ''; btn.textContent = btn.dataset.label; btn.classList.remove('confirming'); }, 4000);
+    return false;
+  }
+
+  function stockKey(c) { return String(c || '').trim().toLowerCase(); }
+  function stockFor(brand, fil, color) {
+    return state.fstock.find(function (s) { return s.brand === brand && s.fil === fil && stockKey(s.color) === stockKey(color); }) || null;
+  }
+  function filLabel(brand, fil, color, mats) {
+    let name;
+    if (brand === 'mine') {
+      const m = (mats || state.materials).find(function (x) { return x.id === fil; });
+      name = m ? m.name : 'Material propio';
+    } else {
+      const f = filById(fil);
+      name = f ? f.b + ' ' + f.n : String(fil || '');
+    }
+    return name + (color ? ' · ' + color : '');
+  }
+
+  /* ---- Presupuestos en espera ---- */
+  /* Copia del presupuesto con los precios congelados, para que su PDF salga igual aunque cambien Macrotec o el dólar */
+  function snapshot() {
+    const o = {};
+    QUOTE_KEYS.forEach(function (k) { o[k] = clone(state[k]); });
+    o.rates = Object.assign({}, o.rates || {});
+    if (state.currency !== 'USD') o.rates[state.currency] = usdRate(state);
+    o.overrides = Object.assign({}, o.overrides || {});
+    state.lines.forEach(function (l) {
+      if (l.brand === 'mine') return;
+      const f = filById(l.fil);
+      if (f) o.overrides[f.id] = rollPrice(state, f);
+    });
+    return o;
+  }
+  function quoteSource(q) { return Object.assign({}, state, clone(q.snap)); }
+
+  function saveQuote() {
+    const t = calcTotals(state);
+    const snap = snapshot();
+    const q = state.quotes.find(function (x) { return x.status === 'espera' && x.snap && x.snap.number === state.number; });
+    if (q) {
+      q.snap = snap; q.total = t.total; q.currency = state.currency; q.savedAt = nowIso();
+      setStatus('Actualizado en Presupuestos en espera.', 'ok');
+    } else {
+      state.quotes.unshift({ id: uid(), status: 'espera', savedAt: nowIso(), total: t.total, currency: state.currency, snap: snap });
+      setStatus('Guardado en Presupuestos en espera. Para empezar otro, toca "Nuevo presupuesto".', 'ok');
+    }
+    flushSave(); updateWaitBadge(); renderBiz();
+  }
+
+  function updateWaitBadge() {
+    const n = state.quotes.filter(function (q) { return q.status === 'espera'; }).length;
+    const b = $('[data-bind="waitCount"]');
+    b.textContent = n; b.hidden = !n;
+    const link = $('#wait-link');
+    link.hidden = !n;
+    link.textContent = n === 1 ? 'Ver 1 presupuesto en espera' : 'Ver ' + n + ' presupuestos en espera';
+  }
+
+  function quoteHTML(q, hist) {
+    const s = q.snap || {};
+    let tags = '';
+    if (hist) {
+      tags = q.status === 'aceptado' ? '<span class="tag sale">Aceptado</span>' : '<span class="tag out">Rechazado</span>';
+    } else {
+      const exp = expiry(s);
+      if (exp) tags = '<span class="tag ' + (exp < startOfToday() ? 'warn">Venció el ' : 'info">Vence el ') + dmy(exp) + '</span>';
+    }
+    const actions = hist
+      ? '<button class="btn ghost sm" type="button" data-q="open">Abrir</button><button class="btn ghost sm" type="button" data-q="pdf">PDF</button>' +
+        (q.status === 'rechazado' ? '<button class="btn ghost sm" type="button" data-q="back">Volver a espera</button>' : '') +
+        '<button class="link" type="button" data-q="del">Borrar</button>'
+      : '<button class="btn sm" type="button" data-q="accept">Aceptado</button><button class="btn ghost sm" type="button" data-q="reject">Rechazado</button>' +
+        '<button class="btn ghost sm" type="button" data-q="open">Abrir</button><button class="btn ghost sm" type="button" data-q="pdf">PDF</button>' +
+        (canShareFiles ? '<button class="btn ghost sm" type="button" data-q="share">Enviar</button>' : '');
+    return '<div class="item" data-quote="' + esc(q.id) + '">' +
+      '<div class="item-head"><span class="item-title">' + esc(s.client || 'Sin cliente') + '</span><span class="item-amount">' + esc(moneyIn(q.currency, q.total, s.round)) + '</span></div>' +
+      '<div class="item-meta">' + esc([s.number, s.project, 'guardado el ' + isoToLocal(q.savedAt)].filter(Boolean).join(' · ')) + '</div>' +
+      (tags ? '<div class="item-tags">' + tags + '</div>' : '') +
+      '<div class="item-actions">' + actions + '</div></div>';
+  }
+  function renderQuotes() {
+    const wait = state.quotes.filter(function (q) { return q.status === 'espera'; });
+    const hist = state.quotes.filter(function (q) { return q.status !== 'espera'; });
+    $('#quotes').innerHTML = wait.length ? wait.map(function (q) { return quoteHTML(q, false); }).join('')
+      : '<div class="empty">No hay presupuestos en espera. En la calculadora, toca "Guardar en espera" cuando envíes un presupuesto.</div>';
+    $('#quotes-hist').innerHTML = hist.map(function (q) { return quoteHTML(q, true); }).join('');
+    $('#quotes-hist-box').hidden = !hist.length;
+  }
+
+  function calcHasWork() {
+    return !!(state.client || state.project || state.lines.some(function (l) { return num(l.g) > 0 && !/\(ejemplo\)\s*$/.test(l.desc || ''); }));
+  }
+  function calcIsSaved() {
+    const cur = JSON.stringify(snapshot());
+    return state.quotes.some(function (q) { return JSON.stringify(q.snap) === cur; });
+  }
+  function openQuote(q, btn) {
+    if (calcHasWork() && !calcIsSaved() && !confirmTwice(btn, 'Toca de nuevo: reemplaza la calculadora')) return;
+    const s = clone(q.snap) || {};
+    QUOTE_KEYS.forEach(function (k) { if (KEEP_GLOBAL.indexOf(k) < 0 && s[k] !== undefined) state[k] = s[k]; });
+    (s.materials || []).forEach(function (m) { if (!state.materials.some(function (x) { return x.id === m.id; })) state.materials.push(m); });
+    if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
+    syncFields(); renderPrinter(); renderMaterials(); renderLines(); update();
+    showTab('calculadora');
+    window.scrollTo(0, 0);
+    const now = calcTotals(state).total;
+    if (Math.abs(now - num(q.total)) >= 0.5) {
+      setStatus('Con los precios de hoy el total es ' + money(state, now) + '; cuando lo guardaste era ' + moneyIn(q.currency, q.total, s.round) + '.', 'err');
+    } else {
+      setStatus('Abriste el presupuesto ' + (state.number || '') + '. Si lo cambias, toca "Guardar en espera" para actualizarlo.', 'ok');
+    }
+  }
+
+  function jobFromQuote(q) {
+    const s = q.snap || {};
+    return {
+      id: uid(), quoteId: q.id, number: s.number || '', client: s.client || '',
+      desc: s.project || (s.lines && s.lines[0] && s.lines[0].desc) || 'Trabajo',
+      items: (s.lines || []).map(function (l) {
+        return { desc: l.desc || '', brand: l.brand, fil: l.fil, color: l.color || '', g: num(l.g), qty: Math.max(1, Math.round(num(l.qty)) || 1), label: filLabel(l.brand, l.fil, l.color, s.materials) };
+      }),
+      fail: num(s.fail), total: q.total, currency: q.currency, round: !!s.round,
+      due: '', status: 'hacer', pay: 'sin', deduct: true, deducted: false, log: [], createdAt: nowIso(), doneAt: ''
+    };
+  }
+
+  $('#sec-espera').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-q]');
+    if (!b) return;
+    const q = state.quotes.find(function (x) { return x.id === b.closest('[data-quote]').dataset.quote; });
+    if (!q) return;
+    const act = b.dataset.q;
+    if (act === 'pdf') { exportPdf(quoteSource(q), quoteSay); return; }
+    if (act === 'share') { sharePdf(quoteSource(q), quoteSay); return; }
+    if (act === 'open') { openQuote(q, b); return; }
+    if (act === 'accept') {
+      q.status = 'aceptado'; q.decidedAt = nowIso();
+      state.jobs.unshift(jobFromQuote(q));
+      quoteSay('Aceptado: pasó a Trabajos por realizar.', 'ok');
+    } else if (act === 'reject') {
+      q.status = 'rechazado'; q.decidedAt = nowIso();
+      quoteSay('Marcado como rechazado. Queda en el historial.', 'ok');
+    } else if (act === 'back') {
+      q.status = 'espera';
+      quoteSay('Volvió a Presupuestos en espera.', 'ok');
+    } else if (act === 'del') {
+      if (!confirmTwice(b, 'Toca de nuevo para borrar')) return;
+      state.quotes = state.quotes.filter(function (x) { return x !== q; });
+      quoteSay('Presupuesto borrado.');
+    }
+    flushSave(); updateWaitBadge(); renderBiz();
+  });
+
+  /* ---- Trabajos ---- */
+  function deductStock(j) {
+    j.log = [];
+    (j.items || []).forEach(function (it) {
+      const need = num(it.g) * (it.qty || 1) * (1 + num(j.fail) / 100);
+      if (!(need > 0)) return;
+      const s = stockFor(it.brand, it.fil, it.color);
+      if (!s) { j.log.push({ label: it.label, missing: true }); return; }
+      const take = Math.min(num(s.g), need);
+      s.g = Math.round((num(s.g) - take) * 10) / 10;
+      j.log.push({ stockId: s.id, g: take, short: need - take, label: it.label });
+    });
+    j.deducted = true;
+  }
+  function restoreStock(j) {
+    (j.log || []).forEach(function (x) {
+      if (!x.stockId) return;
+      const s = state.fstock.find(function (r) { return r.id === x.stockId; });
+      if (s) s.g = Math.round((num(s.g) + num(x.g)) * 10) / 10;
+    });
+    j.log = []; j.deducted = false;
+  }
+  function setJobStatus(j, st) {
+    const was = isDone(j.status), now = isDone(st);
+    j.status = st;
+    if (now && !was) {
+      j.doneAt = nowIso();
+      if (j.deduct && !j.deducted && j.items && j.items.length) deductStock(j);
+    } else if (!now && was) {
+      j.doneAt = '';
+      if (j.deducted) restoreStock(j);
+    }
+  }
+  function opts(list, cur) {
+    return list.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === cur ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('');
+  }
+  function jobHTML(j) {
+    const done = isDone(j.status);
+    const items = (j.items || []).length ? '<ul>' + j.items.map(function (it) {
+      return '<li>' + esc(it.qty + ' × ' + (it.desc || 'Pieza') + ' — ' + it.label + (it.g ? ', ' + Math.round(it.g) + ' g c/u' : '')) + '</li>';
+    }).join('') + '</ul>' : '';
+    let tags = '';
+    if (isLate(j)) tags += '<span class="tag warn">Atrasado</span>';
+    if (j.pay === 'pagado') tags += '<span class="tag sale">Pagado</span>';
+    else if (j.pay === 'sena') tags += '<span class="tag info">Con seña</span>';
+    const log = (j.log || []).length ? '<div class="item-meta">' + esc(j.log.map(function (x) {
+      if (x.missing) return 'No tenías en stock ' + x.label;
+      return 'Se descontaron ' + Math.round(x.g) + ' g de ' + x.label + (x.short > 0.5 ? ' (faltaron ' + Math.round(x.short) + ' g)' : '');
+    }).join('. ')) + '.</div>' : '';
+    return '<div class="item" data-job="' + esc(j.id) + '">' +
+      '<div class="item-head"><span class="item-title">' + esc(j.client || 'Sin cliente') + '</span><span class="item-amount">' + esc(moneyIn(j.currency, j.total, j.round)) + '</span></div>' +
+      '<div class="item-meta">' + esc([j.desc, j.number, done && j.doneAt ? 'terminado el ' + isoToLocal(j.doneAt) : ''].filter(Boolean).join(' · ')) + '</div>' +
+      items + (tags ? '<div class="item-tags">' + tags + '</div>' : '') +
+      '<div class="item-grid">' +
+        '<label class="field"><span>Estado</span><select data-j="status">' + opts(JOB_STATES, j.status) + '</select></label>' +
+        '<label class="field"><span>Pago</span><select data-j="pay">' + opts(PAY_STATES, j.pay) + '</select></label>' +
+        '<label class="field"><span>Entrega</span><input type="date" data-j="due" value="' + esc(j.due) + '"></label>' +
+      '</div>' +
+      ((j.items || []).length && !done ? '<label class="check"><input type="checkbox" data-j="deduct"' + (j.deduct ? ' checked' : '') + '> Descontar el filamento del stock al terminarlo</label>' : '') +
+      log +
+      '<div class="item-actions"><button class="link" type="button" data-j="del">Borrar trabajo</button></div></div>';
+  }
+  function renderJobs() {
+    const todo = state.jobs.filter(function (j) { return !isDone(j.status); })
+      .sort(function (a, b) { return (a.due || '9999').localeCompare(b.due || '9999'); });
+    const done = state.jobs.filter(function (j) { return isDone(j.status); })
+      .sort(function (a, b) { return (b.doneAt || '').localeCompare(a.doneAt || ''); });
+    $('#jobs-todo').innerHTML = todo.length ? todo.map(jobHTML).join('')
+      : '<div class="empty">No hay trabajos pendientes. Cuando un cliente acepte, márcalo como "Aceptado" en Presupuestos en espera.</div>';
+    $('#jobs-done').innerHTML = done.length ? done.slice(0, 60).map(jobHTML).join('') : '<div class="empty">Todavía no hay trabajos realizados.</div>';
+  }
+  function jobOf(el) {
+    const id = el.closest('[data-job]').dataset.job;
+    return state.jobs.find(function (j) { return j.id === id; });
+  }
+  $('#sec-trabajos').addEventListener('change', function (e) {
+    const k = e.target.dataset.j;
+    if (!k) return;
+    const j = jobOf(e.target);
+    if (!j) return;
+    if (k === 'status') { setJobStatus(j, e.target.value); renderJobs(); renderFstock(); update(); }
+    else if (k === 'pay') { j.pay = e.target.value; renderJobs(); }
+    else if (k === 'due') { j.due = e.target.value; renderJobs(); }
+    else if (k === 'deduct') { j.deduct = e.target.checked; }
+    renderStats(); flushSave();
+  });
+  $('#sec-trabajos').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-j="del"]');
+    if (!b) return;
+    if (!confirmTwice(b, 'Toca de nuevo para borrar')) return;
+    const j = jobOf(b);
+    state.jobs = state.jobs.filter(function (x) { return x !== j; });
+    flushSave(); renderJobs(); renderStats();
+  });
+  $('#nj-add').addEventListener('click', function () {
+    const client = $('#nj-client').value.trim(), desc = $('#nj-desc').value.trim();
+    if (!client && !desc) { $('#nj-desc').focus(); return; }
+    state.jobs.unshift({
+      id: uid(), quoteId: '', number: '', client: client, desc: desc, items: [], fail: 0,
+      total: num($('#nj-total').value), currency: state.currency, round: !!state.round,
+      due: $('#nj-due').value, status: 'hacer', pay: 'sin', deduct: false, deducted: false, log: [], createdAt: nowIso(), doneAt: ''
+    });
+    ['#nj-client', '#nj-desc', '#nj-due', '#nj-total'].forEach(function (s) { $(s).value = ''; });
+    $('#job-add-box').open = false;
+    flushSave(); renderJobs(); renderStats();
+  });
+
+  /* ---- Stock de filamentos ---- */
+  const fsDraft = { brand: '', fil: '', color: '' };
+  function renderFsPick() {
+    if (!fsDraft.brand || (fsDraft.brand !== 'mine' && !filById(fsDraft.fil))) {
+      const f = filById(DEFAULT_FIL[state.printerBrand] || 'bl-pla-basic') || FIL[0];
+      fsDraft.brand = f.b; fsDraft.fil = f.id; fsDraft.color = pickColor(fsDraft, f);
+    }
+    $('#fs-pick').innerHTML =
+      '<label class="field"><span>Filamento</span><select data-fs="brand">' + brandOptions(fsDraft) + '</select></label>' +
+      '<label class="field fil-prod"><span>Línea</span><select data-fs="fil">' + prodOptions(fsDraft) + '</select></label>' +
+      '<label class="field fil-color"><span>Color</span>' + colorControl(fsDraft).replace('data-f="color"', 'data-fs="color"') + '</label>';
+    const f = fsDraft.brand === 'mine' ? null : filById(fsDraft.fil);
+    $('#fs-g').placeholder = f ? String(f.w) : '1000';
+  }
+  $('#fs-pick').addEventListener('change', function (e) {
+    const k = e.target.dataset.fs;
+    if (!k) return;
+    if (k === 'brand') {
+      fsDraft.brand = e.target.value;
+      if (fsDraft.brand === 'mine') { fsDraft.fil = state.materials[0].id; fsDraft.color = ''; }
+      else {
+        const f = FIL.find(function (x) { return x.b === fsDraft.brand && !x.gone; }) || FIL.find(function (x) { return x.b === fsDraft.brand; });
+        fsDraft.fil = f.id; fsDraft.color = pickColor(fsDraft, f);
+      }
+      renderFsPick();
+    } else if (k === 'fil') {
+      fsDraft.fil = e.target.value;
+      if (fsDraft.brand !== 'mine') fsDraft.color = pickColor(fsDraft, filById(fsDraft.fil));
+      renderFsPick();
+    } else {
+      fsDraft.color = e.target.value;
+    }
+  });
+  $('#fs-pick').addEventListener('input', function (e) { if (e.target.dataset.fs === 'color') fsDraft.color = e.target.value; });
+  $('#fs-add').addEventListener('click', function () {
+    const f = fsDraft.brand === 'mine' ? null : filById(fsDraft.fil);
+    const g = num($('#fs-g').value) || (f ? f.w : 1000);
+    const ex = stockFor(fsDraft.brand, fsDraft.fil, fsDraft.color);
+    if (ex) ex.g = Math.round((num(ex.g) + g) * 10) / 10;
+    else state.fstock.push({ id: uid(), brand: fsDraft.brand, fil: fsDraft.fil, color: fsDraft.color, g: g });
+    $('#fs-g').value = '';
+    flushSave(); renderFstock(); renderStats(); update();
+  });
+  function fstockPerKg(s) {
+    if (s.brand === 'mine') { const m = state.materials.find(function (x) { return x.id === s.fil; }); return m ? num(m.price) : 0; }
+    const f = filById(s.fil);
+    return f ? rollPrice(state, f) / (f.w / 1000) * usdRate(state) : 0;
+  }
+  function fstockHTML(s) {
+    const f = s.brand === 'mine' ? null : filById(s.fil);
+    const g = num(s.g);
+    const value = g / 1000 * fstockPerKg(s);
+    const rollW = f ? f.w : 1000;
+    const tag = g <= 0 ? '<span class="tag out">Agotado</span>' : g < num(state.lowStock) ? '<span class="tag warn">Poco stock</span>' : '';
+    return '<div class="item" data-fstock="' + esc(s.id) + '">' +
+      '<div class="item-head"><span class="item-title">' + esc(filLabel(s.brand, s.fil, s.color)) + '</span>' +
+      (value > 0 ? '<span class="item-meta">Vale ≈ ' + esc(money(state, value)) + '</span>' : '') + '</div>' +
+      '<div class="stock-row"><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" data-fsg value="' + esc(Math.round(g * 10) / 10) + '" aria-label="Gramos disponibles"><i>g</i></div>' +
+      '<button class="btn ghost sm" type="button" data-fsa="roll">+ 1 rollo (' + (rollW >= 1000 ? String(rollW / 1000).replace('.', ',') + ' kg' : rollW + ' g') + ')</button>' +
+      tag + '<button class="link" type="button" data-fsa="del">Quitar</button></div></div>';
+  }
+  function renderFstock() {
+    const list = state.fstock.slice().sort(function (a, b) { return filLabel(a.brand, a.fil, a.color).localeCompare(filLabel(b.brand, b.fil, b.color)); });
+    $('#fstock').innerHTML = list.length ? list.map(fstockHTML).join('')
+      : '<div class="empty">Todavía no cargaste filamentos. Elige marca, línea y color abajo y agrega lo que tienes.</div>';
+  }
+  function fstockOf(el) {
+    const id = el.closest('[data-fstock]').dataset.fstock;
+    return state.fstock.find(function (s) { return s.id === id; });
+  }
+  $('#fstock').addEventListener('input', function (e) {
+    if (!e.target.hasAttribute('data-fsg')) return;
+    const s = fstockOf(e.target);
+    if (!s) return;
+    s.g = num(e.target.value);
+    save(); renderStats();
+  });
+  $('#fstock').addEventListener('change', function (e) { if (e.target.hasAttribute('data-fsg')) { renderFstock(); update(); } });
+  $('#fstock').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-fsa]');
+    if (!b) return;
+    const s = fstockOf(b);
+    if (!s) return;
+    if (b.dataset.fsa === 'roll') {
+      const f = s.brand === 'mine' ? null : filById(s.fil);
+      s.g = Math.round((num(s.g) + (f ? f.w : 1000)) * 10) / 10;
+    } else {
+      if (!confirmTwice(b, 'Toca de nuevo para quitar')) return;
+      state.fstock = state.fstock.filter(function (x) { return x !== s; });
+    }
+    flushSave(); renderFstock(); renderStats(); update();
+  });
+
+  /* ---- Stock de piezas ---- */
+  function pstockHTML(p) {
+    const q = Math.max(0, Math.round(num(p.qty)));
+    return '<div class="item" data-pstock="' + esc(p.id) + '">' +
+      '<div class="item-head"><span class="item-title">' + esc(p.name || 'Sin nombre') + '</span>' +
+      (num(p.price) > 0 ? '<span class="item-amount">' + esc(money(state, num(p.price))) + '</span>' : '') + '</div>' +
+      '<div class="stock-row"><span class="tag ' + (p.kind === 'repuesto' ? 'info">Repuesto' : 'src">Producto') + '</span>' +
+      '<div class="stepper"><button type="button" data-psa="minus" aria-label="Restar uno">−</button>' +
+      '<input type="number" inputmode="numeric" min="0" step="1" data-psq value="' + q + '" aria-label="Cantidad">' +
+      '<button type="button" data-psa="plus" aria-label="Sumar uno">+</button></div>' +
+      (q === 0 ? '<span class="tag out">Agotado</span>' : '') +
+      '<button class="link" type="button" data-psa="del">Quitar</button></div>' +
+      (p.note ? '<div class="item-meta">' + esc(p.note) + '</div>' : '') + '</div>';
+  }
+  function renderPstock() {
+    $('#pstock').innerHTML = state.pstock.length ? state.pstock.map(pstockHTML).join('')
+      : '<div class="empty">Todavía no cargaste piezas. Agrega abajo lo que tienes impreso para vender o tus repuestos.</div>';
+  }
+  function pstockOf(el) {
+    const id = el.closest('[data-pstock]').dataset.pstock;
+    return state.pstock.find(function (p) { return p.id === id; });
+  }
+  $('#pstock').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-psa]');
+    if (!b) return;
+    const p = pstockOf(b);
+    if (!p) return;
+    if (b.dataset.psa === 'plus') p.qty = Math.max(0, Math.round(num(p.qty))) + 1;
+    else if (b.dataset.psa === 'minus') p.qty = Math.max(0, Math.round(num(p.qty)) - 1);
+    else {
+      if (!confirmTwice(b, 'Toca de nuevo para quitar')) return;
+      state.pstock = state.pstock.filter(function (x) { return x !== p; });
+    }
+    flushSave(); renderPstock(); renderStats();
+  });
+  $('#pstock').addEventListener('input', function (e) {
+    if (!e.target.hasAttribute('data-psq')) return;
+    const p = pstockOf(e.target);
+    if (p) { p.qty = Math.max(0, Math.round(num(e.target.value))); save(); renderStats(); }
+  });
+  $('#pstock').addEventListener('change', function (e) { if (e.target.hasAttribute('data-psq')) renderPstock(); });
+  $('#ps-add').addEventListener('click', function () {
+    const name = $('#ps-name').value.trim();
+    if (!name) { $('#ps-name').focus(); return; }
+    state.pstock.push({
+      id: uid(), name: name, kind: $('#ps-kind').value === 'repuesto' ? 'repuesto' : 'producto',
+      qty: Math.max(0, Math.round(num($('#ps-qty').value))), price: $('#ps-price').value, note: $('#ps-note').value.trim()
+    });
+    ['#ps-name', '#ps-price', '#ps-note'].forEach(function (s) { $(s).value = ''; });
+    $('#ps-qty').value = 1;
+    flushSave(); renderPstock(); renderStats();
+  });
+
+  /* ---- Resumen ---- */
+  function renderStats() {
+    const wait = state.quotes.filter(function (q) { return q.status === 'espera'; });
+    const waitSum = wait.filter(function (q) { return q.currency === state.currency; }).reduce(function (a, q) { return a + num(q.total); }, 0);
+    const todo = state.jobs.filter(function (j) { return !isDone(j.status); });
+    const late = todo.filter(isLate).length;
+    const nextDue = todo.map(function (j) { return j.due; }).filter(Boolean).sort()[0];
+    const now = new Date();
+    const doneMonth = state.jobs.filter(function (j) {
+      if (!isDone(j.status) || !j.doneAt) return false;
+      const d = new Date(j.doneAt);
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    });
+    const monthSum = doneMonth.filter(function (j) { return j.currency === state.currency; }).reduce(function (a, j) { return a + num(j.total); }, 0);
+    const kg = state.fstock.reduce(function (a, s) { return a + num(s.g); }, 0) / 1000;
+    const low = state.fstock.filter(function (s) { return num(s.g) < num(state.lowStock); }).length;
+    const parts = state.pstock.reduce(function (a, p) { return a + Math.max(0, Math.round(num(p.qty))); }, 0);
+    const tile = function (label, value, note, alert, target) {
+      return '<button type="button" class="stat' + (alert ? ' alert' : '') + '" data-goto="' + target + '"><span class="sum-label">' + esc(label) + '</span><b>' + esc(value) + '</b><small>' + esc(note) + '</small></button>';
+    };
+    $('#biz-stats').innerHTML =
+      tile('En espera', String(wait.length), wait.length ? 'Suman ' + money(state, waitSum) : 'Ningún presupuesto pendiente', false, 'sec-espera') +
+      tile('Por realizar', String(todo.length), late ? (late === 1 ? '1 atrasado' : late + ' atrasados') : nextDue ? 'Próxima entrega ' + fmtDate(nextDue) : 'Sin entregas pendientes', late > 0, 'sec-trabajos') +
+      tile('Realizado este mes', money(state, monthSum), doneMonth.length === 1 ? '1 trabajo' : doneMonth.length + ' trabajos', false, 'sec-trabajos') +
+      tile('Filamento en stock', kg.toFixed(1).replace('.', ',') + ' kg', low ? (low === 1 ? '1 con poco stock' : low + ' con poco stock') + ' · ' + parts + ' piezas' : parts + ' piezas en stock', low > 0, 'sec-fil');
+    bind('lowG', String(Math.round(num(state.lowStock))));
+  }
+
+  function renderBiz() {
+    renderStats(); renderQuotes(); renderJobs(); renderFsPick(); renderFstock(); renderPstock();
+  }
+
+  /* ---- Pestañas ---- */
+  function showTab(name) {
+    const biz = name === 'negocio';
+    $('#view-calculadora').hidden = biz;
+    $('#view-negocio').hidden = !biz;
+    $('#calc-bar').hidden = biz;
+    $('#tab-calculadora').setAttribute('aria-selected', String(!biz));
+    $('#tab-negocio').setAttribute('aria-selected', String(biz));
+    if (biz) renderBiz();
+    try { history.replaceState(null, '', '#' + name); } catch (e) { /* sin historial */ }
+  }
+  $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
+  document.addEventListener('click', function (e) {
+    const g = e.target.closest('[data-goto]');
+    if (!g) return;
+    if ($('#view-negocio').hidden) showTab('negocio');
+    const t = document.getElementById(g.dataset.goto);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  /* ---- Respaldo ---- */
+  $('#bk-export').addEventListener('click', async function () {
+    flushSave();
+    const d = new Date();
+    const name = 'respaldo-presupuestos-3d-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
+    const data = JSON.stringify({ app: 'presupuestos-3d', version: 2, exportedAt: nowIso(), state: state });
+    if (await saveFile(name, data, 'application/json', bkSay)) bkSay(IN_CLAUDE ? 'Respaldo listo.' : 'Respaldo descargado.', 'ok');
+  });
+  $('#bk-import').addEventListener('click', function () { $('#bk-file').click(); });
+  $('#bk-file').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = function () {
+      let d = null;
+      try { d = JSON.parse(r.result); } catch (err) { d = null; }
+      if (!d || d.app !== 'presupuestos-3d' || !d.state || typeof d.state !== 'object' || !Array.isArray(d.state.lines)) {
+        bkSay('Ese archivo no es un respaldo de Presupuestos 3D.', 'err');
+        return;
+      }
+      const s = d.state;
+      const box = $('#bk-msg');
+      box.className = 'status';
+      const cnt = function (a, one, many) { const n = Array.isArray(a) ? a.length : 0; return n + ' ' + (n === 1 ? one : many); };
+      box.textContent = 'Respaldo del ' + isoToLocal(d.exportedAt) + ': ' + cnt(s.quotes, 'presupuesto guardado', 'presupuestos guardados') + ', ' +
+        cnt(s.jobs, 'trabajo', 'trabajos') + ', ' + cnt(s.fstock, 'filamento en stock', 'filamentos en stock') + '. Reemplaza todo lo de este dispositivo. ';
+      const ok = document.createElement('button');
+      ok.type = 'button'; ok.className = 'btn sm'; ok.textContent = 'Reemplazar mis datos';
+      const no = document.createElement('button');
+      no.type = 'button'; no.className = 'link plain'; no.textContent = 'Cancelar';
+      no.style.marginLeft = '10px';
+      ok.addEventListener('click', function () {
+        state = Object.assign(defaults(), s);
+        if (state.logo && !(typeof state.logo.data === 'string' && /^data:image\/(png|jpeg);/.test(state.logo.data))) state.logo = null;
+        normalizeState();
+        flushSave();
+        syncFields(); renderPrinter(); renderMaterials(); renderLines(); renderLogo(); update(); renderBiz();
+        bkSay('Datos importados.', 'ok');
+      });
+      no.addEventListener('click', function () { bkSay(''); });
+      box.appendChild(ok); box.appendChild(no);
+    };
+    r.readAsText(file);
+  });
 
   /* ---- Catálogo en vivo (base de datos que actualiza la tarea diaria) ---- */
   let catLive = false, lastCat = '';
@@ -1594,7 +2308,13 @@ if (typeof module !== 'undefined' && module.exports) {
     const fil = cleanFil(docs.filaments && docs.filaments.items);
     const pr = cleanPrinters(docs.printers && docs.printers.items);
     if (fil.length >= 20) {
-      state.lines.forEach(function (l) {
+      /* Lo que usan la calculadora, los presupuestos guardados, los trabajos y el stock se conserva aunque Macrotec lo retire */
+      const used = [];
+      state.lines.forEach(function (l) { used.push(l); });
+      state.quotes.forEach(function (q) { ((q.snap && q.snap.lines) || []).forEach(function (l) { used.push(l); }); });
+      state.jobs.forEach(function (j) { (j.items || []).forEach(function (l) { used.push(l); }); });
+      state.fstock.forEach(function (s) { used.push(s); });
+      used.forEach(function (l) {
         if (l.brand === 'mine' || fil.some(function (f) { return f.id === l.fil; })) return;
         const prev = filById(l.fil);
         if (prev) fil.push(Object.assign({}, prev, { gone: true }));
@@ -1646,6 +2366,7 @@ if (typeof module !== 'undefined' && module.exports) {
     }
     renderChanges();
     update();
+    if (!$('#view-negocio').hidden) renderBiz();
   }
 
   /* En la app instalada: catalog.json publicado junto a la app, que la tarea diaria actualiza */
@@ -1686,6 +2407,7 @@ if (typeof module !== 'undefined' && module.exports) {
   renderLogo();
   renderChanges();
   update();
+  showTab(location.hash === '#negocio' ? 'negocio' : 'calculadora');
 })();
 </script>
 
