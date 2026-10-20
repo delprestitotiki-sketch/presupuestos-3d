@@ -1,0 +1,1693 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Calculadora de presupuestos para impresión 3D con precios de Macrotec y PDF para el cliente.">
+<meta name="theme-color" content="#D9480F">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Presupuestos 3D">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<title>Presupuestos 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: formulario a la izquierda, resumen fijo a la derecha; en teléfono el resumen sigue a las piezas y el total queda en una barra inferior. */
+:root {
+  --bg: #F1F3F6;
+  --surface: #FFFFFF;
+  --field: #F6F7F9;
+  --ink: #14181F;
+  --mute: #5A6472;
+  --line: #DCE1E8;
+  --accent: #D9480F;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #FDEBE2;
+  --danger: #B42318;
+  --danger-soft: #FDECEA;
+  --ok: #17703E;
+  --ok-soft: #E3F4EA;
+  --display: 'Bricolage Grotesque', 'Hanken Grotesk', system-ui, sans-serif;
+  --body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1217; --surface: #161B22; --field: #1C222B; --ink: #E8ECF1; --mute: #9AA4B2;
+    --line: #29313C; --accent: #FF7A3D; --accent-ink: #1B0E06; --accent-soft: #2B1A11;
+    --danger: #FF8A80; --danger-soft: #2E1715; --ok: #5FD08F; --ok-soft: #12261A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1217; --surface: #161B22; --field: #1C222B; --ink: #E8ECF1; --mute: #9AA4B2;
+  --line: #29313C; --accent: #FF7A3D; --accent-ink: #1B0E06; --accent-soft: #2B1A11;
+  --danger: #FF8A80; --danger-soft: #2E1715; --ok: #5FD08F; --ok-soft: #12261A; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 400 15px/1.5 var(--body);
+  padding-block: 28px 104px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 19px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 600; }
+
+.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.top p { margin: 8px 0 0; color: var(--mute); max-width: 52ch; }
+.top-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+a.btn { text-decoration: none; }
+.install-hint { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: -8px 0 20px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); font-size: 14px; }
+.bar-actions { display: flex; gap: 8px; }
+.bar-actions .btn { padding: 0 14px; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.main { display: grid; gap: 20px; min-width: 0; }
+@media (min-width: 900px) {
+  body { padding-bottom: 48px; }
+  .layout { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
+  aside { position: sticky; top: 20px; }
+  .bar { display: none !important; }
+}
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; min-width: 0; }
+.panel > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.panel > summary::-webkit-details-marker { display: none; }
+.panel > summary::after { content: "+"; font: 500 20px/1 var(--mono); color: var(--mute); }
+.panel[open] > summary::after { content: "\2212"; }
+.panel > summary + * { margin-top: 18px; }
+.sub { color: var(--mute); font-size: 13.5px; margin: 4px 0 0; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.grid.wide { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.grid.two { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.span { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > span { font-size: 12.5px; font-weight: 500; color: var(--mute); }
+.field small, .hint { font-size: 12px; color: var(--mute); line-height: 1.35; }
+
+input, select, textarea {
+  width: 100%; min-width: 0; height: 42px; padding: 0 12px;
+  background: var(--field); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 8px;
+  font: 400 15px/1.2 var(--body);
+}
+select { padding-right: 8px; text-overflow: ellipsis; }
+textarea { height: auto; min-height: 92px; padding: 10px 12px; line-height: 1.45; resize: vertical; }
+input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 14px; -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input::placeholder, textarea::placeholder { color: var(--mute); opacity: .65; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+}
+.need { border-color: var(--accent); background: var(--accent-soft); }
+.inp { position: relative; }
+.inp input { padding-right: 42px; }
+.inp i { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font: 400 12px var(--mono); color: var(--mute); pointer-events: none; font-style: normal; }
+.inp.pre input { padding-left: 40px; padding-right: 12px; }
+.inp.pre i { right: auto; left: 12px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pair .inp input { padding-left: 10px; padding-right: 34px; }
+.pair .inp i { right: 9px; }
+
+.check { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 44px; padding: 0 18px; border-radius: 8px; border: 1px solid transparent;
+  font: 600 15px var(--body); cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+}
+.btn:hover { filter: brightness(1.06); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); height: 40px; font-weight: 500; font-size: 14px; }
+.btn.ghost:hover { border-color: var(--mute); filter: none; }
+.btn.block { width: 100%; }
+.link { background: none; border: 0; padding: 4px 0; color: var(--mute); font: 500 13px var(--body); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover { color: var(--danger); }
+.link.plain:hover { color: var(--ink); }
+.link[disabled] { opacity: .35; cursor: default; text-decoration: none; }
+
+.tag { display: inline-block; padding: 1px 7px; border-radius: 999px; font: 500 11.5px/1.6 var(--body); white-space: nowrap; }
+.tag.sale { background: var(--ok-soft); color: var(--ok); }
+.tag.out { background: var(--danger-soft); color: var(--danger); }
+.tag.src { background: var(--field); color: var(--mute); border: 1px solid var(--line); }
+.tag.live { background: var(--ok-soft); color: var(--ok); }
+.tag.live::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 6px; vertical-align: 1px; }
+.cat-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 10px; font-size: 13px; color: var(--mute); }
+.cat-status b { font-weight: 600; color: var(--ink); }
+.changes { margin-top: 8px; font-size: 13px; }
+.changes summary { cursor: pointer; color: var(--ink); font-weight: 500; }
+.changes ul { margin: 8px 0 0; padding-left: 18px; color: var(--mute); display: grid; gap: 3px; }
+
+/* Impresora */
+.rates { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; }
+.rates b { font: 500 14px var(--mono); font-variant-numeric: tabular-nums; }
+.rates .hint { flex-basis: 100%; }
+
+/* Piezas */
+.lines { display: grid; margin-top: 8px; }
+.line { padding: 18px 0; border-top: 1px solid var(--line); }
+.line:first-child { border-top: 0; }
+.line-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.line-n { font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
+.fil { margin: 14px 0; padding: 14px; background: var(--field); border: 1px solid var(--line); border-radius: 10px; display: grid; gap: 12px; }
+.fil input, .fil select { background: var(--surface); }
+.fil-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr); gap: 10px; }
+.fil-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.fil-foot .field { width: 150px; flex: none; }
+.fil-info { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--mute); min-width: 0; flex: 1 1 200px; }
+.fil-info b { font: 500 13px var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.line-calc { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 14px; font: 400 12.5px var(--mono); color: var(--mute); font-variant-numeric: tabular-nums; }
+.line-calc b { color: var(--ink); font-weight: 500; }
+.add { margin-top: 6px; }
+@media (max-width: 640px) {
+  .fil-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .fil-row .fil-prod { grid-column: 1 / -1; grid-row: 2; }
+  .fil-row .fil-color { grid-row: 1; grid-column: 2; }
+}
+
+/* Mis materiales */
+.mats { display: grid; gap: 10px; margin-top: 10px; }
+.mat { display: grid; grid-template-columns: minmax(0, 1fr) 128px auto; gap: 10px; align-items: center; }
+.sec-title { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+.logo-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.logo-prev { height: 44px; max-width: 140px; object-fit: contain; border: 1px solid var(--line); border-radius: 6px; padding: 4px; background: #fff; }
+.file { font-size: 13px; }
+.file input { height: auto; padding: 8px; }
+
+/* Resumen */
+.sum { padding: 22px; }
+.sum-label { font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--mute); }
+.sum-total { font: 700 clamp(34px, 9vw, 44px)/1.05 var(--display); letter-spacing: -0.02em; margin: 6px 0 2px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sum-note { color: var(--mute); font-size: 13px; }
+.rows { margin: 18px 0; display: grid; gap: 8px; }
+.row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.row span:first-child { color: var(--mute); }
+.row span:last-child { font: 400 13.5px var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+.status { min-height: 20px; margin: 10px 0 0; font-size: 13px; color: var(--mute); }
+.status.err { color: var(--danger); }
+.status.ok { color: var(--ok); }
+.own { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line); }
+.own .rows { margin: 12px 0 0; }
+
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--surface); border-top: 1px solid var(--line);
+}
+.bar .sum-label { display: block; }
+.bar strong { font: 700 22px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 520px) {
+  .panel { padding: 16px; }
+  .fil { padding: 12px; }
+  .mat { grid-template-columns: minmax(0, 1fr) 112px auto; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn, input, select, textarea { transition: border-color .15s, filter .15s; }
+}
+</style>
+</head>
+<body>
+<script src="vendor/jspdf.umd.min.js"></script>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Presupuestos 3D</h1>
+      <p>Elige tu impresora y el filamento de cada pieza; los precios de Macrotec se cargan solos. Descarga el PDF y envíalo a tu cliente.</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn ghost" type="button" id="btn-install" hidden>Instalar app</button>
+      <a class="btn ghost" id="app-link" target="_blank" rel="noopener" hidden>Instalar como app</a>
+      <button class="btn ghost" type="button" id="btn-new">Nuevo presupuesto</button>
+    </div>
+  </header>
+  <div class="install-hint" id="ios-hint" hidden>
+    <span>Para instalar en iPhone o iPad: toca <b>Compartir</b> en Safari y luego <b>Agregar a pantalla de inicio</b>.</span>
+    <button class="link plain" type="button" id="ios-hint-close">Entendido</button>
+  </div>
+
+  <div class="layout">
+    <div class="main">
+
+      <section class="panel" aria-labelledby="h-cliente">
+        <h2 id="h-cliente">Cliente y presupuesto</h2>
+        <div class="grid wide" style="margin-top:16px">
+          <label class="field"><span>Cliente</span><input type="text" id="client" data-s="client" placeholder="Nombre o empresa"></label>
+          <label class="field"><span>Proyecto o referencia</span><input type="text" id="project" data-s="project" placeholder="Ej: Soportes para stand"></label>
+          <label class="field span"><span>Contacto del cliente</span><textarea id="clientContact" data-s="clientContact" rows="2" style="min-height:64px" placeholder="Correo, teléfono, dirección"></textarea></label>
+        </div>
+        <div class="grid" style="margin-top:14px">
+          <label class="field"><span>N.º de presupuesto</span><input type="text" id="number" data-s="number"></label>
+          <label class="field"><span>Fecha</span><input type="date" id="date" data-s="date"></label>
+          <label class="field"><span>Validez</span><div class="inp"><input type="number" inputmode="numeric" min="0" step="1" id="validity" data-s="validity"><i>días</i></div></label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-impresora">
+        <h2 id="h-impresora">Impresora</h2>
+        <p class="sub">Al elegir el modelo se cargan su precio y su consumo. Con eso se calcula cuánto te cuesta cada hora de impresión.</p>
+        <div class="grid two" style="margin-top:16px">
+          <label class="field"><span>Marca</span><select id="printerBrand"></select></label>
+          <label class="field"><span>Modelo</span><select id="printerModel"></select></label>
+        </div>
+        <div class="grid" style="margin-top:14px">
+          <label class="field"><span>Precio de la impresora</span><div class="inp pre"><input type="number" inputmode="decimal" min="0" step="any" id="printerPrice" data-s="printerPrice"><i>U$S</i></div><small id="price-src"></small></label>
+          <label class="field"><span>Consumo promedio</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="watts" data-s="watts"><i>W</i></div><small>Estimado imprimiendo PLA. Con ABS o cámara caliente sube.</small></label>
+          <label class="field"><span>Vida útil</span><div class="inp"><input type="number" inputmode="numeric" min="1" step="1" id="life" data-s="life"><i>h</i></div><small>Horas de impresión en que la amortizas.</small></label>
+          <label class="field"><span>Mantenimiento</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="maint" data-s="maint"><i>%</i></div><small>Repuestos y boquillas, sobre el precio.</small></label>
+        </div>
+        <div class="rates">
+          <span>Máquina <b data-bind="machineRate"></b> por hora</span>
+          <span>Energía <b data-bind="energyRate"></b> por hora</span>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-piezas">
+        <h2 id="h-piezas">Piezas</h2>
+        <p class="sub">Elige marca, línea y color del filamento: el precio por kilo sale de Macrotec. Si pagaste otro precio, edita el precio del rollo. Las dos piezas de ejemplo son para que veas cómo funciona.</p>
+        <div class="cat-status">
+          <span class="tag live" id="cat-live" hidden>Se actualiza a diario</span>
+          <span>Precios de Macrotec al <b data-bind="catDate"></b>, revisados el <b data-bind="catChecked"></b></span>
+        </div>
+        <details class="changes" id="changes" hidden><summary>Últimos cambios en Macrotec</summary><ul id="changes-list"></ul></details>
+        <div class="lines" id="lines"></div>
+        <button class="btn ghost add" type="button" id="btn-add">+ Agregar pieza</button>
+      </section>
+
+      <details class="panel" open>
+        <summary><h2>Costos y márgenes</h2></summary>
+        <div>
+          <div class="grid">
+            <label class="field"><span>Moneda del presupuesto</span>
+              <select id="currency" data-s="currency">
+                <option value="UYU">Peso uruguayo (UYU)</option>
+                <option value="USD">Dólar (USD)</option>
+                <option value="ARS">Peso argentino (ARS)</option>
+                <option value="CLP">Peso chileno (CLP)</option>
+                <option value="COP">Peso colombiano (COP)</option>
+                <option value="MXN">Peso mexicano (MXN)</option>
+                <option value="BRL">Real (BRL)</option>
+                <option value="EUR">Euro (EUR)</option>
+              </select>
+            </label>
+            <label class="field" id="rate-field"><span>Cotización: 1 U$S en <b data-cur></b></span><input type="number" inputmode="decimal" min="0" step="any" id="usdRate"><small id="rate-hint"></small></label>
+            <label class="field"><span>Energía (<b data-cur></b> por kWh)</span><input type="number" inputmode="decimal" min="0" step="any" id="kwh" data-s="kwh"><small>UTE Residencial Simple 2026, tramo 101 a 600 kWh, con IVA: $ 10,3.</small></label>
+            <label class="field"><span>Mano de obra (<b data-cur></b> por hora)</span><input type="number" inputmode="decimal" min="0" step="any" id="laborRate" data-s="laborRate"><small>Preparar, retirar, lijar, embalar.</small></label>
+            <label class="field"><span>Merma y fallas</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="fail" data-s="fail"><i>%</i></div><small>Se suma al peso del material.</small></label>
+            <label class="field"><span>Margen de ganancia</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="margin" data-s="margin"><i>%</i></div><small>Sobre el costo de cada pieza.</small></label>
+            <label class="field"><span>Descuento</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="discount" data-s="discount"><i>%</i></div></label>
+            <label class="field"><span>IVA</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="iva" data-s="iva"><i>%</i></div><small>Déjalo en 0 si no aplica.</small></label>
+            <label class="field"><span>Envío y otros (<b data-cur></b>)</span><input type="number" inputmode="decimal" min="0" step="any" id="shipping" data-s="shipping"></label>
+          </div>
+          <label class="check" style="margin-top:16px"><input type="checkbox" id="round" data-s="round"> Redondear precios a números enteros</label>
+
+          <h3 class="sec-title">Mis materiales (<span data-cur></span> por kg)</h3>
+          <p class="sub">Para filamentos que compraste en otro lado. Aparecen en cada pieza bajo la marca "Mis materiales".</p>
+          <div class="mats" id="mats"></div>
+          <button class="btn ghost add" type="button" id="btn-add-mat" style="margin-top:12px">+ Agregar material</button>
+        </div>
+      </details>
+
+      <section class="panel" aria-labelledby="h-cond">
+        <h2 id="h-cond">Condiciones</h2>
+        <p class="sub">Aparecen al pie del PDF.</p>
+        <label class="field" style="margin-top:14px"><span style="position:absolute;left:-9999px">Condiciones del presupuesto</span><textarea id="notes" data-s="notes" rows="4"></textarea></label>
+      </section>
+
+      <details class="panel" open>
+        <summary><h2>Tu negocio</h2></summary>
+        <div>
+          <div class="grid wide">
+            <label class="field"><span>Nombre</span><input type="text" id="bizName" data-s="bizName" placeholder="Nombre de tu taller"></label>
+            <label class="field"><span>Contacto</span><textarea id="bizContact" data-s="bizContact" rows="3" style="min-height:76px" placeholder="Teléfono, correo, web o dirección (una línea por dato)"></textarea></label>
+          </div>
+          <div class="logo-row" style="margin-top:16px">
+            <img class="logo-prev" id="logo-prev" alt="Logo cargado" hidden>
+            <label class="file field"><span>Logo (PNG o JPG, hasta 2 MB)</span><input type="file" id="logo-file" accept="image/png,image/jpeg"></label>
+            <button class="link" type="button" id="logo-del" hidden>Quitar logo</button>
+          </div>
+          <p class="status err" id="logo-msg" style="margin-top:8px"></p>
+          <p class="sub">Tus datos y precios quedan guardados en este dispositivo.</p>
+        </div>
+      </details>
+    </div>
+
+    <aside>
+      <div class="panel sum" aria-label="Resumen del presupuesto">
+        <div class="sum-label">Total</div>
+        <div class="sum-total" data-bind="total"></div>
+        <div class="sum-note" data-bind="ivaNote"></div>
+
+        <div class="rows">
+          <div class="row"><span>Piezas</span><span data-bind="count"></span></div>
+          <div class="row"><span>Subtotal</span><span data-bind="subtotal"></span></div>
+          <div class="row" data-row="discount"><span>Descuento</span><span data-bind="discount"></span></div>
+          <div class="row" data-row="shipping"><span>Envío y otros</span><span data-bind="shipping"></span></div>
+          <div class="row" data-row="iva"><span>IVA</span><span data-bind="iva"></span></div>
+        </div>
+
+        <div style="display:grid;gap:8px">
+          <button class="btn block" type="button" data-act="pdf">Descargar PDF</button>
+          <button class="btn ghost block" type="button" data-act="share" hidden>Compartir PDF</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+
+        <div class="own">
+          <div class="sum-label">Solo para ti, no sale en el PDF</div>
+          <div class="rows">
+            <div class="row"><span>Costo real</span><span data-bind="cost"></span></div>
+            <div class="row"><span>Ganancia</span><span data-bind="profit"></span></div>
+            <div class="row"><span>Filamento</span><span data-bind="matCost"></span></div>
+            <div class="row"><span>Tiempo de impresión</span><span data-bind="hours"></span></div>
+            <div class="row"><span>Material total</span><span data-bind="grams"></span></div>
+            <div class="row"><span>Impresora</span><span data-bind="printerName"></span></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="bar">
+  <div><span class="sum-label">Total</span><strong data-bind="total"></strong></div>
+  <div class="bar-actions">
+    <button class="btn ghost" type="button" data-act="share" hidden>Compartir</button>
+    <button class="btn" type="button" data-act="pdf">PDF</button>
+  </div>
+</div>
+
+<script>
+/* ---- Catálogo: precios de Macrotec (macrotec.com.uy) relevados el 20/10/2026, en U$S ---- */
+/* Respaldo embebido: la página lo reemplaza por la versión de la base de datos, que una tarea programada actualiza a diario. */
+let CATALOG_DATE = '20/10/2026';
+let CATALOG_CHECKED = '20/10/2026';
+let CATALOG_CHANGES = [];
+let USD_RATE_UYU = 40.13;
+let USD_RATE_DATE = '19/10/2026';
+const MACROTEC = 'https://www.macrotec.com.uy/';
+
+const FIL_ORDER = ['Bambu Lab', 'Creality', 'Soleyin', 'Flashforge', 'Grilon3', '3n3', 'Mingda'];
+
+const FIL_URLS = {
+  'bl-pla-lite-r': 'filamento-pla-lite-bambu-lab-sin-carrete-refill-1kg-175mm',
+  'bl-pla-matte-r': 'filamento-pla-matte-bambu-lab-refill-1kg-175mm',
+  'bl-pla-basic-r': 'filamento-pla-basic-bambu-lab-sin-carrete-refill',
+  'bl-pla-lite': 'filamento-pla-lite-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pla-basic': 'filamento-pla-basic-bambu-lab-con-carrete-reusable',
+  'bl-pla-matte': 'filamento-pla-matte-bambu-lab-con-carrete-reusable',
+  'bl-pla-transl': 'filamento-pla-translucent-bambu-lab-con-carrete-1kg-175mm',
+  'bl-sup-abs': 'filamento-soporte-para-abs-bambu-lab-con-carrete-blanco',
+  'bl-pla-metal': 'filamento-pla-metal-bambu-lab-con-carrete-1kg-175mm',
+  'bl-pla-silkp': 'filamento-pla-silk-bambu-lab-con-carrete-1kg-175mm',
+  'bl-abs': 'filamento-abs-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-petg-transl': 'filamento-petg-translucido-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pla-grad': 'filamento-pla-basic-gradient-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-petg-hf': 'filamento-petg-hf-bambu-lab-con-carrete',
+  'bl-pla-silk': 'filamento-pla-silk-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pla-galaxy': 'filamento-pla-galaxy-bambu-lab-1kg-con-carrete-1kg-175mm',
+  'bl-pla-cf': 'filamento-pla-cf-bambu-lab-con-carrete-1kg-175mm',
+  'bl-pla-wood': 'filamento-pla-wood-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pla-sparkle': 'filamento-pla-sparkle-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-asa': 'filamento-asa-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-sup-pla': 'filamento-soporte-para-pla-petg-bambu-lab-con-carrete-reusable-500grs-175mm',
+  'bl-tpu-ams': 'filamento-tpu-para-ams-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pc': 'filamento-pc-bambu-lab-con-carrete-1kg-175mm',
+  'bl-pla-aero': 'filamento-pla-aero-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-pa6-gf': 'filamento-pa6-gf-bambu-lab-con-carrete-1kg-175mm',
+  'bl-pc-fr': 'filamento-pc-fr-bambu-lab-con-carrete-reusable-1kg-175mm',
+  'bl-asa-aero': 'filamento-asa-aero-bambu-lab-con-carrete-reusable-blanco',
+  'bl-pa6-cf': 'filamento-pa6-cf-bambu-lab-con-carrete-1kg-negro',
+  'bl-pet-cf': 'filamento-pet-cf-bambu-lab-con-carrete-1kg-negro',
+  'bl-pps-cf': 'filamento-pps-cf-bambu-lab-con-carrete-1kg-negro',
+  'cr-ender-plap': 'filamento-ender-pla-creality-1kg-175mm',
+  'cr-ender-fast': 'filamento-pla-creality-ender-fast-1kg-175mm',
+  'cr-cr-petg': 'filamento-petg-creality-cr-175mm-1kg',
+  'cr-hyper-pla': 'filamento-pla-creality-hyper-1kg-175mm',
+  'cr-hyper-rainbow': 'filamento-pla-hyper-creality-arcoiris-175mm-1kg',
+  'cr-hyper-rfid': 'filamento-pla-creality-hyper-rfid-1kg-175mm',
+  'cr-cr-abs': 'filamento-abs-creality-cr-175mm-1kg',
+  'cr-cr-pla': 'filamento-pla-creality-cr-175mm-1kg',
+  'cr-pla-fluo': 'filamente-pla-creality-fluorecente-175mm-1kg',
+  'cr-silk': 'filamento-pla-silk-seda-creality-175mm-1kg',
+  'cr-hyper-stardust': 'filamento-pla-creality-hyper-rfid-stardust-1kg-175mm',
+  'cr-silk-dual': 'filamento-pla-silk-seda-dual-creality-1kg-175mm',
+  'cr-cr-tpu': 'filamento-flexible-tpu-creality-cr-1kg-175mm',
+  'cr-ultra-basf': 'filamento-ultra-pla-creality-basf-1kg-175mm',
+  'cr-hyper-placf': 'filamento-pla-cf-creality-hyper-1kg-175mm',
+  'cr-hp-tpu': 'filamento-hp-tpu-creality-1kg-175mm',
+  'cr-hyper-foamed': 'filamento-pla-creality-hyper-foamed-1kg-175mm',
+  'cr-pa612-cf': 'filamento-pa612-cf-creality-hyper-negro-1kg-175mm',
+  'cr-petg-10s': 'filamento-creality-cr-petg-1kgx10-175mm-sin-carrete',
+  'cr-petg-10': 'filamento-creality-cr-petg-175mm-1kgx10',
+  'so-ultra-pla': 'filamento-ultra-pla-creality-soleyin-1kg-175mm',
+  'so-ultra-pla-n': 'filamento-ultra-pla-creality-soleyin-nuevos-colores-1kg-175mm',
+  'ff-pla-basic': 'filamento-pla-basic-flashforge-1-kg-175-mm',
+  'ff-pla-matte': 'filamento-pla-matte-flashforge-1-kg-175-mm',
+  'g3-hips': 'filamento-hips-grilon3-175mm-1kg',
+  'g3-petg': 'filamento-petg-grilon3-175mm-1kg',
+  'g3-pla': 'filamento-pla-grilon3-175mm-1kg',
+  'g3-boutique': 'filamento-boutique-grilon3-175mm-1kg',
+  'g3-pla850': 'filamento-pla-plus-pla850-grilon3-175mm-1kg',
+  'g3-abs': 'filamento-abs-grilon3-1kg-175mm',
+  'g3-pla-prohyper': 'filamento-pla-pro-hyper-grilon3-175mm-1kg',
+  'g3-ppt': 'filamento-pp-t-grilon3-175mm-1kg',
+  'g3-astra': 'filamento-pla-astra-grilon3-175mm-1kg',
+  'g3-zeta': 'filamento-pla-zeta-grilon3-175mm-1kg',
+  'g3-silk-dorado': 'filamento-pla-silk-grilon3-dorado-175mm-1kg',
+  'g3-silk': 'filamento-pla-silk-seda-grilon3-175mm-1kg',
+  'g3-nylon6': 'filamento-nylon-6-grilon3-175mm-1kg',
+  'g3-pla870': 'filamento-pla-pla-870-grilon3-175mm-1kg',
+  'g3-wood': 'filamento-pla-wood-madera-grilon3-175mm-1kg',
+  'g3-simpliflex': 'filamento-flexible-simpliflex-grilon3-1kg-175mm',
+  'g3-acetal': 'filamento-acetal-grilon3-175mm-1kg',
+  'g3-petg-25': 'filamento-petg-grilon3-25kg-175mm',
+  'g3-pla850-25': 'filamento-pla-pla-850-grilon3-175mm-25kg',
+  'g3-abs-25': 'filamento-abs-grilon3-175mm-25kg',
+  'g3-pva': 'filamento-pva-grilon3-natural-175mm-500gr',
+  'g3-nylon12': 'filamento-nylon-12-grilon3-175mm-1kg',
+  'g3-petg-4': 'filamento-petg-grilon3-megafill-175mm-4kg',
+  'g3-boutique-4': 'filamento-boutique-grilon3-175mm-4kg',
+  'g3-pla-4': 'filamento-pla-grilon3-4kg-175mm',
+  '3n3-pla-500': 'filamento-pla-3n3-175mm-500gr',
+  '3n3-max-se': 'filamento-pla-3nmax-se-750g-175mm',
+  '3n3-max': 'filamento-pla-3nmax-175mm-1kg',
+  '3n3-epet': 'filamento-epet-3n3-175mm-1kg',
+  '3n3-pla': 'filamento-pla-3n3-175mm-1kg',
+  '3n3-petg': 'filamento-petg-3n3-1kg-175mm',
+  '3n3-tpu-500': 'filamento-flexible-tpu-3n3-500g-175mm',
+  '3n3-silk': 'filamento-pla-silk-3n3-1kg-175mm',
+  '3n3-flex': 'filamento-flexible-pla-3nflex-1kg-175mm',
+  'md-adpetg-t': 'filamento-adpetg-tough-mingda-translucido-1kg-175mm',
+  'md-adpetg-b': 'filamento-adpetg-tough-mingda-bloqueador-luz-1kg-175mm'
+};
+
+const PRINTER_URLS = {
+  'bl-a1mini': 'impresora-3d-bambu-lab-a1-mini',
+  'bl-a1mini-c': 'impresora-3d-bambu-lab-a1-mini-combo-ams-lite',
+  'bl-a1': 'impresora-3d-bambu-lab-a1',
+  'bl-a1-c': 'impresora-3d-bambu-lab-a1-combo-ams-lite',
+  'bl-a2l-c': 'impresora-3d-bambu-lab-a2l-combo',
+  'bl-p1p': 'impresora-3d-bambu-lab-p1p',
+  'bl-p1s': 'impresora-3d-bambu-lab-p1s',
+  'bl-p1s-c': 'impresora-3d-bambu-lab-p1s-combo-ams',
+  'bl-p2s': 'impresora-3d-bambu-lab-p2s',
+  'bl-x2d': 'impresoras-3d-bambu-lab-x2d',
+  'cr-e3v3ke': 'impresora-3d-creality-ender-3-v3-ke',
+  'cr-e3v3': 'impresora-3d-creality-ender-3-v3',
+  'cr-hi-c': 'impresora-3d-creality-hi-cfs-combo',
+  'cr-k2se-c': 'impresora-3d-creality-k2-se-cfs-combo',
+  'cr-k1max': 'impresora-3d-creality-k1-max',
+  'cr-k2': 'impresora-3d-creality-k2',
+  'cr-k2-c': 'impresora-3d-creality-k2-cfs-combo',
+  'ff-ad5x': 'impresora-3d-flashforge-ad5x',
+  'ff-ad5mpro': 'impresora-3d-flashforge-ad5m-pro',
+  'ff-creator5': 'impresoras-3d-flashforge-creator-5'
+};
+
+/* [id, marca, línea, tipo, precio U$S, gramos, colores separados por |, precio anterior, sin stock] */
+let FIL = [
+  ['bl-pla-lite-r', 'Bambu Lab', 'PLA Lite (refill, sin carrete)', 'PLA', 17, 1000, 'Amarillo|Amarillo Girasol|Azul|Beige|Blanco|Cian|Gris|Naranja|Negro|Rojo|Verde'],
+  ['bl-pla-matte-r', 'Bambu Lab', 'PLA Matte (refill, sin carrete)', 'PLA', 21, 1000, 'Amarillo|Azul Marino|Azul Oscuro|Blanco Marfil|Celeste|Gris|Gris Carbón|Lila|Marrón Latte|Marrón Oscuro|Naranja|Rojo Escarlata|Rojo Oscuro|Verde|Verde Oscuro'],
+  ['bl-pla-basic-r', 'Bambu Lab', 'PLA Basic (refill, sin carrete)', 'PLA', 21, 1000, 'Amarillo|Azul|Azul Grisáceo|Beige|Blanco|Bronce|Cyan|Dorado|Gris|Magenta|Marrón|Marrón Cocoa|Naranja|Negro|Púrpura|Plateado|Rojo|Rosado|Verde|Verde Muérdago'],
+  ['bl-pla-lite', 'Bambu Lab', 'PLA Lite', 'PLA', 24, 1000, 'Amarillo|Amarillo Girasol|Azul|Beige|Blanco|Cian|Gris|Naranja|Negro|Rojo|Verde'],
+  ['bl-pla-basic', 'Bambu Lab', 'PLA Basic', 'PLA', 24, 1000, 'Amarillo|Amarillo Girasol|Azul|Azul Grisáceo|Beige|Blanco|Bronce|Cyan|Dorado|Gris|Magenta|Marrón|Naranja|Negro|Plateado|Púrpura|Púrpura Índigo|Rojo|Rosado|Rosa Caliente|Verde|Verde Muérdago'],
+  ['bl-pla-matte', 'Bambu Lab', 'PLA Matte', 'PLA', 24, 1000, 'Amarillo|Azul Marino|Azul Oscuro|Blanco|Bronceado Desierto|Celeste|Gris|Gris Carbón|Lila|Marrón Latte|Marrón Oscuro|Naranja|Rojo Escarlata|Rojo Oscuro|Rosa|Verde|Verde Oscuro', 27],
+  ['bl-pla-transl', 'Bambu Lab', 'PLA Translúcido', 'PLA', 24, 1000, 'Azul|Cherry Pink|Ice Blue|Lavender|Light Jade|Mellow Yellow|Orange|Púrpura|Rojo|Teal'],
+  ['bl-sup-abs', 'Bambu Lab', 'Soporte para ABS (500 g)', 'Soporte', 25, 500, 'Blanco'],
+  ['bl-pla-metal', 'Bambu Lab', 'PLA Metal', 'PLA', 26, 1000, 'Cobalt Blue|Copper Brown|Iridium Gold|Iron Gray|Oxide Green', 45],
+  ['bl-pla-silkp', 'Bambu Lab', 'PLA Silk+', 'PLA', 28, 1000, 'Azul|Baby Blue|Blanco|Candy Green|Candy Red|Champagne|Dorado|Menta|Plateado|Púrpura|Rosa|Rose Gold|Titan Gray'],
+  ['bl-abs', 'Bambu Lab', 'ABS', 'ABS', 29, 1000, 'Amarillo|Azul|Blanco|Negro|Plateado|Rojo'],
+  ['bl-petg-transl', 'Bambu Lab', 'PETG Translúcido', 'PETG', 29, 1000, 'Celeste|Gris|Marrón|Naranja|Púrpura|Rosado|Transparente|Turquesa|Verde Oliva', 46],
+  ['bl-pla-grad', 'Bambu Lab', 'PLA Basic Gradient', 'PLA', 29, 1000, 'Arctic Whisper|Dusk Glare|Ocean to Meadow|Pink Citrus|Solar Breeze'],
+  ['bl-petg-hf', 'Bambu Lab', 'PETG HF', 'PETG', 35, 1000, 'Rojo|Verde Lima'],
+  ['bl-pla-silk', 'Bambu Lab', 'PLA Silk', 'PLA', 35, 1000, 'Azul|Aurora Purple|Blanco|Blue Hawaii|Copper|Dawn Radiance|Dorado|Gilded Rose|Midnight Blaze|Mystic Magenta|Neon City|Phantom Blue|Plateado|Púrpura|Rosa|South Beach|Velvet Eclipse|Verde'],
+  ['bl-pla-galaxy', 'Bambu Lab', 'PLA Galaxy', 'PLA', 35, 1000, 'Marrón|Nebulae|Púrpura|Verde'],
+  ['bl-pla-cf', 'Bambu Lab', 'PLA-CF', 'PLA-CF', 35, 1000, 'Burgundy Red|Iris Purple|Jeans Blue|Lava Grey|Matcha Green|Negro|Royal Blue'],
+  ['bl-pla-wood', 'Bambu Lab', 'PLA Wood', 'PLA', 36, 1000, 'Black Walnut|Classic Birch|Clay Brown|Ochre Yellow|Rosewood|White Oak', 42],
+  ['bl-pla-sparkle', 'Bambu Lab', 'PLA Sparkle', 'PLA', 39, 1000, 'Dorado|Gris|Negro|Púrpura|Rojo|Verde'],
+  ['bl-asa', 'Bambu Lab', 'ASA', 'ASA', 49, 1000, 'Blanco|Negro', 0, 1],
+  ['bl-sup-pla', 'Bambu Lab', 'Soporte para PLA / PETG (500 g)', 'Soporte', 49, 500, 'Natural'],
+  ['bl-tpu-ams', 'Bambu Lab', 'TPU para AMS', 'TPU', 49, 1000, 'Amarillo|Azul|Blanco|Gris|Negro|Rojo|Verde Neón'],
+  ['bl-pc', 'Bambu Lab', 'PC', 'PC', 55, 1000, 'Blanco|Clear Black|Negro|Transparente'],
+  ['bl-pla-aero', 'Bambu Lab', 'PLA Aero', 'PLA', 59, 1000, 'Blanco'],
+  ['bl-pa6-gf', 'Bambu Lab', 'PA6-GF', 'Nylon', 59, 1000, 'Blanco|Negro'],
+  ['bl-pc-fr', 'Bambu Lab', 'PC FR', 'PC', 75, 1000, 'Blanco|Gris|Negro'],
+  ['bl-asa-aero', 'Bambu Lab', 'ASA Aero', 'ASA', 75, 1000, 'Blanco'],
+  ['bl-pa6-cf', 'Bambu Lab', 'PA6-CF', 'Nylon', 79, 1000, 'Negro'],
+  ['bl-pet-cf', 'Bambu Lab', 'PET-CF', 'PET-CF', 85, 1000, 'Negro'],
+  ['bl-pps-cf', 'Bambu Lab', 'PPS-CF (750 g)', 'PPS-CF', 117, 750, 'Negro'],
+
+  ['cr-ender-plap', 'Creality', 'Ender PLA+', 'PLA+', 19, 1000, 'Arcoíris|Azul|Beige|Blanco|Gris|Naranja|Negro|Rojo|Verde Jade'],
+  ['cr-ender-fast', 'Creality', 'Ender Fast PLA', 'PLA', 21, 1000, 'Azul|Azul Claro|Blanco|Gris Claro|Gris Oscuro|Naranja|Negro|Plateado|Púrpura|Rojo|Rosado|Verde'],
+  ['cr-cr-petg', 'Creality', 'CR-PETG', 'PETG', 21, 1000, 'Amarillo|Azul|Azul Transparente|Blanco|Negro|Rojo|Transparente'],
+  ['cr-hyper-pla', 'Creality', 'Hyper PLA', 'PLA', 23, 1000, 'Amarillo|Azul|Blanco|Gris|Marrón|Naranja|Negro|Piel|Púrpura|Rojo|Rosa Durazno|Verde|Viva Magenta'],
+  ['cr-hyper-rainbow', 'Creality', 'Hyper PLA Arcoíris', 'PLA', 23, 1000, 'Dorado|Perry Blue|Spring Lake|Wild Blossom (corto)|Wild Blossom (largo)', 30],
+  ['cr-hyper-rfid', 'Creality', 'Hyper PLA RFID', 'PLA', 23, 1000, 'Amarillo|Amarillo Goldfish|Azul|Azul Very Peri|Blanco|Dorado|Durazno|Gris|Marrón|Naranja|Negro|Orchid Pink|Piel|Púrpura|Púrpura Tulipán|Rojo|Verde|Verde Celeste|Verde Montaña|Viva Magenta'],
+  ['cr-cr-abs', 'Creality', 'CR-ABS', 'ABS', 24, 1000, 'Amarillo|Azul|Blanco|Gris|Negro|Rojo'],
+  ['cr-cr-pla', 'Creality', 'CR-PLA', 'PLA', 24, 1000, 'Amarillo|Amarillo Flúor|Azul|Blanco|Blanco Marfil|Dorado|Gris|Marrón|Naranja|Naranja Flúor|Negro|Plateado|Rojo|Rojo Flúor|Rosado|Verde|Verde Flúor'],
+  ['cr-pla-fluo', 'Creality', 'PLA Fluorescente', 'PLA', 24, 1000, 'Amarillo Fluorescente|Rojo Fluorescente|Verde Fluorescente'],
+  ['cr-silk', 'Creality', 'PLA Silk', 'PLA', 27, 1000, 'Amarillo|Azul|Blanco|Cobre Rojizo|Dorado|Plateado|Púrpura|Rojo|Verde'],
+  ['cr-hyper-stardust', 'Creality', 'Hyper PLA RFID Stardust', 'PLA', 29, 1000, 'Amarillo|Anaranjado|Azul|Café|Gris|Marrón|Rosado|Verde|Violeta'],
+  ['cr-silk-dual', 'Creality', 'PLA Silk Dual', 'PLA', 30, 1000, 'Amarillo y Azul|Azul y Verde|Dorado y Plateado|Dorado y Rojo|Rosado y Púrpura'],
+  ['cr-cr-tpu', 'Creality', 'CR-TPU flexible', 'TPU', 36, 1000, 'Azul|Blanco|Gris|Negro|Rojo|Verde'],
+  ['cr-ultra-basf', 'Creality', 'Ultra PLA (con BASF)', 'PLA', 39, 1000, ''],
+  ['cr-hyper-placf', 'Creality', 'Hyper PLA-CF', 'PLA-CF', 39, 1000, 'Amarillo Grisáceo|Negro|Ocre|Púrpura|Verde Oscuro'],
+  ['cr-hp-tpu', 'Creality', 'HP-TPU', 'TPU', 46, 1000, 'Blanco|Transparente'],
+  ['cr-hyper-foamed', 'Creality', 'Hyper PLA Foamed', 'PLA', 52, 1000, 'Blanco|Negro'],
+  ['cr-pa612-cf', 'Creality', 'Hyper PA612-CF', 'Nylon', 89, 1000, 'Negro'],
+  ['cr-petg-10s', 'Creality', 'CR-PETG pack 10 kg (sin carrete)', 'PETG', 169, 10000, 'Negro'],
+  ['cr-petg-10', 'Creality', 'CR-PETG pack 10 kg', 'PETG', 179, 10000, 'Blanco|Negro'],
+
+  ['so-ultra-pla', 'Soleyin', 'Ultra PLA', 'PLA', 17, 1000, 'Amarillo Piña|Azul Océano|Blanco|Crema de Fresa|Escaramujo|Gris|Negro|Púrpura Macaron|Verde Claro|Verde Hierba'],
+  ['so-ultra-pla-n', 'Soleyin', 'Ultra PLA (nuevos colores)', 'PLA', 23, 1000, 'Fluorite|Moon Stone|Rose Stone'],
+
+  ['ff-pla-basic', 'Flashforge', 'PLA Basic', 'PLA', 17, 1000, 'Amarillo|Amarillo Claro|Azul|Blanco|Dorado|Dorado Claro|Gris|Gris Plateado|Mandarina|Marrón|Naranja|Natural|Negro|Piel|Plateado|Púrpura|Púrpura Oscuro|Rojo|Rojo Claro|Rojo Tráfico|Rosa|Rosado|Verde|Verde Claro'],
+  ['ff-pla-matte', 'Flashforge', 'PLA Matte', 'PLA', 17, 1000, 'Amarillo|Amarillo Crema|Amarillo Mango|Arena|Azul|Azul Hielo|Azul Medianoche|Azul Pizarra|Blanco|Coral Claro|Gris|Gris Claro|Gris Frío|Lavanda|Mandarina|Miel|Naranja Quemado|Negro|Piel|Rojo|Rojo Coral|Rosa|Rosa Empolvado|Rosa Fuerte|Turquesa Medio|Verde|Verde Bosque|Verde Mar|Verde Melón|Verde Menta'],
+
+  ['g3-hips', 'Grilon3', 'HIPS', 'HIPS', 19, 1000, 'Blanco|Natural|Negro'],
+  ['g3-petg', 'Grilon3', 'PETG', 'PETG', 21, 1000, 'Blanco|Chocolate|Clear Amarillo|Clear Ámbar|Clear Azul|Clear Rojo|Clear Verde|Gris Acero|Gris Plata|Naranja Praga|Natural|Negro|Nova'],
+  ['g3-pla', 'Grilon3', 'PLA', 'PLA', 23, 1000, 'Amarillo|Amarillo Flúor|Azul|Azul Prusia|Blanco|Bordó|Bronce|Carpincho|Celeste|Cobre|Dorado|Fucsia|Gris Espacial|Gris Plata|Magenta Flúor|Naranja Flúor|Natural|Negro|Piel 162|Piel 720|Rojo|Rosado|Turquesa|Verde|Verde Flúor|Verde Manzana|Violeta'],
+  ['g3-boutique', 'Grilon3', 'PLA Boutique', 'PLA', 23, 1000, 'Aqua|Arena|Carbón|Caribe|Chocolate|Crema del Cielo|Dulce de Leche|Esmeralda|Frutilla|Lavanda|Perla|Rubí|Salmón|Verde Aviador|Zafiro'],
+  ['g3-pla850', 'Grilon3', 'PLA+ 850', 'PLA+', 24, 1000, 'Azul|Blanco|Bordó|Bronce|Gris Plata|Naranja UV Glow|Negro|Rojo|Turquesa|Verde UV Glow'],
+  ['g3-abs', 'Grilon3', 'ABS', 'ABS', 24, 1000, 'Amarillo|Azul|Blanco|Celeste|Fucsia|Gris Plata|Naranja Flúor|Natural|Negro|Rojo|Turquesa|Verde'],
+  ['g3-pla-prohyper', 'Grilon3', 'PLA Pro Hyper', 'PLA', 25, 1000, 'Blanco|Negro|Verde Flúor Glow'],
+  ['g3-ppt', 'Grilon3', 'PP-T', 'PP', 25, 1000, 'Amarillo|Azul|Natural|Rojo|Verde'],
+  ['g3-astra', 'Grilon3', 'PLA Astra', 'PLA', 25, 1000, 'Calipso|Dark|Jade|Nebula|Noche|Roby'],
+  ['g3-zeta', 'Grilon3', 'PLA Zeta', 'PLA', 25, 1000, 'Azabache|Clear Cristal'],
+  ['g3-silk-dorado', 'Grilon3', 'PLA Silk Dorado', 'PLA', 27, 1000, 'Dorado'],
+  ['g3-silk', 'Grilon3', 'PLA Silk', 'PLA', 27, 1000, 'Azabache|Azul|Blanco Perla|Cobre|Dorado|Platino|Tutti Frutti|Verde'],
+  ['g3-nylon6', 'Grilon3', 'Nylon 6', 'Nylon', 29, 1000, 'Blanco|Naranja Flúor|Natural|Negro|Óptico|Verde Flúor'],
+  ['g3-pla870', 'Grilon3', 'PLA+ 870', 'PLA+', 32, 1000, 'Blanco|Natural|Negro|Turquesa'],
+  ['g3-wood', 'Grilon3', 'PLA Wood (madera)', 'PLA', 34, 1000, 'Caoba|Cerezo|Nogal|Pino'],
+  ['g3-simpliflex', 'Grilon3', 'Simpliflex flexible', 'TPU', 42, 1000, 'Blanco|Celeste|Naranja|Natural|Negro|Nova|Verde'],
+  ['g3-acetal', 'Grilon3', 'Acetal (POM)', 'POM', 47, 1000, 'Blanco|Gris Acero|Gris Plata|Negro|Rojo'],
+  ['g3-petg-25', 'Grilon3', 'PETG 2,5 kg', 'PETG', 47, 2500, 'Blanco|Negro'],
+  ['g3-pla850-25', 'Grilon3', 'PLA+ 850 2,5 kg', 'PLA+', 56, 2500, 'Blanco|Negro'],
+  ['g3-abs-25', 'Grilon3', 'ABS 2,5 kg', 'ABS', 56, 2500, 'Blanco|Negro'],
+  ['g3-pva', 'Grilon3', 'PVA soluble (500 g)', 'PVA', 63, 500, 'Natural'],
+  ['g3-nylon12', 'Grilon3', 'Nylon 12', 'Nylon', 69, 1000, 'Blanco|Natural|Negro'],
+  ['g3-petg-4', 'Grilon3', 'PETG Megafill 4 kg', 'PETG', 76, 4000, 'Blanco|Clear Verde|Negro'],
+  ['g3-boutique-4', 'Grilon3', 'PLA Boutique 4 kg', 'PLA', 82, 4000, 'Perla'],
+  ['g3-pla-4', 'Grilon3', 'PLA 4 kg', 'PLA', 82, 4000, 'Blanco|Negro', 86],
+
+  ['3n3-pla-500', '3n3', 'PLA 3n3 (500 g)', 'PLA', 9, 500, 'Amarillo|Azul|Blanco|Bronce|Celeste|Fucsia|Gris Plomo|Naranja|Negro|Rojo|Verde Flúor'],
+  ['3n3-max-se', '3n3', 'PLA+ 3nMax SE (750 g)', 'PLA+', 11.9, 750, 'Amarillo|Azul|Blanco|Bronce|Celeste|Chocolate|Gris Plomo|Lila|Naranja|Negro|Rojo|Rosa|Verde'],
+  ['3n3-max', '3n3', 'PLA+ 3nMax', 'PLA+', 15.5, 1000, 'Amarillo|Azul|Blanco|Bronce|Celeste|Chocolate|Gris Plomo|Lila|Naranja|Negro|Rojo|Rosado|Uva|Verde'],
+  ['3n3-epet', '3n3', 'EPET 3n3', 'PETG', 16, 1000, 'Azul|Blanco|Gris Espacial|Negro|Rojo|Verde'],
+  ['3n3-pla', '3n3', 'PLA 3n3', 'PLA', 16.5, 1000, 'Amarillo|Amarillo Flúor|Azul|Blanco|Bronce|Celeste|Cobre|Fucsia|Gris Acero|Gris Plomo|Habano|Hueso|Naranja|Natural|Negro|Oro|Rojo|Rosado|Rústico|Verde|Verde Flúor|Violeta'],
+  ['3n3-petg', '3n3', 'PETG 3n3', 'PETG', 18, 1000, 'Azul|Blanco|Bronce|Gris Espacial|Negro|Rojo'],
+  ['3n3-tpu-500', '3n3', 'TPU flexible 3n3 (500 g)', 'TPU', 19, 500, 'Azul|Blanco|Gris Plomo|Negro|Rojo|Verde', 0, 1],
+  ['3n3-silk', '3n3', 'PLA Silk 3n3', 'PLA', 24, 1000, 'Aluminio|Cobre|Malaquita Verde|Papaya|Rojo'],
+  ['3n3-flex', '3n3', 'PLA+ flexible 3nFlex', 'TPU', 28, 1000, 'Amarillo|Azul Prusia|Blanco|Bronce|Gris Plomo|Naranja|Negro|Piel 162|Piel 720|Rojo|Rosa|Verde|Verde Manzana'],
+
+  ['md-adpetg-t', 'Mingda', 'AdPETG Tough Translúcido', 'PETG', 27, 1000, 'Amarillo|Azul|Azul Lago|Blanco|Bronce|Dorado|Gris|Naranja|Negro|Plateado|Púrpura|Rojo|Rosa|Transparente|Verde|Verde Menta'],
+  ['md-adpetg-b', 'Mingda', 'AdPETG Tough bloqueador de luz', 'PETG', 27, 1000, 'Amarillo|Azul|Blanco|Gris|Negro|Plateado|Rojo|Verde']
+].map(function (r) {
+  return { id: r[0], b: r[1], n: r[2], t: r[3], p: r[4], w: r[5], c: r[6] ? r[6].split('|') : [], old: r[7] || 0, out: !!r[8], gone: false, url: FIL_URLS[r[0]] || '' };
+});
+
+/* Impresoras: [id, marca, modelo, precio Macrotec U$S (null si no lo vende), consumo promedio estimado en W] */
+const PRINTER_BRANDS = ['Bambu Lab', 'Creality', 'Flashforge'];
+let PRINTERS = [
+  ['bl-a1mini', 'Bambu Lab', 'A1 mini', 264, 80],
+  ['bl-a1mini-c', 'Bambu Lab', 'A1 mini Combo (AMS Lite)', 499, 85],
+  ['bl-a1', 'Bambu Lab', 'A1', 419, 110],
+  ['bl-a1-c', 'Bambu Lab', 'A1 Combo (AMS Lite)', 639, 115],
+  ['bl-a2l-c', 'Bambu Lab', 'A2L Combo', 769, 150],
+  ['bl-p1p', 'Bambu Lab', 'P1P', 599, 120],
+  ['bl-p1s', 'Bambu Lab', 'P1S', 639, 130],
+  ['bl-p1s-c', 'Bambu Lab', 'P1S Combo (AMS)', 859, 135],
+  ['bl-p2s', 'Bambu Lab', 'P2S', 899, 140],
+  ['bl-x2d', 'Bambu Lab', 'X2D', 1179, 220],
+  ['bl-x1c', 'Bambu Lab', 'X1 Carbon', null, 140],
+  ['bl-h2d', 'Bambu Lab', 'H2D', null, 250],
+  ['bl-otra', 'Bambu Lab', 'Otro modelo', null, 130],
+
+  ['cr-e3v3se', 'Creality', 'Ender 3 V3 SE', 236, 110],
+  ['cr-e3v3ke', 'Creality', 'Ender 3 V3 KE', 338, 120],
+  ['cr-e3v3', 'Creality', 'Ender 3 V3', 410, 130],
+  ['cr-hi', 'Creality', 'Hi', 410, 120],
+  ['cr-hi-c', 'Creality', 'Hi CFS Combo', 652, 125],
+  ['cr-k2se', 'Creality', 'K2 SE', 399, 120],
+  ['cr-k2se-c', 'Creality', 'K2 SE CFS Combo', 629, 125],
+  ['cr-k1max', 'Creality', 'K1 Max', 749, 200],
+  ['cr-k2', 'Creality', 'K2', 773, 170],
+  ['cr-k2-c', 'Creality', 'K2 CFS Combo', 1041, 175],
+  ['cr-e3v2', 'Creality', 'Ender 3 V2', null, 110],
+  ['cr-e3s1', 'Creality', 'Ender 3 S1', null, 120],
+  ['cr-e3v3plus', 'Creality', 'Ender 3 V3 Plus', null, 160],
+  ['cr-k1', 'Creality', 'K1', null, 140],
+  ['cr-k1c', 'Creality', 'K1C', null, 140],
+  ['cr-k2plus', 'Creality', 'K2 Plus', null, 250],
+  ['cr-otra', 'Creality', 'Otro modelo', null, 130],
+
+  ['ff-ad5x', 'Flashforge', 'AD5X', 549, 110],
+  ['ff-ad5mpro', 'Flashforge', 'Adventurer 5M Pro', 554, 120],
+  ['ff-creator5', 'Flashforge', 'Creator 5', 1139, 180],
+  ['ff-ad5m', 'Flashforge', 'Adventurer 5M', null, 110],
+  ['ff-ad4', 'Flashforge', 'Adventurer 4', null, 120],
+  ['ff-ad3', 'Flashforge', 'Adventurer 3', null, 80],
+  ['ff-otra', 'Flashforge', 'Otro modelo', null, 130]
+].map(function (r) { return { id: r[0], b: r[1], n: r[2], p: r[3], wt: r[4], url: PRINTER_URLS[r[0]] || '' }; });
+
+/* Marcas de filamento presentes en el catálogo, en el orden preferido */
+function filBrands() {
+  const seen = [];
+  FIL_ORDER.concat(FIL.map(function (f) { return f.b; })).forEach(function (b) {
+    if (seen.indexOf(b) < 0 && FIL.some(function (f) { return f.b === b; })) seen.push(b);
+  });
+  return seen;
+}
+
+/* Filamento sugerido al elegir la marca de la impresora */
+const DEFAULT_FIL = { 'Bambu Lab': 'bl-pla-basic', 'Creality': 'cr-hyper-pla', 'Flashforge': 'ff-pla-basic' };
+
+
+/* ---- Núcleo: cálculo y generación de PDF ---- */
+function num(v) {
+  const n = parseFloat(String(v == null ? '' : v).replace(',', '.'));
+  return isFinite(n) && n > 0 ? n : 0;
+}
+
+function pctText(v) {
+  return String(Math.round(num(v) * 100) / 100).replace('.', ',');
+}
+
+function money(s, v) {
+  const dec = s.round ? 0 : 2;
+  let out;
+  try {
+    out = new Intl.NumberFormat('es-UY', {
+      style: 'currency',
+      currency: s.currency || 'UYU',
+      minimumFractionDigits: dec,
+      maximumFractionDigits: dec
+    }).format(v);
+  } catch (e) {
+    out = (s.currency || '') + ' ' + v.toFixed(dec);
+  }
+  return out.replace(/[  ]/g, ' ');
+}
+
+function usdRate(s) {
+  if (s.currency === 'USD') return 1;
+  const r = s.rates && s.rates[s.currency];
+  if (r !== undefined && r !== null && r !== '') return num(r);
+  return s.currency === 'UYU' ? USD_RATE_UYU : 0;
+}
+
+function filById(id) {
+  for (let i = 0; i < FIL.length; i++) if (FIL[i].id === id) return FIL[i];
+  return null;
+}
+
+function rollPrice(s, f) {
+  const o = s.overrides && s.overrides[f.id];
+  return (o === undefined || o === null || o === '') ? f.p : num(o);
+}
+
+/* Precio por kg en la moneda del presupuesto y nombre para el PDF */
+function matInfo(s, l) {
+  if (l.brand === 'mine') {
+    const m = (s.materials || []).find(function (x) { return x.id === l.fil; });
+    if (!m) return { perKg: 0, name: '' };
+    return { perKg: num(m.price), name: m.name || '' };
+  }
+  const f = filById(l.fil);
+  if (!f) return { perKg: 0, name: '' };
+  return { perKg: rollPrice(s, f) / (f.w / 1000) * usdRate(s), name: f.b + ' ' + f.n, fil: f };
+}
+
+function machineRate(s) {
+  return num(s.printerPrice) * usdRate(s) * (1 + num(s.maint) / 100) / Math.max(1, num(s.life));
+}
+
+function energyRate(s) {
+  return (num(s.watts) / 1000) * num(s.kwh);
+}
+
+function calcLine(s, l) {
+  const info = matInfo(s, l);
+  const hrs = num(l.h) + num(l.m) / 60;
+  const g = num(l.g);
+  const mat = (g / 1000) * info.perKg * (1 + num(s.fail) / 100);
+  const machine = hrs * machineRate(s);
+  const energy = hrs * energyRate(s);
+  const labor = (num(l.labor) / 60) * num(s.laborRate);
+  const extras = num(l.extras);
+  const cost = mat + machine + energy + labor + extras;
+  let unit = cost * (1 + num(s.margin) / 100);
+  if (s.round) unit = Math.round(unit);
+  const qty = Math.max(1, Math.round(num(l.qty)) || 1);
+  return {
+    mat: mat, machine: machine, energy: energy, labor: labor, extras: extras,
+    cost: cost, unit: unit, qty: qty, total: unit * qty,
+    hrsTotal: hrs * qty, gTotal: g * qty, costTotal: cost * qty,
+    perKg: info.perKg,
+    matName: info.name ? info.name + (l.color ? ' · ' + l.color : '') : ''
+  };
+}
+
+function calcTotals(s) {
+  const lines = s.lines.map(function (l) { return calcLine(s, l); });
+  const subtotal = lines.reduce(function (a, c) { return a + c.total; }, 0);
+  let discount = subtotal * Math.min(num(s.discount), 100) / 100;
+  if (s.round) discount = Math.round(discount);
+  const shipping = num(s.shipping);
+  const base = subtotal - discount + shipping;
+  let iva = base * num(s.iva) / 100;
+  if (s.round) iva = Math.round(iva);
+  const costTotal = lines.reduce(function (a, c) { return a + c.costTotal; }, 0);
+  const net = subtotal - discount;
+  return {
+    lines: lines, subtotal: subtotal, discount: discount, shipping: shipping,
+    base: base, iva: iva, total: base + iva,
+    costTotal: costTotal, profit: net - costTotal,
+    profitPct: net > 0 ? ((net - costTotal) / net) * 100 : 0,
+    hours: lines.reduce(function (a, c) { return a + c.hrsTotal; }, 0),
+    grams: lines.reduce(function (a, c) { return a + c.gTotal; }, 0),
+    units: lines.reduce(function (a, c) { return a + c.qty; }, 0)
+  };
+}
+
+function fmtDate(iso) {
+  const p = String(iso || '').split('-');
+  return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : '';
+}
+
+function validUntil(iso, days) {
+  const p = String(iso || '').split('-').map(Number);
+  if (p.length !== 3 || !p[0]) return '';
+  const d = new Date(Date.UTC(p[0], p[1] - 1, p[2] + Math.round(num(days))));
+  const pad = function (n) { return String(n).padStart(2, '0'); };
+  return pad(d.getUTCDate()) + '/' + pad(d.getUTCMonth() + 1) + '/' + d.getUTCFullYear();
+}
+
+function buildPdf(JsPDF, s, t, logo) {
+  const doc = new JsPDF({ unit: 'mm', format: 'a4', compress: true });
+  const W = 210, H = 297, M = 18, R = W - M, IW = R - M;
+  const INK = [20, 24, 31], MUTE = [100, 108, 120], RULE = [221, 226, 233];
+  const ACC = [217, 72, 15], TINT = [244, 246, 249];
+  const color = function (c) { doc.setTextColor(c[0], c[1], c[2]); };
+  const put = function (str, x, y, o) { doc.text(String(str), x, y, o); };
+  const font = function (style, size) { doc.setFont('helvetica', style); doc.setFontSize(size); };
+  const rule = function (y, c, w, x1, x2) {
+    doc.setDrawColor(c[0], c[1], c[2]);
+    doc.setLineWidth(w);
+    doc.line(x1 == null ? M : x1, y, x2 == null ? R : x2, y);
+  };
+  const FOOT = 22;
+  let y = M;
+
+  /* Encabezado */
+  let ly = y;
+  if (logo && logo.w && logo.h) {
+    let lh = 14, lw = lh * logo.w / logo.h;
+    if (lw > 50) { lw = 50; lh = lw * logo.h / logo.w; }
+    try { doc.addImage(logo.data, logo.fmt, M, ly, lw, lh); ly += lh + 4; } catch (e) { /* logo ilegible */ }
+  }
+  if (s.bizName) {
+    font('bold', 13); color(INK);
+    put(s.bizName, M, ly + 4);
+    ly += 7;
+  }
+  font('normal', 8.5); color(MUTE);
+  String(s.bizContact || '').split('\n').filter(Boolean).forEach(function (l) {
+    put(l, M, ly + 3);
+    ly += 4.2;
+  });
+
+  font('bold', 8.5); color(ACC);
+  put('PRESUPUESTO', R, y + 3, { align: 'right' });
+  font('bold', 18); color(INK);
+  put(s.number || '', R, y + 11, { align: 'right' });
+  font('normal', 9); color(MUTE);
+  put('Fecha   ' + fmtDate(s.date), R, y + 18, { align: 'right' });
+  const vu = num(s.validity) > 0 ? validUntil(s.date, s.validity) : '';
+  if (vu) put('Válido hasta   ' + vu, R, y + 23, { align: 'right' });
+  y = Math.max(ly, y + 26) + 8;
+  rule(y, RULE, 0.3);
+  y += 9;
+
+  /* Cliente y proyecto */
+  const colB = M + 98;
+  font('bold', 7.5); color(MUTE);
+  put('PARA', M, y);
+  put('PROYECTO', colB, y);
+  let ya = y + 5.5, yb = y + 5.5;
+  font('bold', 11); color(INK);
+  if (s.client) { put(s.client, M, ya); ya += 5; }
+  font('normal', 9); color(MUTE);
+  doc.splitTextToSize(String(s.clientContact || ''), 88).forEach(function (l) { if (l) { put(l, M, ya); ya += 4.3; } });
+  font('normal', 10); color(INK);
+  doc.splitTextToSize(String(s.project || ''), 76).forEach(function (l) { if (l) { put(l, colB, yb); yb += 4.6; } });
+  y = Math.max(ya, yb, y + 6) + 8;
+
+  /* Tabla */
+  const colQty = M + 104, colUnit = M + 138, colTot = R - 3;
+  const tableHead = function () {
+    doc.setFillColor(TINT[0], TINT[1], TINT[2]);
+    doc.rect(M, y, IW, 8, 'F');
+    font('bold', 7.5); color(MUTE);
+    put('DESCRIPCIÓN', M + 3, y + 5.2);
+    put('CANT.', colQty, y + 5.2, { align: 'right' });
+    put('P. UNITARIO', colUnit, y + 5.2, { align: 'right' });
+    put('TOTAL', colTot, y + 5.2, { align: 'right' });
+    y += 8;
+  };
+  tableHead();
+
+  s.lines.forEach(function (l, i) {
+    const c = t.lines[i];
+    font('bold', 9.5);
+    const desc = doc.splitTextToSize(String(l.desc || 'Pieza ' + (i + 1)), 84);
+    font('normal', 8.5);
+    const detail = c.matName ? doc.splitTextToSize('Material: ' + c.matName, 84) : [];
+    const rowH = 4 + desc.length * 4.4 + detail.length * 4 + 3;
+    if (y + rowH > H - FOOT) { doc.addPage(); y = M; tableHead(); }
+    font('bold', 9.5); color(INK);
+    desc.forEach(function (d, k) { put(d, M + 3, y + 5.2 + k * 4.4); });
+    if (detail.length) {
+      font('normal', 8.5); color(MUTE);
+      detail.forEach(function (d, k) { put(d, M + 3, y + 5.2 + desc.length * 4.4 + k * 4); });
+    }
+    font('normal', 9.5); color(INK);
+    put(String(c.qty), colQty, y + 5.2, { align: 'right' });
+    put(money(s, c.unit), colUnit, y + 5.2, { align: 'right' });
+    font('bold', 9.5);
+    put(money(s, c.total), colTot, y + 5.2, { align: 'right' });
+    y += rowH;
+    rule(y, RULE, 0.2);
+  });
+  y += 8;
+
+  /* Totales */
+  const rows = [['Subtotal', money(s, t.subtotal)]];
+  if (t.discount > 0) rows.push(['Descuento (' + pctText(s.discount) + '%)', '- ' + money(s, t.discount)]);
+  if (t.shipping > 0) rows.push(['Envío y otros', money(s, t.shipping)]);
+  if (num(s.iva) > 0) rows.push(['IVA (' + pctText(s.iva) + '%)', money(s, t.iva)]);
+  const need = rows.length * 6.5 + 16;
+  if (y + need > H - FOOT) { doc.addPage(); y = M; }
+  const lx = R - 72;
+  rows.forEach(function (r) {
+    font('normal', 9.5); color(MUTE);
+    put(r[0], lx, y);
+    color(INK);
+    put(r[1], colTot, y, { align: 'right' });
+    y += 6.5;
+  });
+  y += 1;
+  rule(y, ACC, 0.6, lx, R);
+  y += 7.5;
+  font('bold', 10); color(INK);
+  put('TOTAL', lx, y);
+  font('bold', 15);
+  put(money(s, t.total), colTot, y + 0.5, { align: 'right' });
+  y += 14;
+
+  /* Condiciones */
+  const notes = String(s.notes || '').trim();
+  if (notes) {
+    if (y + 20 > H - FOOT) { doc.addPage(); y = M; }
+    font('bold', 7.5); color(MUTE);
+    put('CONDICIONES', M, y);
+    y += 5.5;
+    font('normal', 9); color(INK);
+    notes.split('\n').forEach(function (par) {
+      const wrapped = par.trim() ? doc.splitTextToSize(par, IW) : [''];
+      wrapped.forEach(function (ln) {
+        if (y > H - FOOT) { doc.addPage(); y = M; font('normal', 9); color(INK); }
+        if (ln) put(ln, M, y);
+        y += 4.6;
+      });
+    });
+  }
+
+  /* Pie de página */
+  const n = doc.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p);
+    rule(H - 14, RULE, 0.2);
+    font('normal', 8); color(MUTE);
+    put(s.bizName || '', M, H - 9);
+    put('Página ' + p + ' de ' + n, R, H - 9, { align: 'right' });
+  }
+  return doc;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { num: num, money: money, calcLine: calcLine, calcTotals: calcTotals, buildPdf: buildPdf, machineRate: machineRate, energyRate: energyRate, matInfo: matInfo };
+}
+
+
+/* ---- Aplicación ---- */
+(function () {
+  const IN_CLAUDE = !!(window.claude && typeof window.claude.use === 'function');
+  const APP_URL = '';
+  const KEY = 'presupuestos3d.v2';
+  const OLD_KEY = 'presupuestos3d.v1';
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  const pad = function (n) { return String(n).padStart(2, '0'); };
+  const uid = function () { return Math.random().toString(36).slice(2, 8); };
+  const esc = function (v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  };
+  const val = function (v) { return (v === 0 || v === '0' || v == null) ? '' : v; };
+  const usd = function (v) { return 'U$S ' + String(Math.round(v * 100) / 100).replace('.', ','); };
+
+  function today() { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function nextNumber(prev) {
+    const d = new Date();
+    const prefix = 'P-' + String(d.getFullYear()).slice(2) + pad(d.getMonth() + 1) + pad(d.getDate()) + '-';
+    const m = /^(.*-)(\d+)$/.exec(prev || '');
+    if (m && m[1] === prefix) return prefix + pad(Number(m[2]) + 1);
+    return prefix + '01';
+  }
+  function printerById(id) { return PRINTERS.find(function (p) { return p.id === id; }) || null; }
+
+  function exampleLines() {
+    return [
+      { id: uid(), desc: 'Soporte para auriculares (ejemplo)', brand: 'Bambu Lab', fil: 'bl-pla-basic', color: 'Negro', g: 85, h: 4, m: 30, qty: 2, labor: 10, extras: 0 },
+      { id: uid(), desc: 'Carcasa para sensor, PETG transparente (ejemplo)', brand: 'Grilon3', fil: 'g3-petg', color: 'Clear Azul', g: 42, h: 2, m: 15, qty: 5, labor: 15, extras: 30 }
+    ];
+  }
+
+  function defaults() {
+    return {
+      currency: 'UYU', rates: {}, kwh: 10.3, laborRate: 300, fail: 5, margin: 40,
+      discount: 0, iva: 22, shipping: 0, round: true,
+      printerBrand: 'Bambu Lab', printerModel: 'bl-p1s', printerPrice: 639, watts: 130, life: 5000, maint: 25,
+      overrides: {},
+      bizName: 'Mi taller 3D', bizContact: '', logo: null,
+      client: '', clientContact: '', project: '', number: nextNumber(''), date: today(), validity: 15,
+      notes: 'Pago: 50% de anticipo y 50% contra entrega.\nPlazo de entrega estimado: 5 días hábiles.\nLos precios pueden cambiar si se modifica el diseño o el material.',
+      materials: [{ id: uid(), name: 'Filamento propio', price: 950 }],
+      lines: exampleLines()
+    };
+  }
+
+  function load() {
+    let saved = null;
+    try { const raw = localStorage.getItem(KEY); if (raw) saved = JSON.parse(raw); } catch (e) { /* sin almacenamiento */ }
+    if (saved) return Object.assign(defaults(), saved);
+    let old = null;
+    try { const raw = localStorage.getItem(OLD_KEY); if (raw) old = JSON.parse(raw); } catch (e) { /* sin almacenamiento */ }
+    const s = defaults();
+    if (!old) return s;
+    ['bizName', 'bizContact', 'logo', 'client', 'clientContact', 'project', 'number', 'date', 'validity', 'notes',
+      'currency', 'laborRate', 'fail', 'margin', 'discount', 'iva', 'shipping', 'round'].forEach(function (k) {
+      if (old[k] !== undefined) s[k] = old[k];
+    });
+    const oldDefaults = ['pla', 'petg', 'abs', 'tpu'];
+    const custom = (old.materials || []).filter(function (m) { return oldDefaults.indexOf(m.id) < 0; });
+    if (custom.length) s.materials = custom;
+    const real = (old.lines || []).filter(function (l) { return !/\(ejemplo\)\s*$/.test(l.desc || ''); });
+    if (real.length) {
+      s.lines = real.map(function (l) {
+        const known = custom.some(function (m) { return m.id === l.material; });
+        const base = known ? { brand: 'mine', fil: l.material, color: '' } : { brand: 'Bambu Lab', fil: 'bl-pla-basic', color: 'Negro' };
+        return Object.assign({ id: l.id || uid(), desc: l.desc, g: l.g, h: l.h, m: l.m, qty: l.qty, labor: l.labor, extras: l.extras }, base);
+      });
+    }
+    return s;
+  }
+
+  let state = load();
+  if (!state.rates || typeof state.rates !== 'object') state.rates = {};
+  if (String(state.rates.UYU) === '40.13') delete state.rates.UYU; /* era el valor por defecto: pasa a cotización automática */
+  if (!state.overrides || typeof state.overrides !== 'object') state.overrides = {};
+  if (!Array.isArray(state.materials) || !state.materials.length) state.materials = defaults().materials;
+  if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
+  if (!printerById(state.printerModel)) { state.printerBrand = 'Bambu Lab'; state.printerModel = 'bl-p1s'; }
+
+  function blankLine() {
+    const fid = DEFAULT_FIL[state.printerBrand] || 'bl-pla-basic';
+    const f = filById(fid);
+    return { id: uid(), desc: '', brand: f.b, fil: f.id, color: f.c.indexOf('Negro') >= 0 ? 'Negro' : (f.c[0] || ''), g: 0, h: 0, m: 0, qty: 1, labor: 0, extras: 0 };
+  }
+
+  let saveTimer = null;
+  function flushSave() {
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignorar */ }
+  }
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flushSave, 400);
+  }
+  /* Guardar ya mismo al cerrar o cambiar de app, para no perder lo último que se escribió */
+  window.addEventListener('pagehide', flushSave);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) flushSave(); });
+
+  function setStatus(msg, kind) {
+    const el = $('#status');
+    el.textContent = msg || '';
+    el.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  /* ---- Campos generales ---- */
+  function syncFields() {
+    $$('[data-s]').forEach(function (el) {
+      const k = el.dataset.s;
+      if (el.type === 'checkbox') el.checked = !!state[k];
+      else el.value = state[k] == null ? '' : state[k];
+    });
+    $('#usdRate').value = state.rates[state.currency] == null ? '' : state.rates[state.currency];
+  }
+  $$('[data-s]').forEach(function (el) {
+    const h = function () {
+      state[el.dataset.s] = el.type === 'checkbox' ? el.checked : el.value;
+      if (el.id === 'currency') { $('#usdRate').value = state.rates[state.currency] == null ? '' : state.rates[state.currency]; renderLines(); }
+      update();
+    };
+    el.addEventListener('input', h);
+    el.addEventListener('change', h);
+  });
+  $('#usdRate').addEventListener('input', function (e) {
+    if (e.target.value === '') delete state.rates[state.currency];
+    else state.rates[state.currency] = e.target.value;
+    update();
+  });
+
+  /* ---- Impresora ---- */
+  const pBrand = $('#printerBrand'), pModel = $('#printerModel');
+  function renderPrinter() {
+    pBrand.innerHTML = PRINTER_BRANDS.map(function (b) {
+      return '<option value="' + esc(b) + '"' + (b === state.printerBrand ? ' selected' : '') + '>' + esc(b) + '</option>';
+    }).join('');
+    const list = PRINTERS.filter(function (p) { return p.b === state.printerBrand; });
+    const sold = list.filter(function (p) { return p.p != null; });
+    const other = list.filter(function (p) { return p.p == null; });
+    const opt = function (p) {
+      return '<option value="' + p.id + '"' + (p.id === state.printerModel ? ' selected' : '') + '>' + esc(p.n) + (p.p != null ? ' · U$S ' + p.p : '') + '</option>';
+    };
+    pModel.innerHTML = '<optgroup label="En Macrotec">' + sold.map(opt).join('') + '</optgroup>' +
+      '<optgroup label="Otros modelos (ingresa el precio)">' + other.map(opt).join('') + '</optgroup>';
+  }
+  function applyPrinter(id) {
+    const p = printerById(id);
+    if (!p) return;
+    state.printerModel = p.id;
+    state.printerPrice = p.p == null ? '' : p.p;
+    state.watts = p.wt;
+    $('#printerPrice').value = state.printerPrice;
+    $('#watts').value = state.watts;
+  }
+  pBrand.addEventListener('change', function () {
+    state.printerBrand = pBrand.value;
+    const first = PRINTERS.find(function (p) { return p.b === state.printerBrand; });
+    applyPrinter(first.id);
+    renderPrinter(); update();
+  });
+  pModel.addEventListener('change', function () {
+    applyPrinter(pModel.value);
+    update();
+    if (state.printerPrice === '') $('#printerPrice').focus();
+  });
+
+  /* ---- Mis materiales ---- */
+  const matsEl = $('#mats');
+  function renderMaterials() {
+    matsEl.innerHTML = state.materials.map(function (m) {
+      return '<div class="mat" data-mat="' + esc(m.id) + '">' +
+        '<input type="text" data-mf="name" aria-label="Nombre del material" value="' + esc(m.name) + '">' +
+        '<div class="inp"><input type="number" inputmode="decimal" min="0" step="any" data-mf="price" aria-label="Precio por kg" value="' + esc(val(m.price)) + '" placeholder="0"><i>/kg</i></div>' +
+        '<button type="button" class="link" data-act="del-mat"' + (state.materials.length < 2 ? ' disabled' : '') + '>Quitar</button></div>';
+    }).join('');
+  }
+  matsEl.addEventListener('input', function (e) {
+    const f = e.target.dataset.mf;
+    if (!f) return;
+    const m = state.materials.find(function (x) { return x.id === e.target.closest('[data-mat]').dataset.mat; });
+    if (!m) return;
+    m[f] = e.target.value;
+    if (f === 'name') $$('[data-line]').forEach(function (row) {
+      const l = state.lines.find(function (x) { return x.id === row.dataset.line; });
+      if (l && l.brand === 'mine') { const s = $('[data-f="fil"]', row); s.innerHTML = prodOptions(l); }
+    });
+    update();
+  });
+  matsEl.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-act="del-mat"]');
+    if (!b || b.disabled) return;
+    const id = b.closest('[data-mat]').dataset.mat;
+    state.materials = state.materials.filter(function (m) { return m.id !== id; });
+    const first = state.materials[0].id;
+    state.lines.forEach(function (l) { if (l.brand === 'mine' && l.fil === id) l.fil = first; });
+    renderMaterials(); renderLines(); update();
+  });
+  $('#btn-add-mat').addEventListener('click', function () {
+    state.materials.push({ id: uid(), name: 'Nuevo material', price: 0 });
+    renderMaterials(); renderLines(); update();
+    const inputs = $$('[data-mf="name"]', matsEl);
+    const last = inputs[inputs.length - 1];
+    last.focus(); last.select();
+  });
+
+  /* ---- Piezas ---- */
+  const linesEl = $('#lines');
+  function brandOptions(l) {
+    return filBrands().map(function (b) {
+      return '<option value="' + esc(b) + '"' + (b === l.brand ? ' selected' : '') + '>' + esc(b) + '</option>';
+    }).join('') + '<option value="mine"' + (l.brand === 'mine' ? ' selected' : '') + '>Mis materiales</option>';
+  }
+  function prodOptions(l) {
+    if (l.brand === 'mine') {
+      return state.materials.map(function (m) {
+        return '<option value="' + esc(m.id) + '"' + (m.id === l.fil ? ' selected' : '') + '>' + esc(m.name || 'Sin nombre') + '</option>';
+      }).join('');
+    }
+    return FIL.filter(function (f) { return f.b === l.brand && (!f.gone || f.id === l.fil); }).map(function (f) {
+      return '<option value="' + esc(f.id) + '"' + (f.id === l.fil ? ' selected' : '') + '>' + esc(f.n) + ' · U$S ' + String(f.p).replace('.', ',') +
+        (f.gone ? ' (ya no está en Macrotec)' : f.out ? ' (sin stock)' : '') + '</option>';
+    }).join('');
+  }
+  function colorControl(l) {
+    const f = l.brand === 'mine' ? null : filById(l.fil);
+    if (f && f.c.length) {
+      return '<select data-f="color">' + f.c.map(function (c) {
+        return '<option' + (c === l.color ? ' selected' : '') + '>' + esc(c) + '</option>';
+      }).join('') + '</select>';
+    }
+    return '<input type="text" data-f="color" value="' + esc(l.color) + '" placeholder="Ej: Negro">';
+  }
+  function lineHTML(l, i) {
+    const numF = function (f, label, unit, ph) {
+      return '<label class="field"><span>' + label + '</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" data-f="' + f + '" value="' + esc(val(l[f])) + '" placeholder="' + (ph || '0') + '"><i>' + unit + '</i></div></label>';
+    };
+    const f = l.brand === 'mine' ? null : filById(l.fil);
+    const roll = f ? '<label class="field"><span>Precio del rollo</span><div class="inp pre"><input type="number" inputmode="decimal" min="0" step="any" data-f="roll" value="' + esc(rollPrice(state, f)) + '"><i>U$S</i></div></label>' : '';
+    return '<div class="line" data-line="' + l.id + '">' +
+      '<div class="line-head"><span class="line-n">Pieza ' + (i + 1) + '</span>' +
+      '<button type="button" class="link" data-act="del-line"' + (state.lines.length < 2 ? ' disabled' : '') + '>Quitar</button></div>' +
+      '<label class="field"><span>Descripción</span><input type="text" data-f="desc" value="' + esc(l.desc) + '" placeholder="Ej: Soporte de pared"></label>' +
+      '<div class="fil">' +
+        '<div class="fil-row">' +
+          '<label class="field"><span>Filamento</span><select data-f="brand">' + brandOptions(l) + '</select></label>' +
+          '<label class="field fil-prod"><span>Línea</span><select data-f="fil">' + prodOptions(l) + '</select></label>' +
+          '<label class="field fil-color"><span>Color</span>' + colorControl(l) + '</label>' +
+        '</div>' +
+        '<div class="fil-foot">' + roll + '<div class="fil-info" data-matinfo></div></div>' +
+      '</div>' +
+      '<div class="grid">' +
+      numF('g', 'Peso', 'g') +
+      '<div class="field"><span>Tiempo de impresión</span><div class="pair">' +
+        '<div class="inp"><input type="number" inputmode="numeric" min="0" step="1" data-f="h" aria-label="Horas" value="' + esc(val(l.h)) + '" placeholder="0"><i>h</i></div>' +
+        '<div class="inp"><input type="number" inputmode="numeric" min="0" step="1" data-f="m" aria-label="Minutos" value="' + esc(val(l.m)) + '" placeholder="0"><i>min</i></div>' +
+      '</div></div>' +
+      numF('qty', 'Cantidad', 'u', '1') +
+      numF('labor', 'Mano de obra por pieza', 'min') +
+      '<label class="field"><span>Extras por pieza (<b data-cur></b>)</span><input type="number" inputmode="decimal" min="0" step="any" data-f="extras" value="' + esc(val(l.extras)) + '" placeholder="0"></label>' +
+      '</div><div class="line-calc" data-calc></div></div>';
+  }
+  function renderLines(focus) {
+    linesEl.innerHTML = state.lines.map(lineHTML).join('');
+    if (focus) {
+      const el = $('[data-line="' + focus.id + '"] [data-f="' + focus.f + '"]', linesEl);
+      if (el) el.focus();
+    }
+  }
+  function lineOf(el) {
+    const id = el.closest('[data-line]').dataset.line;
+    return state.lines.find(function (x) { return x.id === id; });
+  }
+  function pickColor(l, f) {
+    if (!f || !f.c.length) return l.color && l.brand === 'mine' ? l.color : '';
+    if (f.c.indexOf(l.color) >= 0) return l.color;
+    return f.c.indexOf('Negro') >= 0 ? 'Negro' : f.c[0];
+  }
+  linesEl.addEventListener('change', function (e) {
+    const fld = e.target.dataset.f;
+    if (fld !== 'brand' && fld !== 'fil') return;
+    const l = lineOf(e.target);
+    if (!l) return;
+    if (fld === 'brand') {
+      l.brand = e.target.value;
+      if (l.brand === 'mine') { l.fil = state.materials[0].id; l.color = ''; }
+      else {
+        const first = FIL.find(function (f) { return f.b === l.brand && !f.gone; }) || FIL.find(function (f) { return f.b === l.brand; });
+        l.fil = first.id;
+        l.color = pickColor(l, first);
+      }
+    } else {
+      l.fil = e.target.value;
+      if (l.brand !== 'mine') l.color = pickColor(l, filById(l.fil));
+    }
+    renderLines({ id: l.id, f: fld });
+    update();
+  });
+  linesEl.addEventListener('input', function (e) {
+    const fld = e.target.dataset.f;
+    if (!fld || fld === 'brand' || fld === 'fil') return;
+    const l = lineOf(e.target);
+    if (!l) return;
+    if (fld === 'roll') {
+      const f = filById(l.fil);
+      if (!f) return;
+      if (e.target.value === '' || Number(e.target.value) === f.p) delete state.overrides[f.id];
+      else state.overrides[f.id] = e.target.value;
+    } else {
+      l[fld] = e.target.value;
+    }
+    update();
+  });
+  linesEl.addEventListener('click', function (e) {
+    const reset = e.target.closest('[data-act="reset-roll"]');
+    if (reset) {
+      const l = lineOf(reset);
+      const f = filById(l.fil);
+      if (f) delete state.overrides[f.id];
+      renderLines(); update();
+      return;
+    }
+    const b = e.target.closest('[data-act="del-line"]');
+    if (!b || b.disabled) return;
+    const id = b.closest('[data-line]').dataset.line;
+    state.lines = state.lines.filter(function (l) { return l.id !== id; });
+    renderLines(); update();
+  });
+  $('#btn-add').addEventListener('click', function () {
+    state.lines.push(blankLine());
+    renderLines(); update();
+    const d = $$('[data-f="desc"]', linesEl);
+    d[d.length - 1].focus();
+  });
+
+  /* ---- Resumen ---- */
+  function symbol() {
+    try {
+      const p = new Intl.NumberFormat('es-UY', { style: 'currency', currency: state.currency }).formatToParts(0);
+      const c = p.find(function (x) { return x.type === 'currency'; });
+      return c ? c.value : state.currency;
+    } catch (e) { return state.currency; }
+  }
+  function hoursText(h) {
+    const total = Math.round(h * 60);
+    return Math.floor(total / 60) + ' h ' + pad(total % 60) + ' min';
+  }
+  function bind(k, text) { $$('[data-bind="' + k + '"]').forEach(function (el) { el.textContent = text; }); }
+  const money2 = function (v) { return money({ currency: state.currency, round: false }, v); };
+
+  function update() {
+    const t = calcTotals(state);
+    const m = function (v) { return money(state, v); };
+    const sym = symbol();
+    const isUsd = state.currency === 'USD';
+    const rate = usdRate(state);
+    $$('[data-cur]').forEach(function (el) { el.textContent = sym; });
+
+    /* Cotización */
+    $('#rate-field').hidden = isUsd;
+    const rateIn = $('#usdRate');
+    rateIn.classList.toggle('need', !isUsd && !(rate > 0));
+    const manualRate = state.rates[state.currency] !== undefined && state.rates[state.currency] !== '';
+    const autoRate = String(USD_RATE_UYU).replace('.', ',');
+    rateIn.placeholder = state.currency === 'UYU' ? autoRate : '';
+    $('#rate-hint').textContent = !(rate > 0)
+      ? 'Ingresa cuánto vale 1 dólar para convertir los precios de Macrotec.'
+      : state.currency !== 'UYU' ? ''
+      : manualRate ? 'Fijada por ti. Bórrala para usar la del BROU ($ ' + autoRate + ').'
+      : 'Automática: BROU al ' + USD_RATE_DATE + ', se actualiza a diario.';
+
+    /* Impresora */
+    const pr = printerById(state.printerModel);
+    const priceIn = $('#printerPrice');
+    const noPrice = !(num(state.printerPrice) > 0);
+    priceIn.classList.toggle('need', noPrice);
+    $('#price-src').textContent = noPrice
+      ? 'Ingresa cuánto pagaste por tu impresora.'
+      : (pr && pr.p != null && num(state.printerPrice) === pr.p ? 'Precio Macrotec al ' + CATALOG_DATE + '.' : 'Precio ingresado por ti.');
+    bind('machineRate', money2(machineRate(state)));
+    bind('energyRate', money2(energyRate(state)));
+    bind('printerName', pr ? pr.b + ' ' + pr.n : '');
+    bind('catDate', CATALOG_DATE);
+    bind('catChecked', CATALOG_CHECKED);
+
+    /* Piezas */
+    let matCost = 0;
+    state.lines.forEach(function (l, i) {
+      const row = $('[data-line="' + l.id + '"]');
+      if (!row) return;
+      const c = t.lines[i];
+      matCost += c.mat * c.qty;
+      const f = l.brand === 'mine' ? null : filById(l.fil);
+      const info = $('[data-matinfo]', row);
+      let html = '';
+      if (f) {
+        const rp = rollPrice(state, f);
+        const custom = rp !== f.p;
+        const roll = $('[data-f="roll"]', row);
+        if (roll && document.activeElement !== roll) roll.value = rp;
+        html += '<span>' + (f.w >= 1000 ? String(f.w / 1000).replace('.', ',') + ' kg' : f.w + ' g') + ' · <b>' + (rate > 0 ? money2(c.perKg) : usd(rp / (f.w / 1000))) + '</b> por kg</span>';
+        if (custom) html += '<span class="tag src">Macrotec: U$S ' + String(f.p).replace('.', ',') + '</span><button type="button" class="link plain" data-act="reset-roll">Usar precio Macrotec</button>';
+        else if (f.old) html += '<span class="tag sale">En oferta, antes U$S ' + f.old + '</span>';
+        if (f.gone) html += '<span class="tag out">Ya no está en Macrotec</span>';
+        else if (f.out) html += '<span class="tag out">Sin stock en Macrotec</span>';
+        if (f.url && !f.gone) html += '<a class="link plain" href="' + MACROTEC + esc(f.url) + '" target="_blank" rel="noopener">Ver en Macrotec</a>';
+      } else {
+        html = '<span>Precio por kg: <b>' + money2(c.perKg) + '</b>. Edítalo en Mis materiales.</span>';
+      }
+      info.innerHTML = html;
+      $('[data-calc]', row).innerHTML = '<span>Costo unitario <b>' + m(c.cost) + '</b></span><span>Precio unitario <b>' + m(c.unit) + '</b></span><span>Total <b>' + m(c.total) + '</b></span>';
+    });
+
+    bind('total', m(t.total));
+    bind('subtotal', m(t.subtotal));
+    bind('discount', '- ' + m(t.discount));
+    bind('shipping', m(t.shipping));
+    bind('iva', m(t.iva));
+    bind('ivaNote', num(state.iva) > 0 ? 'Incluye IVA de ' + pctText(state.iva) + '%' : 'Sin IVA');
+    bind('count', state.lines.length + (state.lines.length === 1 ? ' pieza, ' : ' piezas, ') + t.units + (t.units === 1 ? ' unidad' : ' unidades'));
+    bind('cost', m(t.costTotal));
+    bind('profit', m(t.profit) + ' (' + Math.round(t.profitPct) + '%)');
+    bind('matCost', money2(matCost));
+    bind('hours', hoursText(t.hours));
+    bind('grams', Math.round(t.grams).toLocaleString('es-UY') + ' g');
+    $('[data-row="discount"]').hidden = !(t.discount > 0);
+    $('[data-row="shipping"]').hidden = !(t.shipping > 0);
+    $('[data-row="iva"]').hidden = !(num(state.iva) > 0);
+    save();
+  }
+
+  /* ---- Logo ---- */
+  function renderLogo() {
+    const img = $('#logo-prev');
+    if (state.logo && state.logo.data) { img.src = state.logo.data; img.hidden = false; $('#logo-del').hidden = false; }
+    else { img.removeAttribute('src'); img.hidden = true; $('#logo-del').hidden = true; }
+  }
+  $('#logo-file').addEventListener('change', function (e) {
+    const f = e.target.files[0];
+    const msg = $('#logo-msg');
+    msg.textContent = '';
+    if (!f) return;
+    if (!/^image\/(png|jpeg)$/.test(f.type)) { msg.textContent = 'Usa una imagen PNG o JPG.'; return; }
+    if (f.size > 2 * 1024 * 1024) { msg.textContent = 'La imagen pesa más de 2 MB. Prueba con una más liviana.'; return; }
+    const r = new FileReader();
+    r.onload = function () {
+      const img = new Image();
+      img.onload = function () {
+        state.logo = { data: r.result, w: img.naturalWidth, h: img.naturalHeight, fmt: f.type === 'image/png' ? 'PNG' : 'JPEG' };
+        renderLogo(); save();
+      };
+      img.onerror = function () { msg.textContent = 'No se pudo leer la imagen.'; };
+      img.src = r.result;
+    };
+    r.readAsDataURL(f);
+  });
+  $('#logo-del').addEventListener('click', function () {
+    state.logo = null; $('#logo-file').value = ''; renderLogo(); save();
+  });
+
+  /* ---- Nuevo presupuesto (confirmación en dos pasos) ---- */
+  const btnNew = $('#btn-new');
+  let armed = false, armTimer = null;
+  btnNew.addEventListener('click', function () {
+    if (!armed) {
+      armed = true;
+      btnNew.textContent = 'Confirmar: se borran las piezas';
+      armTimer = setTimeout(function () { armed = false; btnNew.textContent = 'Nuevo presupuesto'; }, 4000);
+      return;
+    }
+    clearTimeout(armTimer); armed = false; btnNew.textContent = 'Nuevo presupuesto';
+    state.client = ''; state.clientContact = ''; state.project = '';
+    state.number = nextNumber(state.number); state.date = today();
+    state.lines = [blankLine()];
+    syncFields(); renderLines(); update(); setStatus('');
+  });
+
+  /* ---- PDF ---- */
+  let downloads = null, downloadsAnswered = false;
+  if (IN_CLAUDE) {
+    window.claude.use('downloads').then(function (d) {
+      downloads = d; downloadsAnswered = true;
+      if (!d) setStatus('La descarga de PDF solo funciona al abrir esta página en claude.ai.', 'err');
+    }, function () { downloadsAnswered = true; });
+  }
+
+  function fileName() {
+    const clean = function (s) { return String(s || '').replace(/[^\wÀ-ſ\- ]+/g, '').trim().replace(/\s+/g, '-'); };
+    const parts = ['Presupuesto', clean(state.number), clean(state.client)].filter(Boolean);
+    return parts.join('-') + '.pdf';
+  }
+
+  /* Genera el PDF; devuelve null y muestra el motivo si no se puede */
+  function makePdf() {
+    setStatus('');
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      setStatus('No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a abrir la app.', 'err');
+      return null;
+    }
+    if (state.currency !== 'USD' && !(usdRate(state) > 0)) {
+      setStatus('Ingresa la cotización del dólar en Costos y márgenes antes de descargar.', 'err');
+      return null;
+    }
+    return buildPdf(window.jspdf.jsPDF, state, calcTotals(state), state.logo).output('arraybuffer');
+  }
+
+  async function exportPdf() {
+    if (IN_CLAUDE) {
+      if (!downloads) {
+        setStatus(downloadsAnswered
+          ? 'La descarga de PDF solo funciona al abrir esta página en claude.ai.'
+          : 'Un momento, la página aún se está preparando. Intenta de nuevo.', 'err');
+        return;
+      }
+      const buf = makePdf();
+      if (!buf) return;
+      try {
+        await downloads.save({ filename: fileName(), data: buf });
+        setStatus('PDF listo.', 'ok');
+      } catch (e) {
+        if (e && e.code === 'declined') setStatus('Descarga cancelada.');
+        else if (e && e.code === 'rate_limited') setStatus('Ya hay una descarga esperando tu confirmación.', 'err');
+        else setStatus('No se pudo guardar el PDF. Intenta de nuevo.', 'err');
+      }
+      return;
+    }
+    const buf = makePdf();
+    if (!buf) return;
+    try {
+      const url = URL.createObjectURL(new Blob([buf], { type: 'application/pdf' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      setStatus('PDF descargado.', 'ok');
+    } catch (e) {
+      setStatus('No se pudo guardar el PDF. Intenta de nuevo.', 'err');
+    }
+  }
+
+  async function sharePdf() {
+    const buf = makePdf();
+    if (!buf) return;
+    const file = new File([buf], fileName(), { type: 'application/pdf' });
+    try {
+      await navigator.share({ files: [file], title: 'Presupuesto ' + (state.number || '') });
+      setStatus('PDF compartido.', 'ok');
+    } catch (e) {
+      if (e && e.name === 'AbortError') setStatus('');
+      else setStatus('No se pudo compartir. Usa Descargar PDF.', 'err');
+    }
+  }
+
+  let canShareFiles = false;
+  try {
+    canShareFiles = !IN_CLAUDE && !!navigator.canShare && navigator.canShare({ files: [new File(['%PDF'], 'prueba.pdf', { type: 'application/pdf' })] });
+  } catch (e) { canShareFiles = false; }
+  $$('[data-act="pdf"]').forEach(function (b) { b.addEventListener('click', exportPdf); });
+  $$('[data-act="share"]').forEach(function (b) { b.hidden = !canShareFiles; b.addEventListener('click', sharePdf); });
+
+  /* ---- Instalación como app ---- */
+  if (IN_CLAUDE) {
+    if (/^https:\/\//.test(APP_URL)) { const link = $('#app-link'); link.href = APP_URL; link.hidden = false; }
+  } else {
+    let installEvt = null;
+    const btnInstall = $('#btn-install');
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); installEvt = e; btnInstall.hidden = false; });
+    window.addEventListener('appinstalled', function () { btnInstall.hidden = true; installEvt = null; });
+    btnInstall.addEventListener('click', function () {
+      if (!installEvt) return;
+      installEvt.prompt();
+      Promise.resolve(installEvt.userChoice).catch(function () {}).then(function () { installEvt = null; btnInstall.hidden = true; });
+    });
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const standalone = window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    let hintSeen = false;
+    try { hintSeen = localStorage.getItem('presupuestos3d.iosHint') === '1'; } catch (e) { /* sin almacenamiento */ }
+    if (isIOS && !standalone && !hintSeen) $('#ios-hint').hidden = false;
+    $('#ios-hint-close').addEventListener('click', function () {
+      $('#ios-hint').hidden = true;
+      try { localStorage.setItem('presupuestos3d.iosHint', '1'); } catch (e) { /* sin almacenamiento */ }
+    });
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* la app funciona igual, sin modo sin conexión */ });
+    }
+  }
+
+  /* ---- Catálogo en vivo (base de datos que actualiza la tarea diaria) ---- */
+  let catLive = false, lastCat = '';
+  const OTHER_ID = { 'Bambu Lab': 'bl-otra', 'Creality': 'cr-otra', 'Flashforge': 'ff-otra' };
+  const str = function (v, max) { return typeof v === 'string' ? v.slice(0, max) : ''; };
+  const slug = function (v) { return typeof v === 'string' && /^[a-z0-9-]{1,200}$/i.test(v) ? v : ''; };
+
+  function cleanFil(items) {
+    if (!Array.isArray(items)) return [];
+    const out = [], seen = {};
+    items.forEach(function (x) {
+      if (!x || typeof x !== 'object') return;
+      const id = str(x.id, 120), b = str(x.b, 40), n = str(x.n, 120), p = Number(x.p), w = Number(x.w);
+      if (!id || seen[id] || !b || !n || !isFinite(p) || p < 0 || !isFinite(w) || w <= 0) return;
+      seen[id] = 1;
+      out.push({
+        id: id, b: b, n: n, t: str(x.t, 30), p: p, w: w,
+        c: Array.isArray(x.c) ? x.c.filter(function (c) { return typeof c === 'string' && c; }).map(function (c) { return c.slice(0, 60); }).slice(0, 150) : [],
+        old: Number(x.old) > 0 ? Number(x.old) : 0, out: !!x.out, gone: !!x.gone, url: slug(x.url)
+      });
+    });
+    return out;
+  }
+  function cleanPrinters(items) {
+    if (!Array.isArray(items)) return [];
+    const out = [], seen = {};
+    items.forEach(function (x) {
+      if (!x || typeof x !== 'object') return;
+      const id = str(x.id, 120), b = str(x.b, 40), n = str(x.n, 120), wt = Number(x.wt);
+      const p = x.p === null || x.p === undefined || x.p === '' ? null : Number(x.p);
+      if (!id || seen[id] || PRINTER_BRANDS.indexOf(b) < 0 || !n || !isFinite(wt) || wt <= 0) return;
+      seen[id] = 1;
+      out.push({ id: id, b: b, n: n, p: p !== null && isFinite(p) && p > 0 ? p : null, wt: wt, url: slug(x.url) });
+    });
+    return out;
+  }
+
+  function applyCatalog(docs) {
+    const key = JSON.stringify(docs);
+    if (key === lastCat) return;
+    lastCat = key;
+    const meta = docs.meta || {};
+    const fil = cleanFil(docs.filaments && docs.filaments.items);
+    const pr = cleanPrinters(docs.printers && docs.printers.items);
+    if (fil.length >= 20) {
+      state.lines.forEach(function (l) {
+        if (l.brand === 'mine' || fil.some(function (f) { return f.id === l.fil; })) return;
+        const prev = filById(l.fil);
+        if (prev) fil.push(Object.assign({}, prev, { gone: true }));
+      });
+      FIL = fil;
+    }
+    if (pr.length >= 5) {
+      PRINTER_BRANDS.forEach(function (b) {
+        if (!pr.some(function (p) { return p.id === OTHER_ID[b]; })) pr.push({ id: OTHER_ID[b], b: b, n: 'Otro modelo', p: null, wt: 130, url: '' });
+      });
+      if (!pr.some(function (p) { return p.id === state.printerModel; })) {
+        const prev = printerById(state.printerModel);
+        if (prev) pr.push(Object.assign({}, prev, { p: null }));
+      }
+      PRINTERS = pr;
+    }
+    if (str(meta.updated, 20)) CATALOG_DATE = str(meta.updated, 20);
+    if (str(meta.checked, 20)) CATALOG_CHECKED = str(meta.checked, 20);
+    if (Number(meta.usdRate) > 0) USD_RATE_UYU = Number(meta.usdRate);
+    if (str(meta.usdRateDate, 20)) USD_RATE_DATE = str(meta.usdRateDate, 20);
+    CATALOG_CHANGES = Array.isArray(meta.changes) ? meta.changes.filter(function (c) { return typeof c === 'string'; }).map(function (c) { return c.slice(0, 200); }).slice(0, 40) : [];
+    catLive = true;
+    rerenderAll();
+  }
+
+  function renderChanges() {
+    const ul = $('#changes-list');
+    ul.textContent = '';
+    CATALOG_CHANGES.forEach(function (c) {
+      const li = document.createElement('li');
+      li.textContent = c;
+      ul.appendChild(li);
+    });
+    $('#changes').hidden = !CATALOG_CHANGES.length;
+    $('#cat-live').hidden = !catLive;
+  }
+
+  function rerenderAll() {
+    const a = document.activeElement;
+    let keep = null;
+    if (a && a.closest && a.closest('[data-line]') && a.dataset.f) {
+      keep = { id: a.closest('[data-line]').dataset.line, f: a.dataset.f, s: null, e: null };
+      try { keep.s = a.selectionStart; keep.e = a.selectionEnd; } catch (err) { /* sin cursor */ }
+    }
+    renderPrinter();
+    renderLines(keep);
+    if (keep && keep.s !== null) {
+      try { document.activeElement.setSelectionRange(keep.s, keep.e); } catch (err) { /* sin cursor */ }
+    }
+    renderChanges();
+    update();
+  }
+
+  /* En la app instalada: catalog.json publicado junto a la app, que la tarea diaria actualiza */
+  let lastFetch = 0;
+  function fetchCatalogFile() {
+    if (IN_CLAUDE || !/^https?:$/.test(location.protocol)) return;
+    lastFetch = Date.now();
+    fetch('catalog.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && typeof d === 'object') applyCatalog({ meta: d.meta, filaments: d.filaments, printers: d.printers }); })
+      .catch(function () { /* sin conexión: sigue con el último catálogo */ });
+  }
+  if (!IN_CLAUDE) {
+    fetchCatalogFile();
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && Date.now() - lastFetch > 3600000) fetchCatalogFile();
+    });
+  }
+
+  if (IN_CLAUDE) {
+    window.claude.use('db').then(function (db) {
+      if (!db) return;
+      try {
+        db.collection('catalog').onSnapshot(function (snap) {
+          const docs = {};
+          snap.docs.forEach(function (d) { if (d.exists) docs[d.id] = d.data(); });
+          if (docs.meta || docs.filaments || docs.printers) applyCatalog(docs);
+        }, function () { /* sigue con el catálogo guardado en la página */ });
+      } catch (err) { /* sigue con el catálogo guardado en la página */ }
+    }, function () { /* sin base de datos */ });
+  }
+
+  /* ---- Inicio ---- */
+  syncFields();
+  renderPrinter();
+  renderMaterials();
+  renderLines();
+  renderLogo();
+  renderChanges();
+  update();
+})();
+</script>
+
+</body>
+</html>
