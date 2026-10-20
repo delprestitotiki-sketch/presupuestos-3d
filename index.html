@@ -267,6 +267,19 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .stepper input { width: 60px; height: 36px; border: 0; border-radius: 0; text-align: center; padding: 0 4px; }
 .confirming { border-color: var(--danger) !important; color: var(--danger) !important; }
 
+/* Negocio compartido */
+.share .sub { max-width: 62ch; }
+.share-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 14px; }
+.share-box { display: grid; gap: 10px; align-content: start; padding: 14px; background: var(--field); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.share-box input { background: var(--surface); }
+.share-box h3 { font-size: 14.5px; }
+.code { font: 600 22px/1.2 var(--mono); letter-spacing: .08em; }
+.who { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 4px; font-size: 13.5px; color: var(--mute); }
+.who b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+.members { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.members li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.members li span:first-child { overflow-wrap: anywhere; }
+
 @media (max-width: 520px) {
   .panel { padding: 16px; }
   .fil { padding: 12px; }
@@ -440,12 +453,22 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 
   <div id="view-negocio" role="tabpanel" aria-labelledby="tab-negocio" hidden>
     <nav class="jump" aria-label="Ir a">
+      <button type="button" data-goto="sec-share" id="jump-share" hidden>Compartir</button>
       <button type="button" data-goto="sec-espera">Presupuestos en espera</button>
       <button type="button" data-goto="sec-trabajos">Trabajos</button>
       <button type="button" data-goto="sec-fil">Stock de filamentos</button>
       <button type="button" data-goto="sec-piezas">Stock de piezas</button>
       <button type="button" data-goto="sec-datos">Datos y respaldo</button>
     </nav>
+
+    <section class="panel share" id="sec-share" aria-labelledby="h-share" hidden>
+      <div class="panel-head">
+        <h2 id="h-share">Negocio compartido</h2>
+        <span class="tag" id="sync-chip" hidden></span>
+      </div>
+      <div id="share-body"></div>
+      <p class="status" id="share-msg" role="status" aria-live="polite"></p>
+    </section>
 
     <div class="stats" id="biz-stats"></div>
 
@@ -1206,6 +1229,7 @@ if (typeof module !== 'undefined' && module.exports) {
     clearTimeout(saveTimer);
     saveTimer = null;
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignorar */ }
+    afterSave();
   }
   function save() {
     clearTimeout(saveTimer);
@@ -2231,6 +2255,10 @@ if (typeof module !== 'undefined' && module.exports) {
     const file = e.target.files[0];
     e.target.value = '';
     if (!file) return;
+    if (SYNC_ON && sync && sync.biz) {
+      bkSay('Para importar un respaldo, primero toca "Dejar de usar aquí" en Negocio compartido: si no, reemplazarías los datos de todos tus socios.', 'err');
+      return;
+    }
     const r = new FileReader();
     r.onload = function () {
       let d = null;
@@ -2263,6 +2291,510 @@ if (typeof module !== 'undefined' && module.exports) {
     };
     r.readAsText(file);
   });
+
+  /* ================= Negocio compartido (Supabase) ================= */
+  /* Cada presupuesto, trabajo, filamento y pieza es un registro en el servidor. Se suben los que cambiaron
+     respecto de la última versión conocida ("base") y se bajan los que cambiaron desde el último cursor. */
+  var SB = { url: 'https://gjhwajktuteulptzunvv.supabase.co', key: 'sb_publishable_Qi8CkQ1KLWmxDGtBaUIctw_Q15VxiNc' };
+  var SYNC_ON = !IN_CLAUDE && /^https?:\/\//.test(SB.url) && SB.key.length > 10;
+  var AUTH_KEY = 'presupuestos3d.auth', SYNC_KEY = 'presupuestos3d.sync';
+  var KIND_KEY = { quote: 'quotes', job: 'jobs', fstock: 'fstock', pstock: 'pstock' };
+  var SETTINGS_FIELDS = ['bizName', 'bizContact', 'logo', 'lowStock'];
+  var syncReady = false, auth = null, sync = null, syncing = false, syncAgain = false, syncTimer = null;
+  var lastSyncOk = 0, syncErr = '', lastSig = '', memberCache = null, myBizCache = null;
+  const shareSay = sayIn('#share-msg');
+
+  function readJSON(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function writeJSON(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* ignorar */ } }
+  function emptySync() { return { biz: null, cursor: null, base: {} }; }
+
+  function errText(d, status) {
+    const m = String((d && (d.msg || d.message || d.error_description || d.error)) || '');
+    if (/invalid login credentials/i.test(m)) return 'Correo o contraseña incorrectos.';
+    if (/already (been )?registered|user already exists/i.test(m)) return 'Ya existe una cuenta con ese correo. Toca Entrar.';
+    if (/password.*(at least|characters)|weak/i.test(m)) return 'La contraseña es muy corta: usa al menos 6 caracteres.';
+    if (/email.*(invalid|valid)|unable to validate email/i.test(m)) return 'Revisa el correo: no parece válido.';
+    if (/email not confirmed/i.test(m)) return 'Esa cuenta tiene el correo sin confirmar.';
+    if (/signups? not allowed|signup.*disabled/i.test(m)) return 'El registro de cuentas está desactivado en Supabase.';
+    if (/not authorized|email_address_not_authorized/i.test(m)) return 'Supabase no puede mandar el correo de confirmación a esa dirección. El dueño debe desactivar "Confirm email" en Supabase.';
+    if (/rate limit|too many/i.test(m) || status === 429) return 'Demasiados intentos seguidos. Espera un minuto y prueba de nuevo.';
+    if (/[áéíóúñ]/i.test(m)) return m;
+    return m || 'El servidor respondió con un error (' + status + ').';
+  }
+  async function sbFetch(path, opts) {
+    opts = opts || {};
+    const headers = Object.assign({ apikey: SB.key, 'Content-Type': 'application/json' }, opts.headers || {});
+    if (opts.auth !== false && auth && auth.access_token) headers.Authorization = 'Bearer ' + auth.access_token;
+    let res;
+    try {
+      res = await fetch(SB.url + path, { method: opts.method || 'GET', headers: headers, body: opts.body === undefined ? undefined : JSON.stringify(opts.body) });
+    } catch (e) {
+      const err = new Error('Sin conexión a internet.');
+      err.offline = true;
+      throw err;
+    }
+    const text = await res.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+    if (!res.ok) { const err = new Error(errText(data, res.status)); err.status = res.status; throw err; }
+    return data;
+  }
+
+  /* ---- Sesión ---- */
+  function setAuth(d, keepUser) {
+    if (!d || !d.access_token) { auth = null; writeJSON(AUTH_KEY, null); return; }
+    const u = d.user || keepUser || {};
+    auth = { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: Date.now() + (num(d.expires_in) || 3600) * 1000, user: { id: u.id, email: u.email } };
+    writeJSON(AUTH_KEY, auth);
+  }
+  async function ensureSession() {
+    if (!auth) throw new Error('Inicia sesión para sincronizar.');
+    if (Date.now() < auth.expires_at - 60000) return;
+    try {
+      const d = await sbFetch('/auth/v1/token?grant_type=refresh_token', { method: 'POST', auth: false, body: { refresh_token: auth.refresh_token } });
+      setAuth(d, auth.user);
+    } catch (e) {
+      if (e.status === 400 || e.status === 401) { setAuth(null); renderShare(); throw new Error('Tu sesión venció. Vuelve a entrar.'); }
+      throw e;
+    }
+  }
+
+  /* ---- Registros ---- */
+  function settingsData() {
+    const o = {};
+    SETTINGS_FIELDS.forEach(function (f) { o[f] = state[f] === undefined ? null : state[f]; });
+    return o;
+  }
+  function localRecords() {
+    const out = {};
+    Object.keys(KIND_KEY).forEach(function (kind) {
+      state[KIND_KEY[kind]].forEach(function (r) { if (r && r.id) out[kind + ':' + r.id] = { kind: kind, id: String(r.id), data: r }; });
+    });
+    out['settings:main'] = { kind: 'settings', id: 'main', data: settingsData() };
+    return out;
+  }
+  function sortBizLists() {
+    state.quotes.sort(function (a, b) { return String(b.savedAt || '').localeCompare(String(a.savedAt || '')); });
+    state.jobs.sort(function (a, b) { return String(b.createdAt || '').localeCompare(String(a.createdAt || '')); });
+  }
+  /* Aplica un registro del servidor; no pisa cambios locales que todavía no se subieron */
+  function applyRemote(r) {
+    const k = r.kind + ':' + r.id;
+    const base = sync.base[k];
+    if (r.kind === 'settings') {
+      if (r.deleted || !r.data || typeof r.data !== 'object') return false;
+      const cur = JSON.stringify(settingsData());
+      if (base !== undefined && cur !== base) return false;
+      const j = JSON.stringify(r.data);
+      sync.base[k] = j;
+      if (j === cur) return false;
+      SETTINGS_FIELDS.forEach(function (f) { if (r.data[f] !== undefined) state[f] = r.data[f]; });
+      return true;
+    }
+    const key = KIND_KEY[r.kind];
+    if (!key) return false;
+    const arr = state[key];
+    const idx = arr.findIndex(function (x) { return x && String(x.id) === r.id; });
+    const localJ = idx >= 0 ? JSON.stringify(arr[idx]) : null;
+    if (base !== undefined && localJ !== base) return false;
+    if (r.deleted) {
+      delete sync.base[k];
+      if (idx >= 0) { arr.splice(idx, 1); return true; }
+      return false;
+    }
+    if (!r.data || typeof r.data !== 'object' || String(r.data.id) !== r.id) return false;
+    const j = JSON.stringify(r.data);
+    sync.base[k] = j;
+    if (localJ === j) return false;
+    if (idx >= 0) arr[idx] = r.data; else arr.push(r.data);
+    return true;
+  }
+
+  async function runSync() {
+    if (!SYNC_ON || !auth || !sync.biz) return;
+    if (syncing) { syncAgain = true; return; }
+    syncing = true;
+    renderSyncChip();
+    try {
+      await ensureSession();
+      const bid = sync.biz.id;
+      /* 0) Seguir siendo socio (si el dueño te quitó, las lecturas vuelven vacías sin error) */
+      const mine = await sbFetch('/rest/v1/members?select=role,approved&business_id=eq.' + bid + '&user_id=eq.' + auth.user.id);
+      if (!Array.isArray(mine) || !mine.length || mine[0].approved === false) {
+        sync = emptySync(); writeJSON(SYNC_KEY, sync); memberCache = null; myBizCache = null;
+        renderShare();
+        shareSay('Ya no eres socio de ese negocio. Tus datos quedaron solo en este dispositivo.', 'err');
+        return;
+      }
+      if (mine[0].role !== sync.biz.role) { sync.biz.role = mine[0].role; writeJSON(SYNC_KEY, sync); renderShare(); }
+      /* 1) Subir lo que cambió en este dispositivo */
+      const local = localRecords();
+      const ups = [];
+      Object.keys(local).forEach(function (k) {
+        const j = JSON.stringify(local[k].data);
+        if (sync.base[k] !== j) ups.push({ k: k, j: j, row: { business_id: bid, kind: local[k].kind, id: local[k].id, data: local[k].data, deleted: false } });
+      });
+      Object.keys(sync.base).forEach(function (k) {
+        if (local[k]) return;
+        const p = k.indexOf(':');
+        ups.push({ k: k, j: null, row: { business_id: bid, kind: k.slice(0, p), id: k.slice(p + 1), data: {}, deleted: true } });
+      });
+      for (let i = 0; i < ups.length; i += 40) {
+        const chunk = ups.slice(i, i + 40);
+        await sbFetch('/rest/v1/records', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=minimal' }, body: chunk.map(function (u) { return u.row; }) });
+        chunk.forEach(function (u) { if (u.j === null) delete sync.base[u.k]; else sync.base[u.k] = u.j; });
+        writeJSON(SYNC_KEY, sync);
+      }
+      /* 2) Bajar lo que cambiaron los socios u otros dispositivos */
+      let changed = false;
+      for (let page = 0; page < 40; page++) {
+        let q = '/rest/v1/records?select=kind,id,data,deleted,updated_at&business_id=eq.' + bid + '&order=updated_at.asc&limit=500';
+        if (sync.cursor) q += '&updated_at=gte.' + encodeURIComponent(sync.cursor);
+        const rows = await sbFetch(q);
+        if (!Array.isArray(rows)) break;
+        rows.forEach(function (r) { if (applyRemote(r)) changed = true; });
+        const prev = sync.cursor;
+        if (rows.length) sync.cursor = rows[rows.length - 1].updated_at;
+        writeJSON(SYNC_KEY, sync);
+        if (rows.length < 500 || sync.cursor === prev) break;
+      }
+      lastSyncOk = Date.now();
+      syncErr = '';
+      lastSig = JSON.stringify(localRecords());
+      if (sync.biz && sync.biz.role === 'owner') {
+        const before = JSON.stringify(memberCache);
+        loadMembers().then(function () { if (JSON.stringify(memberCache) !== before) renderShare(); }, function () {});
+      }
+      if (changed) {
+        sortBizLists();
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignorar */ }
+        syncFields(); renderLogo(); update();
+        if (!$('#view-negocio').hidden) renderBiz();
+      }
+    } catch (e) {
+      syncErr = e.offline ? 'Sin conexión: tus cambios se suben cuando vuelva internet.' : e.message;
+      if (e.status === 401 || e.status === 403) checkStillMember();
+    } finally {
+      syncing = false;
+      renderSyncChip();
+      if (syncAgain) { syncAgain = false; scheduleSync(300); }
+    }
+  }
+  function scheduleSync(ms) {
+    if (!SYNC_ON || !auth || !sync || !sync.biz) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(runSync, ms == null ? 1200 : ms);
+  }
+  /* Después de guardar: si cambió algo del negocio, se sube */
+  function afterSave() {
+    if (!syncReady || !SYNC_ON || !auth || !sync.biz) return;
+    const sig = JSON.stringify(localRecords());
+    if (sig !== lastSig) { lastSig = sig; scheduleSync(); }
+  }
+  async function checkStillMember() {
+    try {
+      const list = await myBusinesses();
+      if (sync.biz && !list.some(function (b) { return b.id === sync.biz.id; })) {
+        sync = emptySync(); writeJSON(SYNC_KEY, sync);
+        renderShare();
+        shareSay('Ya no eres socio de ese negocio. Tus datos quedaron solo en este dispositivo.', 'err');
+      }
+    } catch (e) { /* se reintenta en la próxima sincronización */ }
+  }
+
+  function ago(ms) {
+    const s = Math.round((Date.now() - ms) / 1000);
+    if (s < 10) return 'recién';
+    if (s < 60) return 'hace ' + s + ' s';
+    const m = Math.round(s / 60);
+    return m < 60 ? 'hace ' + m + ' min' : 'hace ' + Math.round(m / 60) + ' h';
+  }
+  function renderSyncChip() {
+    const chip = $('#sync-chip');
+    if (!SYNC_ON || !auth || !sync.biz) { chip.hidden = true; return; }
+    chip.hidden = false;
+    if (syncing) { chip.className = 'tag info'; chip.textContent = 'Sincronizando…'; }
+    else if (syncErr) { chip.className = 'tag warn'; chip.textContent = syncErr; }
+    else if (lastSyncOk) { chip.className = 'tag live'; chip.textContent = 'Sincronizado ' + ago(lastSyncOk); }
+    else { chip.className = 'tag info'; chip.textContent = 'Sin sincronizar todavía'; }
+  }
+
+  /* ---- Negocios ---- */
+  async function myBusinesses() {
+    await ensureSession();
+    const rows = await sbFetch('/rest/v1/members?select=role,approved,business_id,business:businesses(id,name,invite_code)&user_id=eq.' + auth.user.id);
+    myBizCache = (rows || []).map(function (r) {
+      /* Mientras está pendiente, el negocio todavía no es visible: solo su id */
+      const b = r.business || { id: r.business_id, name: '', invite_code: '' };
+      return { id: b.id, name: b.name, invite_code: b.invite_code, role: r.role, approved: r.approved !== false };
+    });
+    return myBizCache;
+  }
+  async function loadMembers() {
+    if (!sync.biz) return;
+    await ensureSession();
+    memberCache = await sbFetch('/rest/v1/members?select=user_id,role,email,joined_at,approved&business_id=eq.' + sync.biz.id + '&order=joined_at.asc');
+    const me = (memberCache || []).find(function (m) { return m.user_id === auth.user.id; });
+    if (me && me.role !== sync.biz.role) { sync.biz.role = me.role; writeJSON(SYNC_KEY, sync); }
+  }
+  function hasLocalBizData() { return state.quotes.length + state.jobs.length + state.fstock.length + state.pstock.length > 0; }
+  async function linkBusiness(b, merge, isNew) {
+    if (!merge) {
+      writeJSON('presupuestos3d.antes-de-compartir', { savedAt: nowIso(), quotes: state.quotes, jobs: state.jobs, fstock: state.fstock, pstock: state.pstock });
+      state.quotes = []; state.jobs = []; state.fstock = []; state.pstock = [];
+    }
+    sync = { biz: { id: b.id, name: b.name, invite_code: b.invite_code, role: b.role || 'member' }, cursor: null, base: {} };
+    /* Al unirse, los datos del negocio (nombre, contacto, logo) vienen del servidor y no se pisan con los de este dispositivo */
+    if (!isNew) sync.base['settings:main'] = JSON.stringify(settingsData());
+    writeJSON(SYNC_KEY, sync);
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignorar */ }
+    memberCache = null;
+    renderShare(); renderBiz();
+    await runSync();
+    loadMembers().then(renderShare, function () {});
+  }
+
+  /* ---- Panel ---- */
+  function renderShare() {
+    const sec = $('#sec-share');
+    sec.hidden = !SYNC_ON;
+    $('#jump-share').hidden = !SYNC_ON;
+    if (!SYNC_ON) return;
+    const body = $('#share-body');
+    renderSyncChip();
+    if (!auth) {
+      body.innerHTML =
+        '<p class="sub">Comparte presupuestos, trabajos y stock con tus socios, y tenlos iguales en la computadora y el celular. Cada persona entra con su propia cuenta.</p>' +
+        '<form class="share-box" id="sh-login" style="margin-top:14px;max-width:420px" novalidate>' +
+          '<label class="field"><span>Correo</span><input type="email" id="sh-email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"></label>' +
+          '<label class="field"><span>Contraseña</span><input type="password" id="sh-pass" autocomplete="current-password" placeholder="Al menos 6 caracteres"></label>' +
+          '<div class="item-actions"><button class="btn sm" type="submit" data-sh="signin">Entrar</button><button class="btn ghost sm" type="button" data-sh="signup">Crear cuenta</button></div>' +
+        '</form>';
+      return;
+    }
+    const who = '<div class="who"><span>Sesión: <b>' + esc(auth.user.email || '') + '</b></span><button class="link plain" type="button" data-sh="signout">Cerrar sesión</button></div>';
+    if (!sync.biz) {
+      const pendNames = readJSON('presupuestos3d.pendientes') || {};
+      const list = (myBizCache || []).map(function (b) {
+        if (!b.approved) {
+          return '<li><span><b>' + esc(b.name || pendNames[b.id] || 'Negocio') + '</b></span><span class="tag warn">Esperando que el dueño te apruebe</span>' +
+            '<button class="link plain" type="button" data-sh="refresh">Revisar</button><button class="link" type="button" data-sh="cancel" data-id="' + esc(b.id) + '">Cancelar solicitud</button></li>';
+        }
+        return '<li><span><b>' + esc(b.name) + '</b> · ' + (b.role === 'owner' ? 'dueño' : 'socio') + '</span><button class="btn ghost sm" type="button" data-sh="use" data-id="' + esc(b.id) + '">Usar en este dispositivo</button></li>';
+      }).join('');
+      const mergeBox = hasLocalBizData()
+        ? '<label class="check"><input type="checkbox" id="sh-merge"> Sumar al negocio lo que ya tengo en este dispositivo</label>' : '';
+      body.innerHTML = who +
+        '<div class="share-grid">' +
+          '<div class="share-box"><h3>Crear un negocio compartido</h3><p class="sub" style="margin:0">Se sube todo lo de este dispositivo y te damos un código para invitar socios.</p>' +
+            '<label class="field"><span>Nombre del negocio</span><input type="text" id="sh-name" value="' + esc(state.bizName || '') + '"></label>' +
+            '<div><button class="btn sm" type="button" data-sh="create">Crear negocio</button></div></div>' +
+          '<div class="share-box"><h3>Unirme con un código</h3><p class="sub" style="margin:0">Pídele el código a quien creó el negocio.</p>' +
+            '<label class="field"><span>Código</span><input type="text" id="sh-code" placeholder="Ej: 3FA9-C21B" autocapitalize="characters" autocomplete="off"></label>' +
+            mergeBox +
+            '<div><button class="btn sm" type="button" data-sh="join">Unirme</button></div></div>' +
+        '</div>' +
+        (list ? '<h3 class="sec-title">Tus negocios</h3><p class="sub">Elige uno para usarlo en este dispositivo. Si te uniste con un código, aparece cuando el dueño te apruebe.</p><ul class="members" style="margin-top:10px">' + list + '</ul>' +
+          (hasLocalBizData() ? '<p class="sub">Lo que hay en este dispositivo se guarda aparte y se reemplaza por los datos del negocio, salvo que marques "Sumar al negocio" arriba.</p>' : '') : '');
+      if (myBizCache === null) myBusinesses().then(function (l) { if (l.length) renderShare(); }, function () {});
+      return;
+    }
+    const owner = sync.biz.role === 'owner';
+    const pending = (memberCache || []).filter(function (m) { return m.approved === false; });
+    const members = (memberCache || []).map(function (m) {
+      const me = m.user_id === auth.user.id;
+      if (m.approved === false) {
+        return '<li><span>' + esc(m.email || 'Alguien') + '</span><span class="tag warn">Pide entrar</span>' +
+          (owner ? '<button class="btn sm" type="button" data-sh="approve" data-id="' + esc(m.user_id) + '">Aprobar</button>' +
+            '<button class="link" type="button" data-sh="kick" data-id="' + esc(m.user_id) + '">Rechazar</button>' : '') + '</li>';
+      }
+      return '<li><span>' + esc(m.email || 'Socio') + (me ? ' (tú)' : '') + '</span><span class="tag ' + (m.role === 'owner' ? 'src">Dueño' : 'info">Socio') + '</span>' +
+        (owner && !me ? '<button class="link" type="button" data-sh="kick" data-id="' + esc(m.user_id) + '">Quitar</button>' : '') + '</li>';
+    }).join('');
+    const pendingNote = owner && pending.length
+      ? '<p class="status err" style="margin-top:10px">' + (pending.length === 1 ? '1 persona pide entrar' : pending.length + ' personas piden entrar') + ' a tu negocio. Apruébala solo si la conoces.</p>' : '';
+    body.innerHTML = who + pendingNote +
+      '<div class="share-grid">' +
+        '<div class="share-box"><h3>' + esc(sync.biz.name) + '</h3>' +
+          '<span class="sub" style="margin:0">Código para invitar socios</span>' +
+          '<div class="item-actions"><span class="code">' + esc(sync.biz.invite_code || '') + '</span>' +
+          '<button class="btn ghost sm" type="button" data-sh="copy">Copiar</button>' +
+          (owner ? '<button class="link plain" type="button" data-sh="newcode">Cambiar código</button>' : '') + '</div>' +
+          '<p class="sub" style="margin:0">Tus socios instalan la app, crean su cuenta en Tu negocio → Negocio compartido y escriben este código; después tú los apruebas aquí. En tus otros dispositivos, entra con tu misma cuenta.</p></div>' +
+        '<div class="share-box"><h3>Personas</h3>' +
+          (members ? '<ul class="members">' + members + '</ul>' : '<p class="sub" style="margin:0">Cargando…</p>') + '</div>' +
+      '</div>' +
+      '<div class="item-actions" style="margin-top:14px">' +
+        '<button class="btn ghost sm" type="button" data-sh="sync">Sincronizar ahora</button>' +
+        '<button class="btn ghost sm" type="button" data-sh="unlink">Dejar de usar aquí</button>' +
+        '<button class="link" type="button" data-sh="leave">Salir del negocio</button>' +
+      '</div>';
+    if (memberCache === null) loadMembers().then(renderShare, function () {});
+  }
+
+  async function shareAction(act, btn) {
+    const email = ($('#sh-email') || {}).value, pass = ($('#sh-pass') || {}).value;
+    if (act === 'signin' || act === 'signup') {
+      if (!email || !/@/.test(email)) { shareSay('Escribe tu correo.', 'err'); $('#sh-email').focus(); return; }
+      if (!pass || pass.length < 6) { shareSay('La contraseña necesita al menos 6 caracteres.', 'err'); $('#sh-pass').focus(); return; }
+      shareSay(act === 'signin' ? 'Entrando…' : 'Creando la cuenta…');
+      if (act === 'signin') {
+        const d = await sbFetch('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email: email.trim(), password: pass } });
+        setAuth(d);
+      } else {
+        const d = await sbFetch('/auth/v1/signup', { method: 'POST', auth: false, body: { email: email.trim(), password: pass } });
+        if (!d || !d.access_token) { shareSay('Cuenta creada, pero Supabase pide confirmar el correo. Desactiva "Confirm email" en Supabase o confirma el correo y luego toca Entrar.', 'err'); return; }
+        setAuth(d);
+      }
+      myBizCache = null;
+      shareSay('');
+      renderShare();
+      return;
+    }
+    if (act === 'signout') {
+      if (!confirmTwice(btn, 'Toca de nuevo para cerrar sesión')) return;
+      try { await sbFetch('/auth/v1/logout', { method: 'POST' }); } catch (e) { /* igual se cierra aquí */ }
+      setAuth(null); sync = emptySync(); writeJSON(SYNC_KEY, sync); myBizCache = null; memberCache = null;
+      renderShare(); shareSay('Sesión cerrada. Tus datos quedaron en este dispositivo.', 'ok');
+      return;
+    }
+    if (act === 'create') {
+      const name = ($('#sh-name').value || '').trim();
+      if (!name) { shareSay('Ponle un nombre al negocio.', 'err'); $('#sh-name').focus(); return; }
+      await ensureSession();
+      shareSay('Creando el negocio…');
+      const b = await sbFetch('/rest/v1/rpc/create_business', { method: 'POST', body: { p_name: name } });
+      if (!state.bizName || state.bizName === 'Mi taller 3D') { state.bizName = name; syncFields(); }
+      await linkBusiness(Object.assign({}, b, { role: 'owner' }), true, true);
+      shareSay('Listo: el negocio está compartido. Pasa el código a tus socios.', 'ok');
+      return;
+    }
+    if (act === 'join') {
+      const code = ($('#sh-code').value || '').trim();
+      if (!code) { shareSay('Escribe el código que te pasaron.', 'err'); $('#sh-code').focus(); return; }
+      await ensureSession();
+      shareSay('Buscando el negocio…');
+      const b = await sbFetch('/rest/v1/rpc/join_business', { method: 'POST', body: { p_code: code } });
+      const names = readJSON('presupuestos3d.pendientes') || {};
+      names[b.id] = b.name;
+      writeJSON('presupuestos3d.pendientes', names);
+      const list = await myBusinesses();
+      const mine = list.find(function (x) { return x.id === b.id; });
+      if (mine && mine.approved) {
+        const merge = !!($('#sh-merge') && $('#sh-merge').checked);
+        await linkBusiness(Object.assign({}, b, { role: mine.role }), merge, false);
+        shareSay('Usando ' + b.name + ' en este dispositivo.', 'ok');
+      } else {
+        renderShare();
+        shareSay('Solicitud enviada a ' + b.name + '. Cuando el dueño te apruebe, toca "Usar en este dispositivo".', 'ok');
+      }
+      return;
+    }
+    if (act === 'use') {
+      const b = (myBizCache || []).find(function (x) { return x.id === btn.dataset.id; });
+      if (!b) return;
+      const merge = !!($('#sh-merge') && $('#sh-merge').checked);
+      shareSay('Cargando ' + b.name + '…');
+      await linkBusiness(b, merge, false);
+      shareSay('Usando ' + b.name + ' en este dispositivo.', 'ok');
+      return;
+    }
+    if (act === 'copy') {
+      const code = sync.biz.invite_code || '';
+      try { await navigator.clipboard.writeText(code); shareSay('Código copiado.', 'ok'); }
+      catch (e) { shareSay('Copia este código: ' + code); }
+      return;
+    }
+    if (act === 'newcode') {
+      if (!confirmTwice(btn, 'Toca de nuevo: el código anterior deja de servir')) return;
+      await ensureSession();
+      const code = await sbFetch('/rest/v1/rpc/new_invite_code', { method: 'POST', body: { p_business: sync.biz.id } });
+      sync.biz.invite_code = code; writeJSON(SYNC_KEY, sync);
+      renderShare(); shareSay('Código nuevo listo. El anterior ya no sirve.', 'ok');
+      return;
+    }
+    if (act === 'kick') {
+      if (!confirmTwice(btn, 'Toca de nuevo para quitar')) return;
+      await ensureSession();
+      await sbFetch('/rest/v1/rpc/remove_member', { method: 'POST', body: { p_business: sync.biz.id, p_user: btn.dataset.id } });
+      await loadMembers(); renderShare(); shareSay(btn.textContent.indexOf('Rechaz') >= 0 || /rechaz/i.test(btn.dataset.label || '') ? 'Solicitud rechazada.' : 'Socio quitado.', 'ok');
+      return;
+    }
+    if (act === 'sync') { await runSync(); if (!syncErr) shareSay('Todo al día.', 'ok'); return; }
+    if (act === 'approve') {
+      await ensureSession();
+      await sbFetch('/rest/v1/rpc/approve_member', { method: 'POST', body: { p_business: sync.biz.id, p_user: btn.dataset.id } });
+      await loadMembers(); renderShare(); shareSay('Aprobado. Ya puede usar el negocio.', 'ok');
+      return;
+    }
+    if (act === 'refresh') {
+      await myBusinesses(); renderShare();
+      const still = (myBizCache || []).some(function (b) { return !b.approved; });
+      shareSay(still ? 'Todavía no te aprobó.' : '¡Listo! Ya puedes usar el negocio.', still ? '' : 'ok');
+      return;
+    }
+    if (act === 'cancel') {
+      if (!confirmTwice(btn, 'Toca de nuevo para cancelar')) return;
+      await ensureSession();
+      await sbFetch('/rest/v1/rpc/leave_business', { method: 'POST', body: { p_business: btn.dataset.id } });
+      await myBusinesses(); renderShare(); shareSay('Solicitud cancelada.', 'ok');
+      return;
+    }
+    if (act === 'unlink') {
+      if (!confirmTwice(btn, 'Toca de nuevo: deja de sincronizar aquí')) return;
+      await runSync();
+      sync = emptySync(); writeJSON(SYNC_KEY, sync); memberCache = null; myBizCache = null;
+      renderShare(); renderSyncChip();
+      shareSay('Este dispositivo dejó de sincronizar. Tus datos quedaron aquí y el negocio sigue igual para los demás.', 'ok');
+      return;
+    }
+    if (act === 'leave') {
+      if (!confirmTwice(btn, 'Toca de nuevo para salir del negocio')) return;
+      await runSync();
+      await ensureSession();
+      await sbFetch('/rest/v1/rpc/leave_business', { method: 'POST', body: { p_business: sync.biz.id } });
+      sync = emptySync(); writeJSON(SYNC_KEY, sync); memberCache = null; myBizCache = null;
+      renderShare(); renderSyncChip();
+      shareSay('Saliste del negocio. Te quedó una copia de los datos en este dispositivo.', 'ok');
+    }
+  }
+  function onShare(e) {
+    const btn = e.target.closest('[data-sh]');
+    if (!btn) return;
+    e.preventDefault();
+    btn.disabled = true;
+    shareAction(btn.dataset.sh, btn).catch(function (err) {
+      shareSay(err && err.message ? err.message : 'Algo salió mal. Intenta de nuevo.', 'err');
+    }).then(function () { if (btn.isConnected) btn.disabled = false; });
+  }
+  $('#sec-share').addEventListener('click', onShare);
+  $('#sec-share').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const b = $('[data-sh="signin"]');
+    if (b) onShare({ target: b, preventDefault: function () {} });
+  });
+
+  if (SYNC_ON) {
+    auth = readJSON(AUTH_KEY);
+    sync = readJSON(SYNC_KEY) || emptySync();
+    if (!sync.base || typeof sync.base !== 'object') sync.base = {};
+    lastSig = JSON.stringify(localRecords());
+    syncReady = true;
+    setInterval(function () {
+      if (document.hidden) return;
+      runSync(); renderSyncChip();
+      if (auth && !sync.biz && (myBizCache || []).some(function (b) { return !b.approved; })) {
+        const before = JSON.stringify(myBizCache);
+        myBusinesses().then(function () { if (JSON.stringify(myBizCache) !== before) renderShare(); }, function () {});
+      }
+    }, 20000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) scheduleSync(200); });
+    window.addEventListener('online', function () { scheduleSync(200); });
+    if (auth && sync.biz) scheduleSync(300);
+  } else {
+    sync = emptySync();
+  }
+  renderShare();
 
   /* ---- Catálogo en vivo (base de datos que actualiza la tarea diaria) ---- */
   let catLive = false, lastCat = '';

@@ -12,6 +12,12 @@ Abre la app en el navegador y:
 
 Funciona sin conexión. Tus clientes, presupuestos y datos del negocio se guardan solo en tu dispositivo.
 
+## Negocio compartido
+
+En **Tu negocio → Negocio compartido** cada persona crea su cuenta con correo y contraseña. El dueño crea el negocio y pasa el código de invitación; quien entra con el código queda pendiente hasta que el dueño lo aprueba. Presupuestos en espera, trabajos, stock y datos del negocio se sincronizan entre socios y dispositivos (cada 20 segundos, al volver a la app y al guardar). Funciona sin conexión: los cambios se suben cuando vuelve internet.
+
+El servidor es un proyecto de [Supabase](https://supabase.com). La estructura de la base de datos y sus reglas de seguridad están en la carpeta `supabase/`.
+
 ## Precios
 
 `catalog.json` tiene los filamentos, impresoras y la cotización del dólar BROU. Una tarea programada lo actualiza a diario desde [macrotec.com.uy](https://www.macrotec.com.uy). Los precios son de referencia y pueden cambiar.

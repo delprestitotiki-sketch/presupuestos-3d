@@ -1,7 +1,7 @@
 /* Presupuestos 3D: funciona sin conexión.
    La app y el catálogo se buscan primero en la red (para recibir actualizaciones)
    y, si no hay conexión, se usan desde la copia guardada. */
-const CACHE = 'presupuestos3d-20261020123728';
+const CACHE = 'presupuestos3d-20261020151904';
 const SHELL = [
   './',
   'index.html',
