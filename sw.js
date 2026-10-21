@@ -1,12 +1,13 @@
 /* Presupuestos 3D: funciona sin conexión.
    La app y el catálogo se buscan primero en la red (para recibir actualizaciones)
    y, si no hay conexión, se usan desde la copia guardada. */
-const CACHE = 'presupuestos3d-20261021111357';
+const CACHE = 'presupuestos3d-20261021131519';
 const SHELL = [
   './',
   'index.html',
   'manifest.webmanifest',
   'catalog.json',
+  'shop.json',
   'vendor/jspdf.umd.min.js',
   'icons/icon-192.png',
   'icons/icon-512.png',
@@ -50,7 +51,7 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   const same = url.origin === self.location.origin;
-  if (same && (req.mode === 'navigate' || /\/(index\.html|catalog\.json)$/.test(url.pathname))) {
+  if (same && (req.mode === 'navigate' || /\/(index\.html|catalog\.json|shop\.json)$/.test(url.pathname))) {
     e.respondWith(networkFirst(req));
   } else if (same || /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
     e.respondWith(cacheFirst(req));

@@ -18,13 +18,18 @@ En **Tu negocio → Negocio compartido** cada persona crea su cuenta con correo 
 
 El servidor es un proyecto de [Supabase](https://supabase.com). La estructura de la base de datos y sus reglas de seguridad están en la carpeta `supabase/`.
 
+## Macrotec
+
+La pestaña **Macrotec** muestra lo que vende [macrotec.com.uy](https://www.macrotec.com.uy): filamentos (por tipo, color y marca), pegamentos, repuestos de impresoras de filamento, pinturas y resinas. Se arma un pedido y se envía a Macrotec por WhatsApp o correo; al recibirlo, "Ya lo recibí" lo suma al stock de Tu negocio.
+
 ## Precios
 
-`catalog.json` tiene los filamentos, impresoras y la cotización del dólar BROU. Una tarea programada lo actualiza a diario desde [macrotec.com.uy](https://www.macrotec.com.uy). Los precios son de referencia y pueden cambiar.
+Los filamentos, las impresoras y la cotización del dólar BROU los revisa a diario una tarea programada y los guarda en la tabla `catalog` de Supabase (`catalog.json` es la copia de respaldo). Pegamentos, repuestos, pinturas y resinas los revisa la propia base de datos todas las madrugadas (tabla `shop_items`, ver `supabase/supabase-tienda.sql`); `shop.json` es la copia de respaldo. Los precios son de referencia y pueden cambiar.
 
 ## Archivos
 
 - `index.html`: la app.
 - `catalog.json`: catálogo de precios.
+- `shop.json`: pegamentos, repuestos, pinturas y resinas de Macrotec.
 - `sw.js`: permite usarla sin conexión.
 - `vendor/jspdf.umd.min.js`: [jsPDF](https://github.com/parallax/jsPDF) 2.5.1 (licencia MIT), genera el PDF.

@@ -55,6 +55,7 @@ img { max-width: 100%; }
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg); color: var(--ink);
   font: 400 15px/1.5 var(--body);
@@ -280,12 +281,74 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .members li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
 .members li span:first-child { overflow-wrap: anywhere; }
 
+/* Macrotec */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.seg { display: flex; gap: 6px; margin-top: 16px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font: 500 13.5px/1.2 var(--body); cursor: pointer; text-align: left; }
+.chip:hover { border-color: var(--mute); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.chip small { font: 500 11.5px var(--mono); opacity: .7; }
+.chip small:empty { display: none; }
+.seg .chip { height: 38px; padding: 0 16px; font-size: 14px; font-weight: 600; }
+.sw { display: inline-block; width: 14px; height: 14px; flex: none; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); vertical-align: -2px; }
+.sp-label { margin: 16px 0 8px; font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--mute); }
+.sp-search { margin-top: 14px; }
+.sp-search input { height: 44px; }
+.sp-check { margin-top: 14px; font-size: 13.5px; }
+.sp-mine { display: block; margin-top: 8px; }
+.sp-list { display: grid; margin-top: 10px; }
+.sp-group { margin: 22px 0 4px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.sp-fam { margin: 26px 0 2px; padding-top: 14px; border-top: 2px solid var(--line); font-size: 16px; display: flex; align-items: center; gap: 9px; }
+.sp-fam .sw { width: 18px; height: 18px; }
+.sp-list > :first-child { margin-top: 4px; border-top: 0; padding-top: 0; }
+.sp-color { display: flex; align-items: baseline; gap: 8px; margin-top: 14px; padding: 4px 0; font-weight: 600; }
+.sp-color small { font-weight: 400; color: var(--mute); font-size: 12.5px; }
+.sp-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto auto; align-items: center; gap: 10px 14px; padding: 10px 0; border-top: 1px solid var(--line); }
+.sp-color + .sp-row { border-top: 0; }
+.sp-img, .sp-ph { width: 48px; height: 48px; border-radius: 8px; border: 1px solid var(--line); }
+.sp-img { object-fit: contain; background: #fff; }
+.sp-ph { display: grid; place-items: center; background: var(--field); }
+.sp-ph .sw { width: 22px; height: 22px; }
+.sp-fil .sp-ph { width: 36px; height: 36px; border: 0; background: none; justify-self: center; }
+.sp-main { min-width: 0; }
+.sp-name { color: var(--ink); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+a.sp-name:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sp-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 2px; font-size: 12.5px; color: var(--mute); }
+.sp-price { text-align: right; font: 600 14.5px var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sp-price small { display: block; font: 400 11.5px var(--mono); color: var(--mute); }
+.sp-price s { display: block; font: 400 11.5px var(--mono); color: var(--mute); }
+.sp-add { min-width: 96px; background: var(--accent-soft); color: var(--accent); }
+.sp-add.on { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.sp-ph { color: var(--mute); }
+.sp-more { margin-top: 14px; }
+.order-total { display: grid; gap: 2px; margin: 16px 0 6px; padding-top: 14px; border-top: 1px solid var(--line); }
+.order-total strong { font: 700 30px/1.1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.order-total small { color: var(--mute); font-size: 13px; }
+#order-actions { display: grid; gap: 12px; }
+.order-btns { display: grid; gap: 8px; }
+.order-btns .link { justify-self: start; }
+#order-items .item-title { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 0 6px; font-size: 14px; }
+#order-items .item-amount { font-size: 14px; }
+.shop-contact { margin: 14px 0 0; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--mute); line-height: 1.55; }
+.shop-contact a { color: inherit; }
+@media (min-width: 900px) {
+  #view-macrotec aside { max-height: calc(100vh - 40px); overflow-y: auto; border-radius: 12px; }
+}
+@media (max-width: 640px) {
+  .chips { flex-wrap: nowrap; overflow-x: auto; margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar, .seg::-webkit-scrollbar { display: none; }
+  .sp-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  .sp-img, .sp-ph { width: 44px; height: 44px; }
+  .sp-row .sp-add { grid-column: 2 / -1; justify-self: start; }
+}
+
 @media (max-width: 520px) {
   .panel { padding: 16px; }
   .fil { padding: 12px; }
   .mat { grid-template-columns: minmax(0, 1fr) 112px auto; }
   .tabs { width: 100%; }
-  .tab { flex: 1; justify-content: center; padding: 0 10px; }
+  .tab { flex: 1; justify-content: center; padding: 0 8px; gap: 5px; font-size: 13.5px; }
   .bar-actions { gap: 6px; }
   .bar-actions .btn { padding: 0 11px; }
   .bar strong { font-size: 20px; }
@@ -302,7 +365,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   <header class="top">
     <div>
       <h1>Presupuestos 3D</h1>
-      <p>Calcula con precios de Macrotec, envía el PDF a tu cliente y lleva el control de tus presupuestos, trabajos y stock.</p>
+      <p>Calcula con precios de Macrotec, envía el PDF a tu cliente, lleva el control de tu negocio y arma tus pedidos a Macrotec.</p>
     </div>
     <div class="top-actions">
       <button class="btn ghost" type="button" id="btn-install" hidden>Instalar app</button>
@@ -317,6 +380,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   <div class="tabs" role="tablist" aria-label="Secciones de la app">
     <button class="tab" type="button" role="tab" id="tab-calculadora" data-tab="calculadora" aria-controls="view-calculadora" aria-selected="true">Calculadora</button>
     <button class="tab" type="button" role="tab" id="tab-negocio" data-tab="negocio" aria-controls="view-negocio" aria-selected="false">Tu negocio <span class="count" data-bind="waitCount" hidden></span></button>
+    <button class="tab" type="button" role="tab" id="tab-macrotec" data-tab="macrotec" aria-controls="view-macrotec" aria-selected="false">Macrotec <span class="count" data-bind="orderCount" hidden></span></button>
   </div>
 
   <div id="view-calculadora" role="tabpanel" aria-labelledby="tab-calculadora">
@@ -555,6 +619,58 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
       <p class="status" id="bk-msg" role="status" aria-live="polite"></p>
     </section>
   </div>
+
+  <div id="view-macrotec" role="tabpanel" aria-labelledby="tab-macrotec" hidden>
+    <div class="layout">
+      <div class="main">
+        <section class="panel" aria-labelledby="h-shop">
+          <h2 id="h-shop">Comprar en Macrotec</h2>
+          <p class="sub">Lo que vende macrotec.com.uy, ordenado para comprar. Arma tu pedido acá y envíalo por WhatsApp o correo: Macrotec te confirma el stock y cómo pagar.</p>
+          <div class="cat-status" id="shop-status"></div>
+          <details class="changes" id="shop-changes" hidden><summary>Últimos cambios en Macrotec</summary><ul id="shop-changes-list"></ul></details>
+          <nav class="seg" id="shop-tabs" aria-label="Productos de Macrotec">
+            <button type="button" class="chip" data-sec="fil" aria-pressed="true">Filamentos <small></small></button>
+            <button type="button" class="chip" data-sec="peg" aria-pressed="false">Pegamentos <small></small></button>
+            <button type="button" class="chip" data-sec="rep" aria-pressed="false">Repuestos <small></small></button>
+            <button type="button" class="chip" data-sec="pin" aria-pressed="false">Pinturas <small></small></button>
+            <button type="button" class="chip" data-sec="res" aria-pressed="false">Resinas <small></small></button>
+          </nav>
+        </section>
+        <section class="panel" id="shop-list" aria-labelledby="h-shop-list">
+          <h2 id="h-shop-list">Filamentos</h2>
+          <div id="shop-head"></div>
+          <div id="shop-body"></div>
+        </section>
+      </div>
+      <aside>
+        <div class="panel order" id="order-panel" aria-labelledby="h-order">
+          <div class="panel-head"><h2 id="h-order">Mi pedido</h2><span class="item-meta" data-bind="orderItems"></span></div>
+          <div class="items" id="order-items"></div>
+          <div class="order-total"><span class="sum-label">Total estimado</span><strong data-bind="orderTotal"></strong><small id="order-local"></small></div>
+          <div id="order-actions" hidden>
+            <p class="hint">Precios de la web de Macrotec. El precio final y el stock los confirma Macrotec.</p>
+            <label class="field"><span>Enviar a</span><select id="order-wa-pick"></select></label>
+            <div class="order-btns">
+              <a class="btn block" id="order-wa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+              <div class="pair">
+                <a class="btn ghost" id="order-mail">Por correo</a>
+                <button class="btn ghost" type="button" id="order-copy">Copiar</button>
+              </div>
+              <button class="btn ghost block" type="button" id="order-received">Ya lo recibí: sumar al stock</button>
+              <button class="link" type="button" id="order-clear">Vaciar pedido</button>
+            </div>
+          </div>
+          <p class="status" id="order-msg" role="status" aria-live="polite"></p>
+          <p class="shop-contact" id="shop-contact"></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="bar" id="shop-bar" hidden>
+  <div><span class="sum-label">Pedido · <span data-bind="orderItems"></span></span><strong data-bind="orderTotal"></strong></div>
+  <div class="bar-actions"><button class="btn" type="button" data-goto="order-panel" id="shop-bar-btn">Ver pedido</button></div>
 </div>
 
 <div class="bar" id="calc-bar">
@@ -1130,6 +1246,9 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 
+/* Tienda de Macrotec: se baja de Supabase o de shop.json */
+const SHOP_SEED = null;
+
 /* ---- Aplicación ---- */
 (function () {
   const IN_CLAUDE = !!(window.claude && typeof window.claude.use === 'function');
@@ -1174,7 +1293,8 @@ if (typeof module !== 'undefined' && module.exports) {
       notes: 'Pago: 50% de anticipo y 50% contra entrega.\nPlazo de entrega estimado: 5 días hábiles.\nLos precios pueden cambiar si se modifica el diseño o el material.',
       materials: [{ id: uid(), name: 'Filamento propio', price: 950 }],
       lines: exampleLines(),
-      quotes: [], jobs: [], fstock: [], pstock: [], lowStock: 250
+      quotes: [], jobs: [], fstock: [], pstock: [], lowStock: 250,
+      order: [], shopWa: ''
     };
   }
 
@@ -1212,9 +1332,10 @@ if (typeof module !== 'undefined' && module.exports) {
     if (!Array.isArray(state.materials) || !state.materials.length) state.materials = defaults().materials;
     if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
     if (!printerById(state.printerModel)) { state.printerBrand = 'Bambu Lab'; state.printerModel = 'bl-p1s'; }
-    ['quotes', 'jobs', 'fstock', 'pstock'].forEach(function (k) {
+    ['quotes', 'jobs', 'fstock', 'pstock', 'order'].forEach(function (k) {
       state[k] = Array.isArray(state[k]) ? state[k].filter(function (x) { return x && typeof x === 'object'; }) : [];
     });
+    state.order = state.order.filter(function (o) { return typeof o.key === 'string' && typeof o.id === 'string' && (o.t === 'fil' || o.t === 'shop'); });
   }
   normalizeState();
 
@@ -1260,6 +1381,7 @@ if (typeof module !== 'undefined' && module.exports) {
       if (el.id === 'currency') { $('#usdRate').value = state.rates[state.currency] == null ? '' : state.rates[state.currency]; renderLines(); }
       update();
       if ((el.id === 'currency' || el.id === 'lowStock') && !$('#view-negocio').hidden) renderBiz();
+      if ((el.id === 'currency' || el.id === 'bizName') && typeof shopVisible === 'function' && shopVisible()) renderShop(true);
     };
     el.addEventListener('input', h);
     el.addEventListener('change', h);
@@ -2222,21 +2344,27 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 
   /* ---- Pestañas ---- */
+  const TABS = ['calculadora', 'negocio', 'macrotec'];
   function showTab(name) {
-    const biz = name === 'negocio';
-    $('#view-calculadora').hidden = biz;
-    $('#view-negocio').hidden = !biz;
-    $('#calc-bar').hidden = biz;
-    $('#tab-calculadora').setAttribute('aria-selected', String(!biz));
-    $('#tab-negocio').setAttribute('aria-selected', String(biz));
-    if (biz) renderBiz();
+    if (TABS.indexOf(name) < 0) name = 'calculadora';
+    TABS.forEach(function (t) {
+      $('#view-' + t).hidden = t !== name;
+      $('#tab-' + t).setAttribute('aria-selected', String(t === name));
+    });
+    $('#calc-bar').hidden = name !== 'calculadora';
+    $('#shop-bar').hidden = name !== 'macrotec';
+    if (name === 'negocio') renderBiz();
+    if (name === 'macrotec') { renderShop(); fetchShop(false); }
     try { history.replaceState(null, '', '#' + name); } catch (e) { /* sin historial */ }
   }
   $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
+  window.addEventListener('hashchange', function () { const h = location.hash.replace('#', ''); if (TABS.indexOf(h) >= 0) showTab(h); });
   document.addEventListener('click', function (e) {
     const g = e.target.closest('[data-goto]');
     if (!g) return;
-    if ($('#view-negocio').hidden) showTab('negocio');
+    const t0 = document.getElementById(g.dataset.goto);
+    const view = t0 && t0.closest('[role="tabpanel"]');
+    if (view && view.hidden) showTab(view.id.replace('view-', ''));
     const t = document.getElementById(g.dataset.goto);
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
@@ -2899,6 +3027,7 @@ if (typeof module !== 'undefined' && module.exports) {
     renderChanges();
     update();
     if (!$('#view-negocio').hidden) renderBiz();
+    if (!$('#view-macrotec').hidden) renderShop(true);
   }
 
   /* En la app instalada: el catálogo que la tarea diaria guarda en Supabase (lectura pública).
@@ -2944,6 +3073,760 @@ if (typeof module !== 'undefined' && module.exports) {
     }, function () { /* sin base de datos */ });
   }
 
+  /* ================= Macrotec: filamentos, pegamentos, repuestos, pinturas y resinas ================= */
+  const MT = {
+    site: 'https://www.macrotec.com.uy/',
+    img: 'https://i.aw.uy/macrotec/',
+    wa: [{ id: '59891010001', label: '091 010 001' }, { id: '59891210021', label: '091 210 021' }],
+    phone: '2900 7498', mail: 'info@macrotec.com.uy',
+    addr: 'Enrique Tarigo 1168, Plaza Cagancha, Montevideo',
+    hours: 'Lunes a viernes de 10 a 18, sábados de 10 a 14'
+  };
+  const SHOP_CACHE_KEY = 'presupuestos3d.tienda', SHOP_UI_KEY = 'presupuestos3d.tienda-vista';
+  const SECS = [['fil', 'Filamentos'], ['peg', 'Pegamentos'], ['rep', 'Repuestos'], ['pin', 'Pinturas'], ['res', 'Resinas']];
+  const PAGE = 60;
+
+  let SHOP = { meta: {}, items: [], byId: {}, src: '', at: 0 };
+  let shopLoading = false, shopFailed = false;
+  const shopUI = Object.assign({ sec: 'fil', filType: 'PLA', filFam: '', repBrand: '', repType: '', pinLine: 'Model Color', pinFam: '', resBrand: '', hideOut: true },
+    readJSON(SHOP_UI_KEY) || {}, { q: '', limit: PAGE });
+  function saveShopUI() {
+    writeJSON(SHOP_UI_KEY, { sec: shopUI.sec, filType: shopUI.filType, filFam: shopUI.filFam, repBrand: shopUI.repBrand, repType: shopUI.repType,
+      pinLine: shopUI.pinLine, pinFam: shopUI.pinFam, resBrand: shopUI.resBrand, hideOut: shopUI.hideOut });
+  }
+
+  /* ---- Texto normalizado (sin tildes ni mayúsculas) ---- */
+  const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+  function matchesQuery(text, q) {
+    const words = norm(q).split(/[^a-z0-9.,/+-]+/).filter(Boolean);
+    return words.every(function (w) {
+      const i = text.indexOf(w);
+      if (i < 0) return false;
+      let j = i;
+      while (j >= 0) {
+        if (j === 0 || !/[a-z0-9]/.test(text[j - 1])) return true;
+        j = text.indexOf(w, j + 1);
+      }
+      return false;
+    });
+  }
+
+  /* ---- Familias de color ---- */
+  const FAMS = [
+    ['negro', 'Negro', '#1d1f23', ['negro', 'black', 'negra', 'azabache', 'noche', 'onyx', 'obsidiana', 'carbon', 'nato black']],
+    ['blanco', 'Blanco y crema', '#f5f4ef', ['blanco', 'white', 'blanca', 'marfil', 'ivory', 'hueso', 'perla', 'optico', 'crema', 'offwhite', 'nieve', 'snow', 'escarcha']],
+    ['natural', 'Natural y transparente', 'linear-gradient(135deg,#e9eef2 0 45%,#c9d4dc 45% 55%,#e9eef2 55%)', ['natural', 'transparente', 'transparent', 'clear', 'cristal', 'translucido', 'traslucido', 'glass']],
+    ['gris', 'Gris', '#8d9299', ['gris', 'gray', 'grey', 'plomo', 'ceniza', 'pizarra', 'antracita', 'cemento', 'granito', 'humo', 'smoke', 'slate', 'piedra', 'stone', 'halcon milenario', 'moon stone']],
+    ['metal', 'Plateado y metálicos', 'linear-gradient(135deg,#eef0f2,#a9afb6 50%,#e3e6e9)', ['plateado', 'plata', 'plateada', 'silver', 'fusil', 'platino', 'aluminio', 'cromo', 'acero', 'steel', 'metal', 'metalizado', 'hierro', 'magnesio', 'duraluminio', 'gunmetal', 'hojalata', 'iron', 'titanio', 'titan gray', 'tobera', 'colector']],
+    ['oro', 'Dorado, bronce y cobre', 'linear-gradient(135deg,#f3dd8c,#c39a2b 55%,#e8c96a)', ['dorado', 'oro', 'dorada', 'gold', 'bronce', 'bronze', 'cobre', 'copper', 'cobrizo', 'laton', 'champagne', 'brass']],
+    ['rojo', 'Rojo', '#d23a32', ['rojo', 'red', 'roja', 'roby', 'bordo', 'burgundy', 'rubi', 'carmin', 'escarlata', 'scarlet', 'bermellon', 'sangre', 'frutilla', 'granate', 'vino', 'cereza']],
+    ['naranja', 'Naranja', '#f07c22', ['naranja', 'anaranjado', 'anaranjada', 'orange', 'escaramujo', 'mandarina', 'durazno', 'peach', 'papaya', 'salmon', 'coral', 'calabaza']],
+    ['amarillo', 'Amarillo', '#f2c41c', ['amarillo', 'yellow', 'amarilla', 'miel', 'honey', 'limon', 'lemon', 'girasol', 'mango', 'banana', 'mostaza']],
+    ['verde', 'Verde', '#2e9a47', ['verde', 'green', 'jade', 'menta', 'mint', 'matcha', 'oliva', 'olive', 'lima', 'lime', 'esmeralda', 'emerald', 'musgo', 'moss', 'verdin', 'manzana', 'helecho']],
+    ['azul', 'Azul y celeste', '#2f63c8', ['azul', 'blue', 'celeste', 'cian', 'cyan', 'turquesa', 'turquoise', 'teal', 'aqua', 'aguamarina', 'zafiro', 'sapphire', 'caribe', 'marino', 'navy', 'cobalto', 'cobalt', 'ultramar', 'calipso', 'oceano', 'ocean', 'indigo']],
+    ['violeta', 'Violeta y púrpura', '#7c4fc8', ['purpura', 'violeta', 'violet', 'purple', 'morada', 'fluorite', 'lila', 'lavanda', 'lavender', 'morado', 'uva', 'amatista', 'iris', 'orquidea', 'orchid']],
+    ['rosa', 'Rosa y fucsia', '#e65c9f', ['rosa', 'rosado', 'pink', 'fucsia', 'magenta', 'rose', 'frambuesa']],
+    ['marron', 'Marrón, beige y madera', '#8c5b36', ['marron', 'brown', 'cafe', 'chocolate', 'beige', 'arena', 'sand', 'piel', 'carne', 'flesh', 'skin', 'habano', 'caoba', 'cerezo', 'nogal', 'pino', 'madera', 'wood', 'walnut', 'birch', 'oak', 'rosewood', 'latte', 'cocoa', 'tierra', 'earth', 'desierto', 'desert', 'dulce de leche', 'carpincho', 'caqui', 'khaki', 'siena', 'sepia', 'cuero', 'leather', 'ocre', 'ochre', 'oxido', 'rust', 'barro', 'mud', 'lodo', 'suciedad', 'corcho', 'tostad', 'pardo', 'chamois', 'canvas', 'lona', 'corteza', 'embarrad']],
+    ['multi', 'Multicolor y efectos', 'conic-gradient(#e2433a,#f2c41c,#2e9a47,#2f63c8,#7c4fc8,#e2433a)', ['arcoiris', 'rainbow', 'gradient', 'multicolor', 'tutti', 'aurora', 'nebula', 'galaxy', 'neon city', 'dual', 'dawn radiance', 'midnight blaze', 'south beach', 'velvet eclipse']],
+    ['otros', 'Otros colores', '#b9bcc2', []]
+  ];
+  const FAM_BY = {};
+  FAMS.forEach(function (f) { FAM_BY[f[0]] = f; });
+  /* Palabras de colores en alemán (pinturas RAL / RLM): pueden ir pegadas a otra palabra */
+  const GERMAN = [['schwarz', 'negro'], ['weiss', 'blanco'], ['elfenbein', 'blanco'], ['grau', 'gris'], ['silber', 'metal'], ['rot', 'rojo'],
+    ['gelb', 'amarillo'], ['grun', 'verde'], ['oliv', 'verde'], ['blau', 'azul'], ['violett', 'violeta'], ['braun', 'marron']];
+  const FAM_EXACT = { dark: 'negro' };
+  const famCache = {};
+  const FAM_RX = [];
+  FAMS.forEach(function (f) { f[3].forEach(function (kw) { FAM_RX.push([f[0], new RegExp('(^|[^a-z])' + kw.replace(/ /g, '\\s+'))]); }); });
+  function colorFamily(name, multi) {
+    const s = norm(name);
+    if (multi || / y /.test(s) && /^[a-z ]+$/.test(s) && s.split(' y ').length === 2 && s.split(' y ').every(function (p) { return colorFamily(p) !== 'otros'; })) return 'multi';
+    if (famCache[s]) return famCache[s];
+    if (FAM_EXACT[s]) return (famCache[s] = FAM_EXACT[s]);
+    let best = null, at = 1e9;
+    FAM_RX.forEach(function (x) {
+      const m = x[1].exec(s);
+      if (m) { const i = m.index + m[1].length; if (i < at) { at = i; best = x[0]; } }
+    });
+    GERMAN.forEach(function (g) {
+      const i = s.indexOf(g[0]);
+      if (i >= 0 && i < at && (g[0] !== 'rot' || /rot(?:$|[^a-z]|braun)/.test(s.slice(i)))) { at = i; best = g[1]; }
+    });
+    return (famCache[s] = best || 'otros');
+  }
+  /* Dentro de una familia, primero el color base ("Rojo"), luego sus variantes ("Rojo Oscuro") y después el resto */
+  function colorRank(fam, color) {
+    const f = FAM_BY[fam], c = norm(color);
+    if (!f || !f[3].length) return 9;
+    const a = f[3][0], b = f[3][1];
+    return c === a ? 0 : c.indexOf(a + ' ') === 0 ? 1 : c === b ? 2 : c.indexOf(b + ' ') === 0 ? 3 : 9;
+  }
+  function swatch(fam) { const f = FAM_BY[fam] || FAM_BY.otros; return '<span class="sw" style="--c:' + f[2] + '" aria-hidden="true"></span>'; }
+
+  /* ---- Clasificación de los productos de la tienda ---- */
+  const RESIN_RX = /(^|[^a-z])(halot|fep|nfep|ld-00\d\w?|uw-0\d|sla|dlp|mage)([^a-z]|$)|resina(?! epoxi)/;
+  const FDM_RX = /(^|[^a-z])(k1|k2|ender|cr-\d|sprite|cfs|hi|sermoon|bambu|flashforge|ad5\w*|creator)([^a-z0-9]|$)/;
+  const PART_TYPES = [
+    ['laser', 'Láser y kits', /laser|kit de componentes|grabador/],
+    ['cable', 'Electrónica y cables', /^(cables?|pack( de)? cables|paquete de cables|kit (de )?cables)\b/],
+    ['fil', 'AMS, CFS y tubos', /(^|[^a-z])(ams|cfs|ifs)([^a-z]|$)|buffer|bufer|bobina|carrete|portabobinas|secadora|soporte de filamento|soporte para alimentador|embudo|alimentador|(^|[^a-z])hub([^a-z]|$)|amortiguador de filamento|guia de filamento|entrada de filamento|ptfe|teflon|racor|tubo/],
+    ['cama', 'Camas y superficies', /cama|placa de impresion|sticker|plataforma|heatbed|superficie|abrazadera|tacos/],
+    ['hotend', 'Hotend y boquillas', /boquilla|nozzle|hotend|garganta|heat ?break|bloque calentador|calentador ceramico|cartucho calentador|bloque cabezal|silicona|conjunto calefactor|calefaccion hotend|placa caliente|elemento calefactor|bloqueador de flujo|disipador/],
+    ['extrusor', 'Extrusor', /extrus|engranaje|palanca|cortador|cuchilla|tope|leva/],
+    ['aire', 'Ventilación y filtros', /(^|[^a-z])fan([^a-z]|$)|ventilador|soplador|conducto|filtro|purificador|escape|ventilacion|bomba de/],
+    ['mov', 'Motores y movimiento', /motor|correa|polea|tensor|guia lineal|riel|(^|[^a-z])eje([^a-z]|$)|varilla|rodamiento|tuerca|resorte|rueda|acoplador|estabilizador|acople/],
+    ['pantalla', 'Pantallas y cámaras', /pantalla|display|camara|knomi|(^|[^a-z])pad([^a-z]|$)|lidar/],
+    ['elec', 'Electrónica y cables', /placa|cable|fuente|driver|sensor|switch|interruptor|antena|modulo|mainboard|motherboard|board|pcba|galga|(^|[^a-z])ups([^a-z]|$)|indicador|boton|luz|led|conector|power|usb|smart kit|sonic pad|bltouch|cr-touch|nivel|termistor|adaptador de corriente|unidad de seguridad/],
+    ['carcasa', 'Carcasa y paneles', /cubierta|carcasa|panel|puerta|tapa|vidrio|marco|enclosure|cerramiento|manija|pies|bastidor|estructura|revestimiento|organizador|ventana|caja|carpa/],
+    ['tools', 'Herramientas y limpieza', /limpiador|limpieza|herramienta|aguja|cepillo|tornillo|pinza|kit de montaje|almohadilla|medidor|tension|soporte|listones|stickers/]
+  ];
+  const PART_LABEL = { otros: 'Otras piezas' };
+  PART_TYPES.forEach(function (t) { PART_LABEL[t[0]] = t[1]; });
+  const PART_ORDER = ['hotend', 'extrusor', 'cama', 'fil', 'mov', 'aire', 'elec', 'pantalla', 'carcasa', 'tools', 'laser', 'otros'];
+  function partType(s) {
+    if (/canal de purga/.test(s)) return 'tools';
+    if (/carro del cabezal/.test(s)) return 'mov';
+    if (/kit de flujo alto/.test(s)) return 'hotend';
+    if (/detector de filamento|tarjeta|sistema de calefaccion/.test(s)) return 'elec';
+    if (/(^|[^a-z])cover([^a-z]|$)/.test(s)) return 'carcasa';
+    for (let i = 0; i < PART_TYPES.length; i++) {
+      const t = PART_TYPES[i];
+      if (t[0] === 'laser' && /red laser/.test(s)) continue;
+      if (t[2].test(s)) return t[0] === 'cable' ? 'elec' : t[0];
+    }
+    return 'otros';
+  }
+  function repBrand(s, g) {
+    if (/bambu/.test(s)) return 'Bambu Lab';
+    if (/flashforge/.test(s)) return 'Flashforge';
+    if (/mingda|minga/.test(s)) return 'Mingda';
+    if (/creality|ender|sprite|(^|[^a-z])(k1|k2|cr-\d|cfs|hi|sermoon)/.test(s)) return 'Creality';
+    if (/bigtreetech|biqu/.test(s)) return 'BIGTREETECH';
+    return g;
+  }
+  const BRAND_ORDER = ['Bambu Lab', 'Creality', 'Flashforge', 'Mingda', 'BIGTREETECH'];
+
+  const PIN_LINES = ['Model Color', 'Model Air', 'Game Color', 'Game Air', 'Xpress Color', 'Mecha Color', 'Premium Color', 'Metal Color', 'Liquid Metal',
+    'True Metallic Metal', 'Panzer Aces', 'Studio Acrylic', 'Wash FX', 'Weathering FX', 'Pigments FX', 'Diorama FX', 'Imprimaciones',
+    'Barnices y auxiliares', 'Aerosoles', 'Sets', 'Otras pinturas'];
+  const PIN_FROM_NAME = [['Model Color', /model color/], ['Model Air', /model air/], ['Game Color', /game color|game wash/], ['Game Air', /game air/],
+    ['Xpress Color', /xpress/], ['Mecha Color', /mecha/], ['Premium Color', /premium/], ['Metal Color', /metal color/], ['Liquid Metal', /liquid/],
+    ['True Metallic Metal', /tmm|true metallic/], ['Panzer Aces', /panzer/], ['Studio Acrylic', /studio/], ['Wash FX', /wash fx/],
+    ['Weathering FX', /weathering/], ['Pigments FX', /pigment/], ['Diorama FX', /diorama/]];
+  function pinLine(s, g) {
+    if (/(^|[^a-z])set([^a-z]|$)/.test(s)) return 'Sets';
+    if (/aerosol/.test(s)) return 'Aerosoles';
+    if (/imprimaci|imprimante|primer/.test(s)) return 'Imprimaciones';
+    if (/barniz|diluyente|medium|retardante|limpiador|restaurador|mascara|masilla|fijador|ablandador|mejorador|flow improver|base mate|base transparente/.test(s)) return 'Barnices y auxiliares';
+    if (PIN_LINES.indexOf(g) >= 0 && ['Sets', 'Imprimaciones', 'Aerosoles', 'Otras pinturas'].indexOf(g) < 0) return g;
+    for (let i = 0; i < PIN_FROM_NAME.length; i++) if (PIN_FROM_NAME[i][1].test(s)) return PIN_FROM_NAME[i][0];
+    return 'Otras pinturas';
+  }
+  const LINE_WORDS = {
+    'Model Color': /model color/i, 'Model Air': /model air/i, 'Game Color': /game color/i, 'Game Air': /game air/i,
+    'Xpress Color': /xpress color|xpress/i, 'Mecha Color': /mecha color/i, 'Premium Color': /premium color/i, 'Metal Color': /metal color/i,
+    'Liquid Metal': /liquid metal/i, 'True Metallic Metal': /\btmm\b|true metallic metal/i, 'Panzer Aces': /panzer aces/i,
+    'Studio Acrylic': /\bstudio\b/i, 'Wash FX': /wash fx/i, 'Weathering FX': /weathering fx/i, 'Pigments FX': /pigments fx/i,
+    'Diorama FX': /diorama (fx|effects)/i
+  };
+  function pinShort(n, line) {
+    let s = n.replace(/\bvallejo\b/gi, ' ').replace(/\bpinturas?\b/gi, ' ').replace(/\bacr[ií]lica\b/gi, ' ').replace(/\bpigmento\b/gi, ' ');
+    if (LINE_WORDS[line]) s = s.replace(LINE_WORDS[line], ' ');
+    s = s.replace(/\s+/g, ' ').replace(/\.{2,}/g, '.').trim().replace(/^[-–·,]\s*/, '').replace(/\s*\.$/, '');
+    return s || n;
+  }
+  function resBrand(s) { return /pionext/.test(s) ? 'PioNext' : /mingda/.test(s) ? 'Mingda' : /creality|halot/.test(s) ? 'Creality' : 'Otras'; }
+
+  /* ---- Datos ---- */
+  const safePath = function (v) { return typeof v === 'string' && /^[A-Za-z0-9%_.~-]{1,250}$/.test(v) ? v : ''; };
+  function cleanShopItem(x) {
+    let it = x;
+    if (Array.isArray(x)) it = { id: x[0], k: x[1], g: x[2], n: x[3], p: x[4], o: x[5], f: x[6], img: x[7] };
+    if (!it || typeof it !== 'object') return null;
+    const id = safePath(it.id), k = String(it.k || ''), n = typeof it.n === 'string' ? it.n.trim().slice(0, 200) : '', p = Number(it.p);
+    if (!id || ['peg', 'rep', 'pin', 'res'].indexOf(k) < 0 || !n || !isFinite(p) || p <= 0) return null;
+    const o = Number(it.o) > p ? Number(it.o) : 0;
+    const out = { id: id, k: k, k0: k, g: typeof it.g === 'string' ? it.g.slice(0, 60) : '', n: n, p: p, o: o, f: !!it.f, img: safePath(it.img) };
+    const s = norm(n);
+    out.s = s;
+    if (k === 'rep') {
+      if (/adhesivo|pegamento/.test(s)) { out.k = 'peg'; out.grp = 'Otros'; }
+      else {
+        out.ex = RESIN_RX.test(s) && !FDM_RX.test(s);
+        out.grp = repBrand(s, out.g);
+        out.type = partType(s);
+      }
+    } else if (k === 'pin') {
+      out.grp = pinLine(s, out.g);
+      out.short = pinShort(n, out.grp);
+      out.fam = /(^|[^a-z])set([^a-z]|$)/.test(s) ? 'multi' : colorFamily(out.short);
+    } else if (k === 'res') {
+      out.grp = resBrand(s);
+    } else {
+      out.grp = /3dlac|3dnylon/.test(s) ? '3DLAC' : (out.g || 'Otros');
+    }
+    return out;
+  }
+  function setShop(meta, rows, src) {
+    const items = [], byId = {};
+    (Array.isArray(rows) ? rows : []).forEach(function (r) {
+      const it = cleanShopItem(r);
+      if (it && !byId[it.id]) { byId[it.id] = it; items.push(it); }
+    });
+    if (items.length < 50) return false;
+    const m = meta && typeof meta === 'object' ? meta : {};
+    SHOP = {
+      meta: {
+        updated: typeof m.updated === 'string' ? m.updated.slice(0, 20) : '', checked: typeof m.checked === 'string' ? m.checked.slice(0, 20) : '',
+        changes: Array.isArray(m.changes) ? m.changes.filter(function (c) { return typeof c === 'string'; }).map(function (c) { return c.slice(0, 200); }).slice(0, 40) : []
+      },
+      items: items, byId: byId, src: src, at: Date.now()
+    };
+    return true;
+  }
+  function shopToRows() {
+    return SHOP.items.map(function (it) { return [it.id, it.k0, it.g, it.n, it.p, it.o, it.f ? 1 : 0, it.img]; });
+  }
+  if (typeof SHOP_SEED !== 'undefined' && SHOP_SEED) setShop(SHOP_SEED.meta, SHOP_SEED.items, 'seed');
+  (function () {
+    const c = readJSON(SHOP_CACHE_KEY);
+    if (c && Array.isArray(c.items) && (!SHOP.items.length || c.at > 0)) {
+      if (setShop(c.meta, c.items, 'cache')) SHOP.at = Number(c.at) || 0;
+    }
+  })();
+
+  function sbGet(path) {
+    return fetch(SB.url + '/rest/v1/' + path, { headers: { apikey: SB.key }, cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  }
+  function fetchShop(force) {
+    if (IN_CLAUDE || shopLoading || !/^https?:$/.test(location.protocol)) return;
+    if (!force && SHOP.src === 'server' && Date.now() - SHOP.at < 3600000) return;
+    shopLoading = true; shopFailed = false;
+    if (shopVisible()) renderShop();
+    const hasServer = typeof SB !== 'undefined' && /^https?:\/\//.test(SB.url) && SB.key.length > 10;
+    const fromServer = function () {
+      if (!hasServer) return Promise.reject(new Error('sin servidor'));
+      const rows = [];
+      const page = function (off) {
+        return sbGet('shop_items?select=id,k,g,n,p,o,f,img&active=is.true&order=id.asc&limit=1000&offset=' + off).then(function (r) {
+          if (!Array.isArray(r)) throw new Error('respuesta rara');
+          Array.prototype.push.apply(rows, r);
+          return r.length === 1000 && off < 20000 ? page(off + 1000) : rows;
+        });
+      };
+      return Promise.all([page(0), sbGet('catalog?select=data&id=eq.shop').catch(function () { return []; })]).then(function (res) {
+        const meta = Array.isArray(res[1]) && res[1][0] ? res[1][0].data : {};
+        if (!setShop(meta, res[0], 'server')) throw new Error('catálogo incompleto');
+      });
+    };
+    const fromFile = function () {
+      return fetch('shop.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (d) { if (!d || !setShop(d.meta, d.items, 'file')) throw new Error('archivo incompleto'); });
+    };
+    fromServer().catch(function () { return SHOP.items.length ? null : fromFile(); })
+      .then(function () {
+        if (SHOP.items.length) writeJSON(SHOP_CACHE_KEY, { at: SHOP.at, meta: SHOP.meta, items: shopToRows() });
+      }, function () { shopFailed = !SHOP.items.length; })
+      .then(function () { shopLoading = false; renderOrderBadge(); if (shopVisible()) renderShop(); });
+  }
+
+  /* ---- Precios ---- */
+  function usdTxt(v) { return 'U$S ' + (Math.round(v * 100) / 100).toLocaleString('es-UY', { maximumFractionDigits: 2 }); }
+  function localTxt(v) {
+    if (state.currency === 'USD') return '';
+    const r = usdRate(state);
+    return r > 0 ? '≈ ' + money(state, v * r) : '';
+  }
+  function priceHTML(p, o, from) {
+    const loc = localTxt(p);
+    return '<div class="sp-price">' + (from ? '<small>desde</small>' : '') + esc(usdTxt(p)) +
+      (o > p ? '<s>' + esc(usdTxt(o)) + '</s>' : '') + (loc ? '<small>' + esc(loc) + '</small>' : '') + '</div>';
+  }
+
+  /* ---- Pedido ---- */
+  function orderKey(t, id, color) { return t + ':' + id + (color ? '|' + color : ''); }
+  function orderLine(key) { return state.order.find(function (o) { return o.key === key; }) || null; }
+  function liveOrder(o) {
+    if (o.t === 'fil') {
+      const f = filById(o.id);
+      if (!f || f.gone) return { n: o.n, p: o.p, url: o.url || '', missing: true };
+      return { n: f.b + ' ' + f.n, p: f.p, url: f.url, missing: false, out: f.out, w: f.w };
+    }
+    const it = SHOP.byId[o.id];
+    if (!it) return { n: o.n, p: o.p, url: o.id, missing: SHOP.src === 'server' || SHOP.src === 'cache' };
+    return { n: it.n, p: it.p, url: it.id, missing: false, from: it.f };
+  }
+  function addToOrder(t, id, color) {
+    const key = orderKey(t, id, color);
+    const ex = orderLine(key);
+    if (ex) ex.q = Math.min(999, Math.round(num(ex.q)) + 1);
+    else if (t === 'fil') {
+      const f = filById(id);
+      if (!f) return;
+      state.order.push({ key: key, t: 'fil', id: f.id, color: color || '', n: f.b + ' ' + f.n, p: f.p, w: f.w, url: f.url, q: 1 });
+    } else {
+      const it = SHOP.byId[id];
+      if (!it) return;
+      state.order.push({ key: key, t: 'shop', id: it.id, k: it.k, n: it.n, p: it.p, q: 1 });
+    }
+    flushSave();
+  }
+  function orderTotal() {
+    return state.order.reduce(function (a, o) { return a + liveOrder(o).p * Math.max(0, Math.round(num(o.q))); }, 0);
+  }
+  function orderCount() { return state.order.reduce(function (a, o) { return a + Math.max(0, Math.round(num(o.q))); }, 0); }
+  function renderOrderBadge() {
+    const n = orderCount();
+    const b = $('[data-bind="orderCount"]');
+    b.textContent = n; b.hidden = !n;
+    bind('orderTotal', usdTxt(orderTotal()));
+    bind('orderItems', n === 1 ? '1 artículo' : n + ' artículos');
+    $('#shop-bar-btn').textContent = n ? 'Ver pedido (' + n + ')' : 'Ver pedido';
+  }
+  function orderLabel(o, live) {
+    if (o.t === 'fil') {
+      const f = filById(o.id);
+      const kg = f ? (f.w >= 1000 ? String(f.w / 1000).replace('.', ',') + ' kg' : f.w + ' g') : '';
+      return 'Filamento ' + live.n + (kg ? ' ' + kg : '') + (o.color ? ', color ' + o.color : '');
+    }
+    return live.n;
+  }
+  function waNumber() { return MT.wa.some(function (w) { return w.id === state.shopWa; }) ? state.shopWa : MT.wa[0].id; }
+  function orderMessage() {
+    const who = String(state.bizName || '').trim();
+    const lines = state.order.map(function (o) {
+      const live = liveOrder(o);
+      const q = Math.max(0, Math.round(num(o.q)));
+      return '• ' + q + ' × ' + orderLabel(o, live) + ' — ' + (live.from ? 'desde ' : '') + usdTxt(live.p) + (q > 1 ? ' c/u' : '') +
+        (live.url ? '\n  ' + MT.site + live.url : '');
+    });
+    const date = SHOP.meta.checked || CATALOG_CHECKED;
+    return 'Hola Macrotec' + (who && who !== 'Mi taller 3D' ? ', les escribe ' + who : '') + '. Quisiera hacer este pedido:\n\n' + lines.join('\n') +
+      '\n\nTotal estimado: ' + usdTxt(orderTotal()) + (date ? ' (precios de la web al ' + date + ')' : '') +
+      '.\n¿Me confirman stock y forma de pago? Gracias.';
+  }
+  const orderSay = sayIn('#order-msg');
+
+  function orderItemHTML(o) {
+    const live = liveOrder(o);
+    const q = Math.max(0, Math.round(num(o.q)));
+    const fam = o.t === 'fil' ? colorFamily(o.color, /arco|rainbow|grad/.test(norm(live.n))) : '';
+    const tags = (live.missing ? '<span class="tag out">Ya no aparece en Macrotec</span>' : live.out ? '<span class="tag warn">Sin stock</span>' : '');
+    return '<div class="item" data-order="' + esc(o.key) + '">' +
+      '<div class="item-head"><span class="item-title">' + (fam ? swatch(fam) + ' ' : '') +
+      (live.url ? '<a class="sp-name" href="' + esc(MT.site + live.url) + '" target="_blank" rel="noopener">' + esc(live.n) + '</a>' : esc(live.n)) +
+      (o.color ? ' · ' + esc(o.color) : '') + '</span>' +
+      '<span class="item-amount">' + esc(usdTxt(live.p * q)) + '</span></div>' +
+      '<div class="stock-row"><div class="stepper"><button type="button" data-oa="minus" aria-label="Restar uno">−</button>' +
+      '<input type="number" inputmode="numeric" min="0" step="1" data-oq value="' + q + '" aria-label="Cantidad">' +
+      '<button type="button" data-oa="plus" aria-label="Sumar uno">+</button></div>' +
+      '<span class="item-meta">' + esc(usdTxt(live.p)) + ' c/u</span>' + tags +
+      '<button class="link" type="button" data-oa="del">Quitar</button></div></div>';
+  }
+  function renderOrder() {
+    const box = $('#order-items');
+    const has = state.order.length > 0;
+    box.innerHTML = has ? state.order.map(orderItemHTML).join('')
+      : '<div class="empty">Tu pedido está vacío. Toca "Agregar" en lo que quieras comprar.</div>';
+    const total = orderTotal();
+    bind('orderTotal', usdTxt(total));
+    $('#order-local').textContent = has ? localTxt(total) : '';
+    $('#order-actions').hidden = !has;
+    $('#order-wa-pick').innerHTML = MT.wa.map(function (w) {
+      return '<option value="' + w.id + '"' + (w.id === waNumber() ? ' selected' : '') + '>WhatsApp ' + w.label + '</option>';
+    }).join('');
+    if (has) {
+      const msg = orderMessage();
+      $('#order-wa').href = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
+      $('#order-mail').href = 'mailto:' + MT.mail + '?subject=' + encodeURIComponent('Pedido' + (state.bizName && state.bizName !== 'Mi taller 3D' ? ' de ' + state.bizName : '')) + '&body=' + encodeURIComponent(msg);
+    }
+    renderOrderBadge();
+  }
+  function orderOf(el) { const k = el.closest('[data-order]').dataset.order; return orderLine(k); }
+  $('#order-items').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-oa]');
+    if (!b) return;
+    const o = orderOf(b);
+    if (!o) return;
+    if (b.dataset.oa === 'plus') o.q = Math.min(999, Math.round(num(o.q)) + 1);
+    else if (b.dataset.oa === 'minus') o.q = Math.max(0, Math.round(num(o.q)) - 1);
+    else state.order = state.order.filter(function (x) { return x !== o; });
+    if (b.dataset.oa === 'minus' && o.q === 0) state.order = state.order.filter(function (x) { return x !== o; });
+    flushSave(); renderOrder(); refreshAddButtons();
+  });
+  $('#order-items').addEventListener('input', function (e) {
+    if (!e.target.hasAttribute('data-oq')) return;
+    const o = orderOf(e.target);
+    if (o) { o.q = Math.min(999, Math.max(0, Math.round(num(e.target.value)))); save(); renderOrderBadge(); }
+  });
+  $('#order-items').addEventListener('change', function (e) {
+    if (!e.target.hasAttribute('data-oq')) return;
+    state.order = state.order.filter(function (o) { return Math.round(num(o.q)) > 0; });
+    flushSave(); renderOrder(); refreshAddButtons();
+  });
+  $('#order-wa-pick').addEventListener('change', function (e) { state.shopWa = e.target.value; flushSave(); renderOrder(); });
+  $('#order-copy').addEventListener('click', function () {
+    const msg = orderMessage();
+    const done = function () { orderSay('Pedido copiado. Pégalo en WhatsApp, un correo o el chat de la web.', 'ok'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg).then(done, fallback);
+    else fallback();
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = msg; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      ta.remove();
+      if (ok) done(); else orderSay('No se pudo copiar automáticamente. Usa "Enviar por WhatsApp" o "Enviar por correo".', 'err');
+    }
+  });
+  $('#order-clear').addEventListener('click', function (e) {
+    if (!confirmTwice(e.currentTarget, 'Toca de nuevo para vaciar')) return;
+    state.order = [];
+    flushSave(); renderOrder(); refreshAddButtons(); orderSay('');
+  });
+  $('#order-received').addEventListener('click', function (e) {
+    if (!confirmTwice(e.currentTarget, 'Toca de nuevo: suma todo a tu stock')) return;
+    let grams = 0, units = 0;
+    state.order.forEach(function (o) {
+      const q = Math.max(0, Math.round(num(o.q)));
+      if (!q) return;
+      if (o.t === 'fil') {
+        const f = filById(o.id);
+        const g = (f ? f.w : num(o.w) || 1000) * q;
+        const ex = stockFor(f ? f.b : '', o.id, o.color);
+        if (ex) ex.g = Math.round((num(ex.g) + g) * 10) / 10;
+        else state.fstock.push({ id: uid(), brand: f ? f.b : '', fil: o.id, color: o.color || '', g: g });
+        grams += g;
+      } else {
+        const live = liveOrder(o);
+        const ex = state.pstock.find(function (p) { return p.kind === 'repuesto' && norm(p.name) === norm(live.n); });
+        if (ex) ex.qty = Math.max(0, Math.round(num(ex.qty))) + q;
+        else state.pstock.push({ id: uid(), name: live.n, kind: 'repuesto', qty: q, price: '', note: 'Comprado en Macrotec' });
+        units += q;
+      }
+    });
+    state.order = [];
+    flushSave(); renderOrder(); refreshAddButtons(); renderStats();
+    const parts = [];
+    if (grams) parts.push((grams >= 1000 ? String(Math.round(grams / 100) / 10).replace('.', ',') + ' kg' : grams + ' g') + ' de filamento');
+    if (units) parts.push(units === 1 ? '1 repuesto o insumo' : units + ' repuestos e insumos');
+    orderSay(parts.length ? 'Listo: sumé ' + parts.join(' y ') + ' a tu stock (Tu negocio).' : 'El pedido estaba vacío.', 'ok');
+  });
+
+  /* ---- Lista de productos ---- */
+  function shopVisible() { return !$('#view-macrotec').hidden; }
+  function addBtn(t, id, color) {
+    const o = orderLine(orderKey(t, id, color));
+    return '<button class="btn sm sp-add' + (o ? ' on' : '') + '" type="button" data-add="' + esc(t) + '" data-id="' + esc(id) + '"' +
+      (color ? ' data-color="' + esc(color) + '"' : '') + '>' + (o ? 'En pedido · ' + Math.round(num(o.q)) + ' +' : 'Agregar') + '</button>';
+  }
+  function refreshAddButtons() {
+    $$('#shop-list [data-add]').forEach(function (b) {
+      const o = orderLine(orderKey(b.dataset.add, b.dataset.id, b.dataset.color || ''));
+      b.className = 'btn sm sp-add' + (o ? ' on' : '');
+      b.textContent = o ? 'En pedido · ' + Math.round(num(o.q)) + ' +' : 'Agregar';
+    });
+  }
+  function chip(attr, val, label, on, extra) {
+    return '<button type="button" class="chip" data-' + attr + '="' + esc(val) + '" aria-pressed="' + (on ? 'true' : 'false') + '">' + (extra || '') + esc(label) + '</button>';
+  }
+  function countTxt(n) { return '<small>' + n + '</small>'; }
+  function more(shown, total) {
+    return total > shown ? '<button class="btn ghost sm sp-more" type="button" data-more="1">Mostrar ' + Math.min(PAGE, total - shown) + ' más (quedan ' + (total - shown) + ')</button>' : '';
+  }
+  function searchBox(ph) {
+    return '<label class="field sp-search"><span class="vh">Buscar</span><input type="search" id="shop-q" placeholder="' + esc(ph) + '" value="' + esc(shopUI.q) + '" autocomplete="off"></label>';
+  }
+  function shopRow(it, label, meta) {
+    const media = it.img ? '<img class="sp-img" src="' + esc(MT.img + it.img) + '" alt="" loading="lazy" decoding="async">'
+      : it.k === 'pin' ? '<span class="sp-ph">' + swatch(it.fam) + '</span>' : '<span class="sp-ph" aria-hidden="true">' + BOX_ICON + '</span>';
+    return '<div class="sp-row">' + media +
+      '<div class="sp-main"><a class="sp-name" href="' + esc(MT.site + it.id) + '" target="_blank" rel="noopener">' + esc(label || it.n) + '</a>' +
+      (meta ? '<div class="sp-meta">' + meta + '</div>' : '') + '</div>' +
+      priceHTML(it.p, it.o, it.f) + addBtn('shop', it.id) + '</div>';
+  }
+  const BOX_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg>';
+  function emptyMsg(txt) { return '<div class="empty">' + esc(txt) + '</div>'; }
+
+  /* Filamentos: tipo → color → marca */
+  function filRows() {
+    const rows = [];
+    FIL.forEach(function (f) {
+      if (f.gone) return;
+      const ln = norm(f.n);
+      const multi = /arco|rainbow|gradient|grad(\W|$)/.test(ln), wood = /wood|madera/.test(ln);
+      const colors = f.c.length ? f.c : [''];
+      colors.forEach(function (c) {
+        const fam = !c ? 'otros' : wood ? 'marron' : colorFamily(c, multi);
+        rows.push({ f: f, color: c, fam: fam, rank: colorRank(fam, c), s: norm(f.b + ' ' + f.n + ' ' + f.t + ' ' + c) });
+      });
+    });
+    return rows;
+  }
+  function renderFilaments(head) {
+    const rows = filRows();
+    const brandIdx = function (b) { const i = FIL_ORDER.indexOf(b); return i < 0 ? 99 : i; };
+    const types = {};
+    rows.forEach(function (r) { if (!(shopUI.hideOut && r.f.out)) types[r.f.t] = (types[r.f.t] || 0) + 1; });
+    const typeList = Object.keys(types).sort(function (a, b) { return a === 'PLA' ? -1 : b === 'PLA' ? 1 : types[b] - types[a] || a.localeCompare(b); });
+    if (typeList.indexOf(shopUI.filType) < 0) shopUI.filType = typeList[0] || 'PLA';
+    let list = rows.filter(function (r) { return r.f.t === shopUI.filType && !(shopUI.hideOut && r.f.out); });
+    if (shopUI.q) list = rows.filter(function (r) { return !(shopUI.hideOut && r.f.out) && matchesQuery(r.s, shopUI.q); });
+    const fams = {};
+    list.forEach(function (r) { fams[r.fam] = (fams[r.fam] || 0) + 1; });
+    if (shopUI.filFam && !fams[shopUI.filFam]) shopUI.filFam = '';
+    head.innerHTML =
+      '<p class="sub">Ordenados por tipo, color y marca. "Disponible" quiere decir que Macrotec lo tiene a la venta; el stock de cada color no lo publican, así que confírmalo al pedir.</p>' +
+      searchBox('Buscar filamento: silk, hyper, matte…') +
+      (shopUI.q ? '' : '<div class="sp-label">Tipo</div><div class="chips">' + typeList.map(function (t) { return chip('ftype', t, t, t === shopUI.filType, '') .replace('</button>', countTxt(types[t]) + '</button>'); }).join('') + '</div>') +
+      '<div class="sp-label">Color</div><div class="chips">' + chip('ffam', '', 'Todos', !shopUI.filFam) +
+      FAMS.filter(function (f) { return fams[f[0]]; }).map(function (f) { return chip('ffam', f[0], f[1], shopUI.filFam === f[0], swatch(f[0])).replace('</button>', countTxt(fams[f[0]]) + '</button>'); }).join('') + '</div>' +
+      '<label class="check sp-check"><input type="checkbox" id="shop-hideout"' + (shopUI.hideOut ? ' checked' : '') + '> Ocultar los que están sin stock</label>';
+    if (shopUI.filFam) list = list.filter(function (r) { return r.fam === shopUI.filFam; });
+    const famIdx = function (k) { return FAMS.findIndex(function (f) { return f[0] === k; }); };
+    list.sort(function (a, b) {
+      return (shopUI.q ? a.f.t.localeCompare(b.f.t) : 0) || famIdx(a.fam) - famIdx(b.fam) || a.rank - b.rank || norm(a.color).localeCompare(norm(b.color)) ||
+        brandIdx(a.f.b) - brandIdx(b.f.b) || a.f.b.localeCompare(b.f.b) || a.f.p - b.f.p || a.f.n.localeCompare(b.f.n);
+    });
+    if (!list.length) return emptyMsg(shopUI.q ? 'No hay filamentos que coincidan con la búsqueda.' : 'No hay filamentos de este tipo a la venta ahora.');
+    const shown = list.slice(0, shopUI.limit);
+    let html = '', lastFam = null, lastColor = null, lastType = null;
+    shown.forEach(function (r) {
+      if (shopUI.q && r.f.t !== lastType) { html += '<h3 class="sp-group">' + esc(r.f.t) + '</h3>'; lastType = r.f.t; lastFam = null; }
+      if (r.fam !== lastFam && !shopUI.filFam) { html += '<h3 class="sp-fam">' + swatch(r.fam) + esc(FAM_BY[r.fam][1]) + '</h3>'; lastFam = r.fam; lastColor = null; }
+      if (norm(r.color) !== lastColor) {
+        const n = list.filter(function (x) { return norm(x.color) === norm(r.color) && x.f.t === r.f.t; }).length;
+        html += '<div class="sp-color">' + swatch(r.fam) + '<span>' + esc(r.color || 'Color a consultar') + '</span><small>' + (n === 1 ? '1 opción' : n + ' opciones') + '</small></div>';
+        lastColor = norm(r.color); lastFam = r.fam;
+      }
+      const f = r.f;
+      const kg = f.w >= 1000 ? String(f.w / 1000).replace('.', ',') + ' kg' : f.w + ' g';
+      const meta = esc(kg) + (f.w !== 1000 ? ' · ' + esc(usdTxt(f.p / (f.w / 1000))) + '/kg' : '') +
+        (f.out ? ' <span class="tag out">Sin stock</span>' : ' <span class="tag sale">Disponible</span>') +
+        (f.old > f.p ? ' <span class="tag sale">Oferta</span>' : '');
+      html += '<div class="sp-row sp-fil"><span class="sp-ph">' + swatch(r.fam) + '</span>' +
+        '<div class="sp-main">' + (f.url ? '<a class="sp-name" href="' + esc(MT.site + f.url) + '" target="_blank" rel="noopener">' : '<span class="sp-name">') +
+        esc(f.b + ' ' + f.n) + (f.url ? '</a>' : '</span>') + '<div class="sp-meta">' + meta + '</div></div>' +
+        priceHTML(f.p, f.old, false) + addBtn('fil', f.id, r.color) + '</div>';
+    });
+    return '<div class="sp-list">' + html + '</div>' + more(shown.length, list.length);
+  }
+
+  /* Pegamentos, repuestos, pinturas y resinas */
+  function shopItems(k) { return SHOP.items.filter(function (it) { return it.k === k && !it.ex; }); }
+  const PRINTER_ALIAS = {
+    'bl-a1mini': 'A1 Mini', 'bl-a1mini-c': 'A1 Mini', 'bl-a1': 'A1', 'bl-a1-c': 'A1', 'bl-a2l-c': 'A2L', 'bl-p1p': 'P1', 'bl-p1s': 'P1', 'bl-p1s-c': 'P1',
+    'bl-p2s': 'P2S', 'bl-x2d': 'X2D', 'bl-x1c': 'X1', 'bl-h2d': 'H2', 'cr-e3v3se': 'V3 SE', 'cr-e3v3ke': 'V3 KE', 'cr-e3v3': 'Ender 3 V3',
+    'cr-hi': 'Hi', 'cr-hi-c': 'Hi', 'cr-k2se': 'K2', 'cr-k2se-c': 'K2', 'cr-k1max': 'K1 Max', 'cr-k2': 'K2', 'cr-k2-c': 'K2', 'cr-e3v2': 'Ender 3',
+    'cr-e3s1': 'S1', 'cr-e3v3plus': 'V3 Plus', 'cr-k1': 'K1', 'cr-k1c': 'K1C', 'cr-k2plus': 'K2 Plus', 'ff-ad5x': 'AD5X', 'ff-ad5mpro': 'AD5M',
+    'ff-creator5': 'Creator 5', 'ff-ad5m': 'AD5M'
+  };
+  function renderParts(head) {
+    const all = shopItems('rep');
+    const brands = {};
+    all.forEach(function (it) { brands[it.grp] = (brands[it.grp] || 0) + 1; });
+    const brandList = Object.keys(brands).sort(function (a, b) {
+      const ia = BRAND_ORDER.indexOf(a), ib = BRAND_ORDER.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+    });
+    if (shopUI.repBrand && !brands[shopUI.repBrand]) shopUI.repBrand = '';
+    let list = all.filter(function (it) { return !shopUI.repBrand || it.grp === shopUI.repBrand; });
+    if (shopUI.q) list = list.filter(function (it) { return matchesQuery(it.s, shopUI.q); });
+    const types = {};
+    list.forEach(function (it) { types[it.type] = (types[it.type] || 0) + 1; });
+    if (shopUI.repType && !types[shopUI.repType]) shopUI.repType = '';
+    const alias = PRINTER_ALIAS[state.printerModel];
+    const pr = printerById(state.printerModel);
+    head.innerHTML =
+      '<p class="sub">Repuestos y accesorios para impresoras de filamento. Los de impresoras de resina no aparecen.</p>' +
+      searchBox('Buscar: boquilla 0.4, correa, K1 Max…') +
+      (alias ? '<button class="link plain sp-mine" type="button" data-mine="' + esc(alias) + '" data-brand="' + esc(pr ? pr.b : '') + '">Ver lo que hay para mi ' + esc(pr ? pr.b + ' ' + pr.n : alias) + '</button>' : '') +
+      '<div class="sp-label">Marca</div><div class="chips">' + chip('rbrand', '', 'Todas', !shopUI.repBrand) +
+      brandList.map(function (b) { return chip('rbrand', b, b, shopUI.repBrand === b).replace('</button>', countTxt(brands[b]) + '</button>'); }).join('') + '</div>' +
+      '<div class="sp-label">Tipo de pieza</div><div class="chips">' + chip('rtype', '', 'Todas', !shopUI.repType) +
+      PART_ORDER.filter(function (t) { return types[t]; }).map(function (t) { return chip('rtype', t, PART_LABEL[t], shopUI.repType === t).replace('</button>', countTxt(types[t]) + '</button>'); }).join('') + '</div>';
+    if (shopUI.repType) list = list.filter(function (it) { return it.type === shopUI.repType; });
+    list.sort(function (a, b) { return PART_ORDER.indexOf(a.type) - PART_ORDER.indexOf(b.type) || a.n.localeCompare(b.n, 'es'); });
+    if (!list.length) return emptyMsg('No hay repuestos que coincidan.');
+    const shown = list.slice(0, shopUI.limit);
+    let html = '', last = null;
+    shown.forEach(function (it) {
+      if (!shopUI.repType && it.type !== last) { html += '<h3 class="sp-group">' + esc(PART_LABEL[it.type]) + '</h3>'; last = it.type; }
+      html += shopRow(it, it.n, shopUI.repBrand ? '' : esc(it.grp));
+    });
+    return '<div class="sp-list">' + html + '</div>' + more(shown.length, list.length);
+  }
+  const PIN_NOFAM = ['Barnices y auxiliares', 'Sets', 'Diorama FX', 'Weathering FX'];
+  function renderPaints(head) {
+    const all = shopItems('pin');
+    const lines = {};
+    all.forEach(function (it) { lines[it.grp] = (lines[it.grp] || 0) + 1; });
+    const lineList = PIN_LINES.filter(function (l) { return lines[l]; });
+    if (!lines[shopUI.pinLine]) shopUI.pinLine = lineList[0] || '';
+    let list = shopUI.q ? all.filter(function (it) { return matchesQuery(it.s, shopUI.q); }) : all.filter(function (it) { return it.grp === shopUI.pinLine; });
+    const fams = {};
+    list.forEach(function (it) { fams[it.fam] = (fams[it.fam] || 0) + 1; });
+    const noFam = !shopUI.q && PIN_NOFAM.indexOf(shopUI.pinLine) >= 0;
+    if (shopUI.pinFam && (!fams[shopUI.pinFam] || noFam)) shopUI.pinFam = '';
+    head.innerHTML =
+      '<p class="sub">Pinturas Vallejo para terminar tus piezas: acrílicos, imprimaciones, barnices, efectos y sets.</p>' +
+      searchBox('Buscar: negro, 70.950, barniz mate…') +
+      (shopUI.q ? '' : '<div class="sp-label">Línea</div><div class="chips">' + lineList.map(function (l) { return chip('pline', l, l, shopUI.pinLine === l).replace('</button>', countTxt(lines[l]) + '</button>'); }).join('') + '</div>') +
+      (noFam ? '' : '<div class="sp-label">Color</div><div class="chips">' + chip('pfam', '', 'Todos', !shopUI.pinFam) +
+      FAMS.filter(function (f) { return fams[f[0]]; }).map(function (f) { return chip('pfam', f[0], f[1], shopUI.pinFam === f[0], swatch(f[0])).replace('</button>', countTxt(fams[f[0]]) + '</button>'); }).join('') + '</div>');
+    if (shopUI.pinFam) list = list.filter(function (it) { return it.fam === shopUI.pinFam; });
+    const famIdx = function (k) { return FAMS.findIndex(function (f) { return f[0] === k; }); };
+    list.sort(function (a, b) {
+      return (shopUI.q ? PIN_LINES.indexOf(a.grp) - PIN_LINES.indexOf(b.grp) : 0) || (noFam ? 0 : famIdx(a.fam) - famIdx(b.fam) || colorRank(a.fam, a.short) - colorRank(b.fam, b.short)) ||
+        a.short.localeCompare(b.short, 'es', { numeric: true });
+    });
+    if (!list.length) return emptyMsg('No hay pinturas que coincidan.');
+    const shown = list.slice(0, shopUI.limit);
+    let html = '', last = null;
+    shown.forEach(function (it) {
+      const key = shopUI.q ? it.grp : it.fam;
+      if (!shopUI.pinFam && !noFam && key !== last) {
+        html += '<h3 class="sp-group">' + (shopUI.q ? esc(it.grp) : swatch(it.fam) + esc(FAM_BY[it.fam][1])) + '</h3>';
+        last = key;
+      }
+      html += shopRow(it, it.short, '');
+    });
+    return '<div class="sp-list">' + html + '</div>' + more(shown.length, list.length);
+  }
+  function renderSimple(head, k) {
+    const all = shopItems(k);
+    let list = shopUI.q ? all.filter(function (it) { return matchesQuery(it.s, shopUI.q); }) : all;
+    head.innerHTML = (k === 'peg'
+      ? '<p class="sub">Adhesivos para la cama de impresión (3DLAC) y para pegar piezas.</p>'
+      : '<p class="sub">Resinas para impresoras 3D de resina.</p>') + (all.length > 12 ? searchBox('Buscar…') : '');
+    if (k === 'res') {
+      const brands = {};
+      list.forEach(function (it) { brands[it.grp] = (brands[it.grp] || 0) + 1; });
+      const bl = Object.keys(brands).sort();
+      if (shopUI.resBrand && !brands[shopUI.resBrand]) shopUI.resBrand = '';
+      if (bl.length > 1) head.innerHTML += '<div class="sp-label">Marca</div><div class="chips">' + chip('resb', '', 'Todas', !shopUI.resBrand) +
+        bl.map(function (b) { return chip('resb', b, b, shopUI.resBrand === b).replace('</button>', countTxt(brands[b]) + '</button>'); }).join('') + '</div>';
+      if (shopUI.resBrand) list = list.filter(function (it) { return it.grp === shopUI.resBrand; });
+    }
+    list = list.slice().sort(function (a, b) { return a.grp.localeCompare(b.grp) || a.p - b.p; });
+    if (!list.length) return emptyMsg('No hay productos que coincidan.');
+    const shown = list.slice(0, shopUI.limit);
+    let html = '', last = null;
+    shown.forEach(function (it) {
+      if (it.grp !== last && (k === 'peg' || !shopUI.resBrand)) { html += '<h3 class="sp-group">' + esc(it.grp === 'Otros' ? 'Otros adhesivos' : it.grp) + '</h3>'; last = it.grp; }
+      html += shopRow(it, it.n, '');
+    });
+    return '<div class="sp-list">' + html + '</div>' + more(shown.length, list.length);
+  }
+
+  function renderShopStatus() {
+    const m = SHOP.meta;
+    const parts = [];
+    if (CATALOG_CHECKED) parts.push('Filamentos revisados el <b>' + esc(CATALOG_CHECKED) + '</b>');
+    if (m.checked) parts.push('resto de la tienda el <b>' + esc(m.checked) + '</b>');
+    let live = '';
+    if (SHOP.src === 'server' || SHOP.src === 'cache') live = '<span class="tag live">Se actualiza a diario</span>';
+    else if (IN_CLAUDE) live = '<span class="tag src">En la app instalada se actualiza a diario</span>';
+    $('#shop-status').innerHTML = live + '<span>' + parts.join(', ') + '.</span>';
+    const ch = (m.changes || []).concat(CATALOG_CHANGES);
+    const box = $('#shop-changes');
+    box.hidden = !ch.length;
+    $('#shop-changes-list').innerHTML = ch.slice(0, 40).map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('');
+  }
+  function renderShop() {
+    renderShopStatus();
+    $$('[data-sec]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.sec === shopUI.sec)); });
+    const counts = { fil: FIL.filter(function (f) { return !f.gone; }).length };
+    ['peg', 'rep', 'pin', 'res'].forEach(function (k) { counts[k] = shopItems(k).length; });
+    $$('[data-sec]').forEach(function (b) { const c = b.querySelector('small'); if (c) c.textContent = counts[b.dataset.sec] || ''; });
+    const head = $('#shop-head'), body = $('#shop-body');
+    const focusSearch = document.activeElement && document.activeElement.id === 'shop-q';
+    const caret = focusSearch ? document.activeElement.selectionStart : null;
+    let html;
+    if (shopUI.sec !== 'fil' && !SHOP.items.length) {
+      head.innerHTML = '';
+      html = shopLoading ? '<div class="empty">Cargando productos de Macrotec…</div>'
+        : '<div class="empty">No se pudieron cargar los productos de Macrotec. Revisa tu conexión. <button class="link plain" type="button" data-shopretry="1">Reintentar</button></div>';
+    } else if (shopUI.sec === 'fil') html = renderFilaments(head);
+    else if (shopUI.sec === 'rep') html = renderParts(head);
+    else if (shopUI.sec === 'pin') html = renderPaints(head);
+    else html = renderSimple(head, shopUI.sec);
+    $('#h-shop-list').textContent = SECS.find(function (s) { return s[0] === shopUI.sec; })[1];
+    body.innerHTML = html;
+    if (focusSearch) {
+      const q = $('#shop-q');
+      if (q) { q.focus(); try { q.setSelectionRange(caret, caret); } catch (e) { /* sin cursor */ } }
+    }
+    /* En teléfono las filas de filtros se deslizan: dejar a la vista el filtro elegido */
+    $$('#shop-list .chips, #shop-tabs').forEach(function (row) {
+      const on = row.querySelector('[aria-pressed="true"]');
+      if (on && row.scrollWidth > row.clientWidth) row.scrollLeft += on.getBoundingClientRect().left - row.getBoundingClientRect().left - 16;
+    });
+    renderOrder();
+  }
+
+  $('#shop-tabs').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-sec]');
+    if (!b) return;
+    shopUI.sec = b.dataset.sec; shopUI.q = ''; shopUI.limit = PAGE;
+    saveShopUI(); renderShop();
+  });
+  $('#shop-list').addEventListener('click', function (e) {
+    const t = e.target;
+    const add = t.closest('[data-add]');
+    if (add) {
+      addToOrder(add.dataset.add, add.dataset.id, add.dataset.color || '');
+      refreshAddButtons(); renderOrder();
+      orderSay('Agregado al pedido.', 'ok');
+      return;
+    }
+    if (t.closest('[data-more]')) { shopUI.limit += PAGE; renderShop(true); return; }
+    if (t.closest('[data-shopretry]')) { fetchShop(true); return; }
+    const mine = t.closest('[data-mine]');
+    if (mine) {
+      shopUI.q = mine.dataset.mine; shopUI.repType = ''; shopUI.limit = PAGE;
+      if (BRAND_ORDER.indexOf(mine.dataset.brand) >= 0) shopUI.repBrand = mine.dataset.brand;
+      saveShopUI(); renderShop(); return;
+    }
+    const c = t.closest('.chip');
+    if (!c) return;
+    const map = { ftype: 'filType', ffam: 'filFam', rbrand: 'repBrand', rtype: 'repType', pline: 'pinLine', pfam: 'pinFam', resb: 'resBrand' };
+    Object.keys(map).forEach(function (a) {
+      if (c.hasAttribute('data-' + a)) {
+        shopUI[map[a]] = c.getAttribute('data-' + a);
+        if (a === 'ftype') shopUI.filFam = '';
+        if (a === 'pline') shopUI.pinFam = '';
+        if (a === 'rbrand') shopUI.repType = '';
+      }
+    });
+    shopUI.limit = PAGE;
+    saveShopUI(); renderShop(true);
+  });
+  let qTimer = null;
+  $('#shop-list').addEventListener('input', function (e) {
+    if (e.target.id !== 'shop-q') return;
+    clearTimeout(qTimer);
+    const v = e.target.value;
+    qTimer = setTimeout(function () { shopUI.q = v.trim() ? v : ''; shopUI.limit = PAGE; renderShop(true); }, 180);
+  });
+  $('#shop-list').addEventListener('change', function (e) {
+    if (e.target.id === 'shop-hideout') { shopUI.hideOut = e.target.checked; shopUI.limit = PAGE; saveShopUI(); renderShop(true); }
+  });
+  $('#shop-contact').innerHTML =
+    '<b>Macrotec</b> · ' + esc(MT.addr) + '<br>' + esc(MT.hours) + '<br>' +
+    '<a href="tel:+59829007498">Tel. ' + esc(MT.phone) + '</a> · <a href="mailto:' + esc(MT.mail) + '">' + esc(MT.mail) + '</a> · ' +
+    '<a href="' + MT.site + '" target="_blank" rel="noopener">macrotec.com.uy</a>';
+
+  if (!IN_CLAUDE) {
+    setTimeout(function () { fetchShop(false); }, 1500);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) fetchShop(false); });
+  }
+  renderOrderBadge();
+
+
   /* ---- Inicio ---- */
   syncFields();
   renderPrinter();
@@ -2952,7 +3835,7 @@ if (typeof module !== 'undefined' && module.exports) {
   renderLogo();
   renderChanges();
   update();
-  showTab(location.hash === '#negocio' ? 'negocio' : 'calculadora');
+  showTab(location.hash.replace('#', ''));
 })();
 </script>
 
