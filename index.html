@@ -2901,15 +2901,28 @@ if (typeof module !== 'undefined' && module.exports) {
     if (!$('#view-negocio').hidden) renderBiz();
   }
 
-  /* En la app instalada: catalog.json publicado junto a la app, que la tarea diaria actualiza */
+  /* En la app instalada: el catálogo que la tarea diaria guarda en Supabase (lectura pública).
+     Si Supabase no responde, se usa catalog.json publicado junto a la app. */
   let lastFetch = 0;
   function fetchCatalogFile() {
     if (IN_CLAUDE || !/^https?:$/.test(location.protocol)) return;
     lastFetch = Date.now();
-    fetch('catalog.json', { cache: 'no-cache' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) { if (d && typeof d === 'object') applyCatalog({ meta: d.meta, filaments: d.filaments, printers: d.printers }); })
-      .catch(function () { /* sin conexión: sigue con el último catálogo */ });
+    const fromFile = function () {
+      return fetch('catalog.json', { cache: 'no-cache' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d && typeof d === 'object') applyCatalog({ meta: d.meta, filaments: d.filaments, printers: d.printers }); });
+    };
+    const fromServer = (typeof SB !== 'undefined' && /^https?:\/\//.test(SB.url) && SB.key.length > 10)
+      ? fetch(SB.url + '/rest/v1/catalog?select=id,data', { headers: { apikey: SB.key }, cache: 'no-cache' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (rows) {
+            const docs = {};
+            (Array.isArray(rows) ? rows : []).forEach(function (r) { if (r && typeof r.id === 'string' && r.data && typeof r.data === 'object') docs[r.id] = r.data; });
+            if (!docs.filaments || !docs.printers) throw new Error('catálogo incompleto');
+            applyCatalog(docs);
+          })
+      : Promise.reject(new Error('sin servidor'));
+    fromServer.catch(fromFile).catch(function () { /* sin conexión: sigue con el último catálogo */ });
   }
   if (!IN_CLAUDE) {
     fetchCatalogFile();
