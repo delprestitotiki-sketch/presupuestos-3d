@@ -1,10 +1,10 @@
 {
  "meta": {
   "changes": [
-   "Creality SparkX i7: U$S 459 → U$S 399",
-   "Nueva impresora: Bambu Lab P2S Combo AMS2 PRO (U$S 1.299)",
-   "Nueva impresora: Bambu Lab X2D Combo (U$S 1.639)",
-   "Nueva impresora: Creality K2 Pro (U$S 1.138)"
+   "Grilon3 PLA Pro Hyper: U$S 24 → U$S 25",
+   "Nuevo: 3n3 TPU flexible 1 kg (U$S 34, sin stock)",
+   "Nuevo: Soleyin Ultra PLA pack 2 x 1 kg Negro y Gris (U$S 32)",
+   "Nuevo: Soleyin Ultra PLA pack 2 x 1 kg Blanco y Negro (U$S 32)"
   ],
   "checked": "21/10/2026",
   "source": "https://www.macrotec.com.uy/filamentos",
@@ -1101,6 +1101,38 @@
     "w": 1000
    },
    {
+    "id": "filamento-creality-soleyin-ultra-pla-175mm-2kg-negro-y-gris",
+    "b": "Soleyin",
+    "n": "Ultra PLA pack 2 x 1 kg Negro y Gris (2 kg)",
+    "t": "PLA",
+    "p": 32,
+    "w": 2000,
+    "c": [
+     "Negro",
+     "Gris"
+    ],
+    "old": 0,
+    "out": false,
+    "gone": false,
+    "url": "filamento-creality-soleyin-ultra-pla-175mm-2kg-negro-y-gris"
+   },
+   {
+    "id": "filamento-creality-soleyin-ultra-pla-175mm-2kg-blanco-y-negro",
+    "b": "Soleyin",
+    "n": "Ultra PLA pack 2 x 1 kg Blanco y Negro (2 kg)",
+    "t": "PLA",
+    "p": 32,
+    "w": 2000,
+    "c": [
+     "Blanco",
+     "Negro"
+    ],
+    "old": 0,
+    "out": false,
+    "gone": false,
+    "url": "filamento-creality-soleyin-ultra-pla-175mm-2kg-blanco-y-negro"
+   },
+   {
     "b": "Flashforge",
     "c": [
      "Amarillo",
@@ -1358,7 +1390,7 @@
     "n": "PLA Pro Hyper",
     "old": 0,
     "out": false,
-    "p": 24,
+    "p": 25,
     "t": "PLA",
     "url": "filamento-pla-pro-hyper-grilon3-175mm-1kg",
     "w": 1000
@@ -1900,6 +1932,26 @@
     "t": "TPU",
     "url": "filamento-flexible-pla-3nflex-1kg-175mm",
     "w": 1000
+   },
+   {
+    "id": "filamento-flexible-tpu-3n3-1kg-175mm",
+    "b": "3n3",
+    "n": "TPU flexible 3n3",
+    "t": "TPU",
+    "p": 34,
+    "w": 1000,
+    "c": [
+     "Azul",
+     "Blanco",
+     "Gris",
+     "Negro",
+     "Rojo",
+     "Verde"
+    ],
+    "old": 0,
+    "out": true,
+    "gone": false,
+    "url": "filamento-flexible-tpu-3n3-1kg-175mm"
    },
    {
     "b": "Mingda",
