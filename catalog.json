@@ -1,21 +1,27 @@
 {
  "meta": {
-  "updated": "20/10/2026",
-  "checked": "20/10/2026",
-  "usdRate": 40.13,
-  "usdRateDate": "19/10/2026",
+  "changes": [
+   "Bambu Lab PLA Matte: termina la oferta (U$S 24, antes tachado U$S 27)",
+   "Grilon3 PLA Pro Hyper: U$S 25 → U$S 24",
+   "Bambu Lab H2D: vuelve a la venta (U$S 2.599)",
+   "Nueva impresora: Creality SparkX i7 (U$S 459)",
+   "Nueva impresora: Creality SparkX i7 CFS Lite Combo (U$S 574)",
+   "Nueva impresora: Bambu Lab H2D Combo AMS 2 Pro (U$S 2.899)",
+   "Nueva impresora: Bambu Lab H2S Laser Combo AMS 2 Pro (U$S 3.419)",
+   "Nueva impresora: Bambu Lab H2D Laser Combo AMS 2 Pro (U$S 3.984)",
+   "Nueva impresora: Bambu Lab H2C Laser 10W Full Combo AMS 2 Pro (U$S 4.178)",
+   "Dólar BROU: 40,13 → 40,08"
+  ],
+  "checked": "21/10/2026",
   "source": "https://www.macrotec.com.uy/filamentos",
-  "changes": []
+  "updated": "21/10/2026",
+  "usdRate": 40.08,
+  "usdRateDate": "20/10/2026"
  },
  "filaments": {
   "items": [
    {
-    "id": "bl-pla-lite-r",
     "b": "Bambu Lab",
-    "n": "PLA Lite (refill, sin carrete)",
-    "t": "PLA",
-    "p": 17,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Girasol",
@@ -29,18 +35,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "bl-pla-lite-r",
+    "n": "PLA Lite (refill, sin carrete)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-lite-bambu-lab-sin-carrete-refill-1kg-175mm"
+    "p": 17,
+    "t": "PLA",
+    "url": "filamento-pla-lite-bambu-lab-sin-carrete-refill-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-matte-r",
     "b": "Bambu Lab",
-    "n": "PLA Matte (refill, sin carrete)",
-    "t": "PLA",
-    "p": 21,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul Marino",
@@ -58,18 +64,18 @@
      "Verde",
      "Verde Oscuro"
     ],
+    "gone": false,
+    "id": "bl-pla-matte-r",
+    "n": "PLA Matte (refill, sin carrete)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-matte-bambu-lab-refill-1kg-175mm"
+    "p": 21,
+    "t": "PLA",
+    "url": "filamento-pla-matte-bambu-lab-refill-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-basic-r",
     "b": "Bambu Lab",
-    "n": "PLA Basic (refill, sin carrete)",
-    "t": "PLA",
-    "p": 21,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -92,18 +98,18 @@
      "Verde",
      "Verde Muérdago"
     ],
+    "gone": false,
+    "id": "bl-pla-basic-r",
+    "n": "PLA Basic (refill, sin carrete)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-basic-bambu-lab-sin-carrete-refill"
+    "p": 21,
+    "t": "PLA",
+    "url": "filamento-pla-basic-bambu-lab-sin-carrete-refill",
+    "w": 1000
    },
    {
-    "id": "bl-pla-lite",
     "b": "Bambu Lab",
-    "n": "PLA Lite",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Girasol",
@@ -117,18 +123,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "bl-pla-lite",
+    "n": "PLA Lite",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-lite-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-lite-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-basic",
     "b": "Bambu Lab",
-    "n": "PLA Basic",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Girasol",
@@ -153,18 +159,18 @@
      "Verde",
      "Verde Muérdago"
     ],
+    "gone": false,
+    "id": "bl-pla-basic",
+    "n": "PLA Basic",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-basic-bambu-lab-con-carrete-reusable"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-basic-bambu-lab-con-carrete-reusable",
+    "w": 1000
    },
    {
-    "id": "bl-pla-matte",
     "b": "Bambu Lab",
-    "n": "PLA Matte",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul Marino",
@@ -184,18 +190,18 @@
      "Verde",
      "Verde Oscuro"
     ],
-    "old": 27,
-    "out": false,
     "gone": false,
-    "url": "filamento-pla-matte-bambu-lab-con-carrete-reusable"
+    "id": "bl-pla-matte",
+    "n": "PLA Matte",
+    "old": 0,
+    "out": false,
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-matte-bambu-lab-con-carrete-reusable",
+    "w": 1000
    },
    {
-    "id": "bl-pla-transl",
     "b": "Bambu Lab",
-    "n": "PLA Translúcido",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Azul",
      "Cherry Pink",
@@ -208,33 +214,33 @@
      "Rojo",
      "Teal"
     ],
+    "gone": false,
+    "id": "bl-pla-transl",
+    "n": "PLA Translúcido",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-translucent-bambu-lab-con-carrete-1kg-175mm"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-translucent-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-sup-abs",
     "b": "Bambu Lab",
-    "n": "Soporte para ABS (500 g)",
-    "t": "Soporte",
-    "p": 25,
-    "w": 500,
     "c": [
      "Blanco"
     ],
+    "gone": false,
+    "id": "bl-sup-abs",
+    "n": "Soporte para ABS (500 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-soporte-para-abs-bambu-lab-con-carrete-blanco"
+    "p": 25,
+    "t": "Soporte",
+    "url": "filamento-soporte-para-abs-bambu-lab-con-carrete-blanco",
+    "w": 500
    },
    {
-    "id": "bl-pla-metal",
     "b": "Bambu Lab",
-    "n": "PLA Metal",
-    "t": "PLA",
-    "p": 26,
-    "w": 1000,
     "c": [
      "Cobalt Blue",
      "Copper Brown",
@@ -242,18 +248,18 @@
      "Iron Gray",
      "Oxide Green"
     ],
+    "gone": false,
+    "id": "bl-pla-metal",
+    "n": "PLA Metal",
     "old": 45,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-metal-bambu-lab-con-carrete-1kg-175mm"
+    "p": 26,
+    "t": "PLA",
+    "url": "filamento-pla-metal-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-silkp",
     "b": "Bambu Lab",
-    "n": "PLA Silk+",
-    "t": "PLA",
-    "p": 28,
-    "w": 1000,
     "c": [
      "Azul",
      "Baby Blue",
@@ -269,18 +275,18 @@
      "Rose Gold",
      "Titan Gray"
     ],
+    "gone": false,
+    "id": "bl-pla-silkp",
+    "n": "PLA Silk+",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-bambu-lab-con-carrete-1kg-175mm"
+    "p": 28,
+    "t": "PLA",
+    "url": "filamento-pla-silk-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-abs",
     "b": "Bambu Lab",
-    "n": "ABS",
-    "t": "ABS",
-    "p": 29,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -289,18 +295,18 @@
      "Plateado",
      "Rojo"
     ],
+    "gone": false,
+    "id": "bl-abs",
+    "n": "ABS",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-abs-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 29,
+    "t": "ABS",
+    "url": "filamento-abs-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-petg-transl",
     "b": "Bambu Lab",
-    "n": "PETG Translúcido",
-    "t": "PETG",
-    "p": 29,
-    "w": 1000,
     "c": [
      "Celeste",
      "Gris",
@@ -312,18 +318,18 @@
      "Turquesa",
      "Verde Oliva"
     ],
+    "gone": false,
+    "id": "bl-petg-transl",
+    "n": "PETG Translúcido",
     "old": 46,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-translucido-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 29,
+    "t": "PETG",
+    "url": "filamento-petg-translucido-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-grad",
     "b": "Bambu Lab",
-    "n": "PLA Basic Gradient",
-    "t": "PLA",
-    "p": 29,
-    "w": 1000,
     "c": [
      "Arctic Whisper",
      "Dusk Glare",
@@ -331,34 +337,34 @@
      "Pink Citrus",
      "Solar Breeze"
     ],
+    "gone": false,
+    "id": "bl-pla-grad",
+    "n": "PLA Basic Gradient",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-basic-gradient-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 29,
+    "t": "PLA",
+    "url": "filamento-pla-basic-gradient-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-petg-hf",
     "b": "Bambu Lab",
-    "n": "PETG HF",
-    "t": "PETG",
-    "p": 35,
-    "w": 1000,
     "c": [
      "Rojo",
      "Verde Lima"
     ],
+    "gone": false,
+    "id": "bl-petg-hf",
+    "n": "PETG HF",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-hf-bambu-lab-con-carrete"
+    "p": 35,
+    "t": "PETG",
+    "url": "filamento-petg-hf-bambu-lab-con-carrete",
+    "w": 1000
    },
    {
-    "id": "bl-pla-silk",
     "b": "Bambu Lab",
-    "n": "PLA Silk",
-    "t": "PLA",
-    "p": 35,
-    "w": 1000,
     "c": [
      "Azul",
      "Aurora Purple",
@@ -379,36 +385,36 @@
      "Velvet Eclipse",
      "Verde"
     ],
+    "gone": false,
+    "id": "bl-pla-silk",
+    "n": "PLA Silk",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 35,
+    "t": "PLA",
+    "url": "filamento-pla-silk-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-galaxy",
     "b": "Bambu Lab",
-    "n": "PLA Galaxy",
-    "t": "PLA",
-    "p": 35,
-    "w": 1000,
     "c": [
      "Marrón",
      "Nebulae",
      "Púrpura",
      "Verde"
     ],
+    "gone": false,
+    "id": "bl-pla-galaxy",
+    "n": "PLA Galaxy",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-galaxy-bambu-lab-1kg-con-carrete-1kg-175mm"
+    "p": 35,
+    "t": "PLA",
+    "url": "filamento-pla-galaxy-bambu-lab-1kg-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-cf",
     "b": "Bambu Lab",
-    "n": "PLA-CF",
-    "t": "PLA-CF",
-    "p": 35,
-    "w": 1000,
     "c": [
      "Burgundy Red",
      "Iris Purple",
@@ -418,18 +424,18 @@
      "Negro",
      "Royal Blue"
     ],
+    "gone": false,
+    "id": "bl-pla-cf",
+    "n": "PLA-CF",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-cf-bambu-lab-con-carrete-1kg-175mm"
+    "p": 35,
+    "t": "PLA-CF",
+    "url": "filamento-pla-cf-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-wood",
     "b": "Bambu Lab",
-    "n": "PLA Wood",
-    "t": "PLA",
-    "p": 36,
-    "w": 1000,
     "c": [
      "Black Walnut",
      "Classic Birch",
@@ -438,18 +444,18 @@
      "Rosewood",
      "White Oak"
     ],
+    "gone": false,
+    "id": "bl-pla-wood",
+    "n": "PLA Wood",
     "old": 42,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-wood-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 36,
+    "t": "PLA",
+    "url": "filamento-pla-wood-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-sparkle",
     "b": "Bambu Lab",
-    "n": "PLA Sparkle",
-    "t": "PLA",
-    "p": 39,
-    "w": 1000,
     "c": [
      "Dorado",
      "Gris",
@@ -458,49 +464,49 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "bl-pla-sparkle",
+    "n": "PLA Sparkle",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-sparkle-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 39,
+    "t": "PLA",
+    "url": "filamento-pla-sparkle-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-asa",
     "b": "Bambu Lab",
-    "n": "ASA",
-    "t": "ASA",
-    "p": 49,
-    "w": 1000,
     "c": [
      "Blanco",
      "Negro"
     ],
+    "gone": false,
+    "id": "bl-asa",
+    "n": "ASA",
     "old": 0,
     "out": true,
-    "gone": false,
-    "url": "filamento-asa-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 49,
+    "t": "ASA",
+    "url": "filamento-asa-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-sup-pla",
     "b": "Bambu Lab",
-    "n": "Soporte para PLA / PETG (500 g)",
-    "t": "Soporte",
-    "p": 49,
-    "w": 500,
     "c": [
      "Natural"
     ],
+    "gone": false,
+    "id": "bl-sup-pla",
+    "n": "Soporte para PLA / PETG (500 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-soporte-para-pla-petg-bambu-lab-con-carrete-reusable-500grs-175mm"
+    "p": 49,
+    "t": "Soporte",
+    "url": "filamento-soporte-para-pla-petg-bambu-lab-con-carrete-reusable-500grs-175mm",
+    "w": 500
    },
    {
-    "id": "bl-tpu-ams",
     "b": "Bambu Lab",
-    "n": "TPU para AMS",
-    "t": "TPU",
-    "p": 49,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -510,144 +516,144 @@
      "Rojo",
      "Verde Neón"
     ],
+    "gone": false,
+    "id": "bl-tpu-ams",
+    "n": "TPU para AMS",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-tpu-para-ams-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 49,
+    "t": "TPU",
+    "url": "filamento-tpu-para-ams-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pc",
     "b": "Bambu Lab",
-    "n": "PC",
-    "t": "PC",
-    "p": 55,
-    "w": 1000,
     "c": [
      "Blanco",
      "Clear Black",
      "Negro",
      "Transparente"
     ],
+    "gone": false,
+    "id": "bl-pc",
+    "n": "PC",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pc-bambu-lab-con-carrete-1kg-175mm"
+    "p": 55,
+    "t": "PC",
+    "url": "filamento-pc-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pla-aero",
     "b": "Bambu Lab",
-    "n": "PLA Aero",
-    "t": "PLA",
-    "p": 59,
-    "w": 1000,
     "c": [
      "Blanco"
     ],
+    "gone": false,
+    "id": "bl-pla-aero",
+    "n": "PLA Aero",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-aero-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 59,
+    "t": "PLA",
+    "url": "filamento-pla-aero-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pa6-gf",
     "b": "Bambu Lab",
-    "n": "PA6-GF",
-    "t": "Nylon",
-    "p": 59,
-    "w": 1000,
     "c": [
      "Blanco",
      "Negro"
     ],
+    "gone": false,
+    "id": "bl-pa6-gf",
+    "n": "PA6-GF",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pa6-gf-bambu-lab-con-carrete-1kg-175mm"
+    "p": 59,
+    "t": "Nylon",
+    "url": "filamento-pa6-gf-bambu-lab-con-carrete-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-pc-fr",
     "b": "Bambu Lab",
-    "n": "PC FR",
-    "t": "PC",
-    "p": 75,
-    "w": 1000,
     "c": [
      "Blanco",
      "Gris",
      "Negro"
     ],
+    "gone": false,
+    "id": "bl-pc-fr",
+    "n": "PC FR",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pc-fr-bambu-lab-con-carrete-reusable-1kg-175mm"
+    "p": 75,
+    "t": "PC",
+    "url": "filamento-pc-fr-bambu-lab-con-carrete-reusable-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "bl-asa-aero",
     "b": "Bambu Lab",
-    "n": "ASA Aero",
-    "t": "ASA",
-    "p": 75,
-    "w": 1000,
     "c": [
      "Blanco"
     ],
+    "gone": false,
+    "id": "bl-asa-aero",
+    "n": "ASA Aero",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-asa-aero-bambu-lab-con-carrete-reusable-blanco"
+    "p": 75,
+    "t": "ASA",
+    "url": "filamento-asa-aero-bambu-lab-con-carrete-reusable-blanco",
+    "w": 1000
    },
    {
+    "b": "Bambu Lab",
+    "c": [
+     "Negro"
+    ],
+    "gone": false,
     "id": "bl-pa6-cf",
-    "b": "Bambu Lab",
     "n": "PA6-CF",
-    "t": "Nylon",
+    "old": 0,
+    "out": false,
     "p": 79,
-    "w": 1000,
+    "t": "Nylon",
+    "url": "filamento-pa6-cf-bambu-lab-con-carrete-1kg-negro",
+    "w": 1000
+   },
+   {
+    "b": "Bambu Lab",
     "c": [
      "Negro"
     ],
-    "old": 0,
-    "out": false,
     "gone": false,
-    "url": "filamento-pa6-cf-bambu-lab-con-carrete-1kg-negro"
-   },
-   {
     "id": "bl-pet-cf",
-    "b": "Bambu Lab",
     "n": "PET-CF",
-    "t": "PET-CF",
+    "old": 0,
+    "out": false,
     "p": 85,
-    "w": 1000,
-    "c": [
-     "Negro"
-    ],
-    "old": 0,
-    "out": false,
-    "gone": false,
-    "url": "filamento-pet-cf-bambu-lab-con-carrete-1kg-negro"
+    "t": "PET-CF",
+    "url": "filamento-pet-cf-bambu-lab-con-carrete-1kg-negro",
+    "w": 1000
    },
    {
-    "id": "bl-pps-cf",
     "b": "Bambu Lab",
-    "n": "PPS-CF (750 g)",
-    "t": "PPS-CF",
-    "p": 117,
-    "w": 750,
     "c": [
      "Negro"
     ],
+    "gone": false,
+    "id": "bl-pps-cf",
+    "n": "PPS-CF (750 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pps-cf-bambu-lab-con-carrete-1kg-negro"
+    "p": 117,
+    "t": "PPS-CF",
+    "url": "filamento-pps-cf-bambu-lab-con-carrete-1kg-negro",
+    "w": 750
    },
    {
-    "id": "cr-ender-plap",
     "b": "Creality",
-    "n": "Ender PLA+",
-    "t": "PLA+",
-    "p": 19,
-    "w": 1000,
     "c": [
      "Arcoíris",
      "Azul",
@@ -659,18 +665,18 @@
      "Rojo",
      "Verde Jade"
     ],
+    "gone": false,
+    "id": "cr-ender-plap",
+    "n": "Ender PLA+",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-ender-pla-creality-1kg-175mm"
+    "p": 19,
+    "t": "PLA+",
+    "url": "filamento-ender-pla-creality-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-ender-fast",
     "b": "Creality",
-    "n": "Ender Fast PLA",
-    "t": "PLA",
-    "p": 21,
-    "w": 1000,
     "c": [
      "Azul",
      "Azul Claro",
@@ -685,18 +691,18 @@
      "Rosado",
      "Verde"
     ],
+    "gone": false,
+    "id": "cr-ender-fast",
+    "n": "Ender Fast PLA",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-ender-fast-1kg-175mm"
+    "p": 21,
+    "t": "PLA",
+    "url": "filamento-pla-creality-ender-fast-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-cr-petg",
     "b": "Creality",
-    "n": "CR-PETG",
-    "t": "PETG",
-    "p": 21,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -706,18 +712,18 @@
      "Rojo",
      "Transparente"
     ],
+    "gone": false,
+    "id": "cr-cr-petg",
+    "n": "CR-PETG",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-creality-cr-175mm-1kg"
+    "p": 21,
+    "t": "PETG",
+    "url": "filamento-petg-creality-cr-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-hyper-pla",
     "b": "Creality",
-    "n": "Hyper PLA",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -733,18 +739,18 @@
      "Verde",
      "Viva Magenta"
     ],
+    "gone": false,
+    "id": "cr-hyper-pla",
+    "n": "Hyper PLA",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-hyper-1kg-175mm"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-pla-creality-hyper-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-hyper-rainbow",
     "b": "Creality",
-    "n": "Hyper PLA Arcoíris",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Dorado",
      "Perry Blue",
@@ -752,18 +758,18 @@
      "Wild Blossom (corto)",
      "Wild Blossom (largo)"
     ],
+    "gone": false,
+    "id": "cr-hyper-rainbow",
+    "n": "Hyper PLA Arcoíris",
     "old": 30,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-hyper-creality-arcoiris-175mm-1kg"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-pla-hyper-creality-arcoiris-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-hyper-rfid",
     "b": "Creality",
-    "n": "Hyper PLA RFID",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Goldfish",
@@ -786,18 +792,18 @@
      "Verde Montaña",
      "Viva Magenta"
     ],
+    "gone": false,
+    "id": "cr-hyper-rfid",
+    "n": "Hyper PLA RFID",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-hyper-rfid-1kg-175mm"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-pla-creality-hyper-rfid-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-cr-abs",
     "b": "Creality",
-    "n": "CR-ABS",
-    "t": "ABS",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -806,18 +812,18 @@
      "Negro",
      "Rojo"
     ],
+    "gone": false,
+    "id": "cr-cr-abs",
+    "n": "CR-ABS",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-abs-creality-cr-175mm-1kg"
+    "p": 24,
+    "t": "ABS",
+    "url": "filamento-abs-creality-cr-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-cr-pla",
     "b": "Creality",
-    "n": "CR-PLA",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Flúor",
@@ -837,35 +843,35 @@
      "Verde",
      "Verde Flúor"
     ],
+    "gone": false,
+    "id": "cr-cr-pla",
+    "n": "CR-PLA",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-cr-175mm-1kg"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-creality-cr-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-pla-fluo",
     "b": "Creality",
-    "n": "PLA Fluorescente",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo Fluorescente",
      "Rojo Fluorescente",
      "Verde Fluorescente"
     ],
+    "gone": false,
+    "id": "cr-pla-fluo",
+    "n": "PLA Fluorescente",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamente-pla-creality-fluorecente-175mm-1kg"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamente-pla-creality-fluorecente-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-silk",
     "b": "Creality",
-    "n": "PLA Silk",
-    "t": "PLA",
-    "p": 27,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -877,18 +883,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "cr-silk",
+    "n": "PLA Silk",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-seda-creality-175mm-1kg"
+    "p": 27,
+    "t": "PLA",
+    "url": "filamento-pla-silk-seda-creality-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "cr-hyper-stardust",
     "b": "Creality",
-    "n": "Hyper PLA RFID Stardust",
-    "t": "PLA",
-    "p": 29,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Anaranjado",
@@ -900,18 +906,18 @@
      "Verde",
      "Violeta"
     ],
+    "gone": false,
+    "id": "cr-hyper-stardust",
+    "n": "Hyper PLA RFID Stardust",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-hyper-rfid-stardust-1kg-175mm"
+    "p": 29,
+    "t": "PLA",
+    "url": "filamento-pla-creality-hyper-rfid-stardust-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-silk-dual",
     "b": "Creality",
-    "n": "PLA Silk Dual",
-    "t": "PLA",
-    "p": 30,
-    "w": 1000,
     "c": [
      "Amarillo y Azul",
      "Azul y Verde",
@@ -919,18 +925,18 @@
      "Dorado y Rojo",
      "Rosado y Púrpura"
     ],
+    "gone": false,
+    "id": "cr-silk-dual",
+    "n": "PLA Silk Dual",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-seda-dual-creality-1kg-175mm"
+    "p": 30,
+    "t": "PLA",
+    "url": "filamento-pla-silk-seda-dual-creality-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-cr-tpu",
     "b": "Creality",
-    "n": "CR-TPU flexible",
-    "t": "TPU",
-    "p": 36,
-    "w": 1000,
     "c": [
      "Azul",
      "Blanco",
@@ -939,31 +945,31 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "cr-cr-tpu",
+    "n": "CR-TPU flexible",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-flexible-tpu-creality-cr-1kg-175mm"
+    "p": 36,
+    "t": "TPU",
+    "url": "filamento-flexible-tpu-creality-cr-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-ultra-basf",
     "b": "Creality",
-    "n": "Ultra PLA (con BASF)",
-    "t": "PLA",
-    "p": 39,
-    "w": 1000,
     "c": [],
+    "gone": false,
+    "id": "cr-ultra-basf",
+    "n": "Ultra PLA (con BASF)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-ultra-pla-creality-basf-1kg-175mm"
+    "p": 39,
+    "t": "PLA",
+    "url": "filamento-ultra-pla-creality-basf-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-hyper-placf",
     "b": "Creality",
-    "n": "Hyper PLA-CF",
-    "t": "PLA-CF",
-    "p": 39,
-    "w": 1000,
     "c": [
      "Amarillo Grisáceo",
      "Negro",
@@ -971,96 +977,96 @@
      "Púrpura",
      "Verde Oscuro"
     ],
+    "gone": false,
+    "id": "cr-hyper-placf",
+    "n": "Hyper PLA-CF",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-cf-creality-hyper-1kg-175mm"
+    "p": 39,
+    "t": "PLA-CF",
+    "url": "filamento-pla-cf-creality-hyper-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "cr-hp-tpu",
     "b": "Creality",
-    "n": "HP-TPU",
-    "t": "TPU",
-    "p": 46,
-    "w": 1000,
     "c": [
      "Blanco",
      "Transparente"
     ],
+    "gone": false,
+    "id": "cr-hp-tpu",
+    "n": "HP-TPU",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-hp-tpu-creality-1kg-175mm"
+    "p": 46,
+    "t": "TPU",
+    "url": "filamento-hp-tpu-creality-1kg-175mm",
+    "w": 1000
    },
    {
+    "b": "Creality",
+    "c": [
+     "Blanco",
+     "Negro"
+    ],
+    "gone": false,
     "id": "cr-hyper-foamed",
-    "b": "Creality",
     "n": "Hyper PLA Foamed",
-    "t": "PLA",
+    "old": 0,
+    "out": false,
     "p": 52,
-    "w": 1000,
-    "c": [
-     "Blanco",
-     "Negro"
-    ],
-    "old": 0,
-    "out": false,
-    "gone": false,
-    "url": "filamento-pla-creality-hyper-foamed-1kg-175mm"
-   },
-   {
-    "id": "cr-pa612-cf",
-    "b": "Creality",
-    "n": "Hyper PA612-CF",
-    "t": "Nylon",
-    "p": 89,
-    "w": 1000,
-    "c": [
-     "Negro"
-    ],
-    "old": 0,
-    "out": false,
-    "gone": false,
-    "url": "filamento-pa612-cf-creality-hyper-negro-1kg-175mm"
-   },
-   {
-    "id": "cr-petg-10s",
-    "b": "Creality",
-    "n": "CR-PETG pack 10 kg (sin carrete)",
-    "t": "PETG",
-    "p": 169,
-    "w": 10000,
-    "c": [
-     "Negro"
-    ],
-    "old": 0,
-    "out": false,
-    "gone": false,
-    "url": "filamento-creality-cr-petg-1kgx10-175mm-sin-carrete"
-   },
-   {
-    "id": "cr-petg-10",
-    "b": "Creality",
-    "n": "CR-PETG pack 10 kg",
-    "t": "PETG",
-    "p": 179,
-    "w": 10000,
-    "c": [
-     "Blanco",
-     "Negro"
-    ],
-    "old": 0,
-    "out": false,
-    "gone": false,
-    "url": "filamento-creality-cr-petg-175mm-1kgx10"
-   },
-   {
-    "id": "so-ultra-pla",
-    "b": "Soleyin",
-    "n": "Ultra PLA",
     "t": "PLA",
-    "p": 17,
-    "w": 1000,
+    "url": "filamento-pla-creality-hyper-foamed-1kg-175mm",
+    "w": 1000
+   },
+   {
+    "b": "Creality",
+    "c": [
+     "Negro"
+    ],
+    "gone": false,
+    "id": "cr-pa612-cf",
+    "n": "Hyper PA612-CF",
+    "old": 0,
+    "out": false,
+    "p": 89,
+    "t": "Nylon",
+    "url": "filamento-pa612-cf-creality-hyper-negro-1kg-175mm",
+    "w": 1000
+   },
+   {
+    "b": "Creality",
+    "c": [
+     "Negro"
+    ],
+    "gone": false,
+    "id": "cr-petg-10s",
+    "n": "CR-PETG pack 10 kg (sin carrete)",
+    "old": 0,
+    "out": false,
+    "p": 169,
+    "t": "PETG",
+    "url": "filamento-creality-cr-petg-1kgx10-175mm-sin-carrete",
+    "w": 10000
+   },
+   {
+    "b": "Creality",
+    "c": [
+     "Blanco",
+     "Negro"
+    ],
+    "gone": false,
+    "id": "cr-petg-10",
+    "n": "CR-PETG pack 10 kg",
+    "old": 0,
+    "out": false,
+    "p": 179,
+    "t": "PETG",
+    "url": "filamento-creality-cr-petg-175mm-1kgx10",
+    "w": 10000
+   },
+   {
+    "b": "Soleyin",
     "c": [
      "Amarillo Piña",
      "Azul Océano",
@@ -1073,35 +1079,35 @@
      "Verde Claro",
      "Verde Hierba"
     ],
+    "gone": false,
+    "id": "so-ultra-pla",
+    "n": "Ultra PLA",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-ultra-pla-creality-soleyin-1kg-175mm"
+    "p": 17,
+    "t": "PLA",
+    "url": "filamento-ultra-pla-creality-soleyin-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "so-ultra-pla-n",
     "b": "Soleyin",
-    "n": "Ultra PLA (nuevos colores)",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Fluorite",
      "Moon Stone",
      "Rose Stone"
     ],
+    "gone": false,
+    "id": "so-ultra-pla-n",
+    "n": "Ultra PLA (nuevos colores)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-ultra-pla-creality-soleyin-nuevos-colores-1kg-175mm"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-ultra-pla-creality-soleyin-nuevos-colores-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "ff-pla-basic",
     "b": "Flashforge",
-    "n": "PLA Basic",
-    "t": "PLA",
-    "p": 17,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Claro",
@@ -1128,18 +1134,18 @@
      "Verde",
      "Verde Claro"
     ],
+    "gone": false,
+    "id": "ff-pla-basic",
+    "n": "PLA Basic",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-basic-flashforge-1-kg-175-mm"
+    "p": 17,
+    "t": "PLA",
+    "url": "filamento-pla-basic-flashforge-1-kg-175-mm",
+    "w": 1000
    },
    {
-    "id": "ff-pla-matte",
     "b": "Flashforge",
-    "n": "PLA Matte",
-    "t": "PLA",
-    "p": 17,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Crema",
@@ -1172,35 +1178,35 @@
      "Verde Melón",
      "Verde Menta"
     ],
+    "gone": false,
+    "id": "ff-pla-matte",
+    "n": "PLA Matte",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-matte-flashforge-1-kg-175-mm"
+    "p": 17,
+    "t": "PLA",
+    "url": "filamento-pla-matte-flashforge-1-kg-175-mm",
+    "w": 1000
    },
    {
-    "id": "g3-hips",
     "b": "Grilon3",
-    "n": "HIPS",
-    "t": "HIPS",
-    "p": 19,
-    "w": 1000,
     "c": [
      "Blanco",
      "Natural",
      "Negro"
     ],
+    "gone": false,
+    "id": "g3-hips",
+    "n": "HIPS",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-hips-grilon3-175mm-1kg"
+    "p": 19,
+    "t": "HIPS",
+    "url": "filamento-hips-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-petg",
     "b": "Grilon3",
-    "n": "PETG",
-    "t": "PETG",
-    "p": 21,
-    "w": 1000,
     "c": [
      "Blanco",
      "Chocolate",
@@ -1216,18 +1222,18 @@
      "Negro",
      "Nova"
     ],
+    "gone": false,
+    "id": "g3-petg",
+    "n": "PETG",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-grilon3-175mm-1kg"
+    "p": 21,
+    "t": "PETG",
+    "url": "filamento-petg-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-pla",
     "b": "Grilon3",
-    "n": "PLA",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Flúor",
@@ -1257,18 +1263,18 @@
      "Verde Manzana",
      "Violeta"
     ],
+    "gone": false,
+    "id": "g3-pla",
+    "n": "PLA",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-grilon3-175mm-1kg"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-pla-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-boutique",
     "b": "Grilon3",
-    "n": "PLA Boutique",
-    "t": "PLA",
-    "p": 23,
-    "w": 1000,
     "c": [
      "Aqua",
      "Arena",
@@ -1286,18 +1292,18 @@
      "Verde Aviador",
      "Zafiro"
     ],
+    "gone": false,
+    "id": "g3-boutique",
+    "n": "PLA Boutique",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-boutique-grilon3-175mm-1kg"
+    "p": 23,
+    "t": "PLA",
+    "url": "filamento-boutique-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-pla850",
     "b": "Grilon3",
-    "n": "PLA+ 850",
-    "t": "PLA+",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Azul",
      "Blanco",
@@ -1310,18 +1316,18 @@
      "Turquesa",
      "Verde UV Glow"
     ],
+    "gone": false,
+    "id": "g3-pla850",
+    "n": "PLA+ 850",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-plus-pla850-grilon3-175mm-1kg"
+    "p": 24,
+    "t": "PLA+",
+    "url": "filamento-pla-plus-pla850-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-abs",
     "b": "Grilon3",
-    "n": "ABS",
-    "t": "ABS",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -1336,35 +1342,35 @@
      "Turquesa",
      "Verde"
     ],
+    "gone": false,
+    "id": "g3-abs",
+    "n": "ABS",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-abs-grilon3-1kg-175mm"
+    "p": 24,
+    "t": "ABS",
+    "url": "filamento-abs-grilon3-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "g3-pla-prohyper",
     "b": "Grilon3",
-    "n": "PLA Pro Hyper",
-    "t": "PLA",
-    "p": 25,
-    "w": 1000,
     "c": [
      "Blanco",
      "Negro",
      "Verde Flúor Glow"
     ],
+    "gone": false,
+    "id": "g3-pla-prohyper",
+    "n": "PLA Pro Hyper",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-pro-hyper-grilon3-175mm-1kg"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-pro-hyper-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-ppt",
     "b": "Grilon3",
-    "n": "PP-T",
-    "t": "PP",
-    "p": 25,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -1372,18 +1378,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "g3-ppt",
+    "n": "PP-T",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pp-t-grilon3-175mm-1kg"
+    "p": 25,
+    "t": "PP",
+    "url": "filamento-pp-t-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-astra",
     "b": "Grilon3",
-    "n": "PLA Astra",
-    "t": "PLA",
-    "p": 25,
-    "w": 1000,
     "c": [
      "Calipso",
      "Dark",
@@ -1392,49 +1398,49 @@
      "Noche",
      "Roby"
     ],
+    "gone": false,
+    "id": "g3-astra",
+    "n": "PLA Astra",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-astra-grilon3-175mm-1kg"
+    "p": 25,
+    "t": "PLA",
+    "url": "filamento-pla-astra-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-zeta",
     "b": "Grilon3",
-    "n": "PLA Zeta",
-    "t": "PLA",
-    "p": 25,
-    "w": 1000,
     "c": [
      "Azabache",
      "Clear Cristal"
     ],
+    "gone": false,
+    "id": "g3-zeta",
+    "n": "PLA Zeta",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-zeta-grilon3-175mm-1kg"
+    "p": 25,
+    "t": "PLA",
+    "url": "filamento-pla-zeta-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-silk-dorado",
     "b": "Grilon3",
-    "n": "PLA Silk Dorado",
-    "t": "PLA",
-    "p": 27,
-    "w": 1000,
     "c": [
      "Dorado"
     ],
+    "gone": false,
+    "id": "g3-silk-dorado",
+    "n": "PLA Silk Dorado",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-grilon3-dorado-175mm-1kg"
+    "p": 27,
+    "t": "PLA",
+    "url": "filamento-pla-silk-grilon3-dorado-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-silk",
     "b": "Grilon3",
-    "n": "PLA Silk",
-    "t": "PLA",
-    "p": 27,
-    "w": 1000,
     "c": [
      "Azabache",
      "Azul",
@@ -1445,18 +1451,18 @@
      "Tutti Frutti",
      "Verde"
     ],
+    "gone": false,
+    "id": "g3-silk",
+    "n": "PLA Silk",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-seda-grilon3-175mm-1kg"
+    "p": 27,
+    "t": "PLA",
+    "url": "filamento-pla-silk-seda-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-nylon6",
     "b": "Grilon3",
-    "n": "Nylon 6",
-    "t": "Nylon",
-    "p": 29,
-    "w": 1000,
     "c": [
      "Blanco",
      "Naranja Flúor",
@@ -1465,54 +1471,54 @@
      "Óptico",
      "Verde Flúor"
     ],
+    "gone": false,
+    "id": "g3-nylon6",
+    "n": "Nylon 6",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-nylon-6-grilon3-175mm-1kg"
+    "p": 29,
+    "t": "Nylon",
+    "url": "filamento-nylon-6-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-pla870",
     "b": "Grilon3",
-    "n": "PLA+ 870",
-    "t": "PLA+",
-    "p": 32,
-    "w": 1000,
     "c": [
      "Blanco",
      "Natural",
      "Negro",
      "Turquesa"
     ],
+    "gone": false,
+    "id": "g3-pla870",
+    "n": "PLA+ 870",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-pla-870-grilon3-175mm-1kg"
+    "p": 32,
+    "t": "PLA+",
+    "url": "filamento-pla-pla-870-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-wood",
     "b": "Grilon3",
-    "n": "PLA Wood (madera)",
-    "t": "PLA",
-    "p": 34,
-    "w": 1000,
     "c": [
      "Caoba",
      "Cerezo",
      "Nogal",
      "Pino"
     ],
+    "gone": false,
+    "id": "g3-wood",
+    "n": "PLA Wood (madera)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-wood-madera-grilon3-175mm-1kg"
+    "p": 34,
+    "t": "PLA",
+    "url": "filamento-pla-wood-madera-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-simpliflex",
     "b": "Grilon3",
-    "n": "Simpliflex flexible",
-    "t": "TPU",
-    "p": 42,
-    "w": 1000,
     "c": [
      "Blanco",
      "Celeste",
@@ -1522,18 +1528,18 @@
      "Nova",
      "Verde"
     ],
+    "gone": false,
+    "id": "g3-simpliflex",
+    "n": "Simpliflex flexible",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-flexible-simpliflex-grilon3-1kg-175mm"
+    "p": 42,
+    "t": "TPU",
+    "url": "filamento-flexible-simpliflex-grilon3-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "g3-acetal",
     "b": "Grilon3",
-    "n": "Acetal (POM)",
-    "t": "POM",
-    "p": 47,
-    "w": 1000,
     "c": [
      "Blanco",
      "Gris Acero",
@@ -1541,146 +1547,146 @@
      "Negro",
      "Rojo"
     ],
+    "gone": false,
+    "id": "g3-acetal",
+    "n": "Acetal (POM)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-acetal-grilon3-175mm-1kg"
-   },
-   {
-    "id": "g3-petg-25",
-    "b": "Grilon3",
-    "n": "PETG 2,5 kg",
-    "t": "PETG",
     "p": 47,
-    "w": 2500,
+    "t": "POM",
+    "url": "filamento-acetal-grilon3-175mm-1kg",
+    "w": 1000
+   },
+   {
+    "b": "Grilon3",
     "c": [
      "Blanco",
      "Negro"
     ],
+    "gone": false,
+    "id": "g3-petg-25",
+    "n": "PETG 2,5 kg",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-grilon3-25kg-175mm"
+    "p": 47,
+    "t": "PETG",
+    "url": "filamento-petg-grilon3-25kg-175mm",
+    "w": 2500
    },
    {
+    "b": "Grilon3",
+    "c": [
+     "Blanco",
+     "Negro"
+    ],
+    "gone": false,
     "id": "g3-pla850-25",
-    "b": "Grilon3",
     "n": "PLA+ 850 2,5 kg",
+    "old": 0,
+    "out": false,
+    "p": 56,
     "t": "PLA+",
-    "p": 56,
-    "w": 2500,
+    "url": "filamento-pla-pla-850-grilon3-175mm-25kg",
+    "w": 2500
+   },
+   {
+    "b": "Grilon3",
     "c": [
      "Blanco",
      "Negro"
     ],
-    "old": 0,
-    "out": false,
     "gone": false,
-    "url": "filamento-pla-pla-850-grilon3-175mm-25kg"
-   },
-   {
     "id": "g3-abs-25",
-    "b": "Grilon3",
     "n": "ABS 2,5 kg",
-    "t": "ABS",
-    "p": 56,
-    "w": 2500,
-    "c": [
-     "Blanco",
-     "Negro"
-    ],
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-abs-grilon3-175mm-25kg"
+    "p": 56,
+    "t": "ABS",
+    "url": "filamento-abs-grilon3-175mm-25kg",
+    "w": 2500
    },
    {
-    "id": "g3-pva",
     "b": "Grilon3",
-    "n": "PVA soluble (500 g)",
-    "t": "PVA",
-    "p": 63,
-    "w": 500,
     "c": [
      "Natural"
     ],
+    "gone": false,
+    "id": "g3-pva",
+    "n": "PVA soluble (500 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pva-grilon3-natural-175mm-500gr"
+    "p": 63,
+    "t": "PVA",
+    "url": "filamento-pva-grilon3-natural-175mm-500gr",
+    "w": 500
    },
    {
-    "id": "g3-nylon12",
     "b": "Grilon3",
-    "n": "Nylon 12",
-    "t": "Nylon",
-    "p": 69,
-    "w": 1000,
     "c": [
      "Blanco",
      "Natural",
      "Negro"
     ],
+    "gone": false,
+    "id": "g3-nylon12",
+    "n": "Nylon 12",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-nylon-12-grilon3-175mm-1kg"
+    "p": 69,
+    "t": "Nylon",
+    "url": "filamento-nylon-12-grilon3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "g3-petg-4",
     "b": "Grilon3",
-    "n": "PETG Megafill 4 kg",
-    "t": "PETG",
-    "p": 76,
-    "w": 4000,
     "c": [
      "Blanco",
      "Clear Verde",
      "Negro"
     ],
+    "gone": false,
+    "id": "g3-petg-4",
+    "n": "PETG Megafill 4 kg",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-grilon3-megafill-175mm-4kg"
+    "p": 76,
+    "t": "PETG",
+    "url": "filamento-petg-grilon3-megafill-175mm-4kg",
+    "w": 4000
    },
    {
-    "id": "g3-boutique-4",
     "b": "Grilon3",
-    "n": "PLA Boutique 4 kg",
-    "t": "PLA",
-    "p": 82,
-    "w": 4000,
     "c": [
      "Perla"
     ],
+    "gone": false,
+    "id": "g3-boutique-4",
+    "n": "PLA Boutique 4 kg",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-boutique-grilon3-175mm-4kg"
+    "p": 82,
+    "t": "PLA",
+    "url": "filamento-boutique-grilon3-175mm-4kg",
+    "w": 4000
    },
    {
-    "id": "g3-pla-4",
     "b": "Grilon3",
-    "n": "PLA 4 kg",
-    "t": "PLA",
-    "p": 82,
-    "w": 4000,
     "c": [
      "Blanco",
      "Negro"
     ],
+    "gone": false,
+    "id": "g3-pla-4",
+    "n": "PLA 4 kg",
     "old": 86,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-grilon3-4kg-175mm"
+    "p": 82,
+    "t": "PLA",
+    "url": "filamento-pla-grilon3-4kg-175mm",
+    "w": 4000
    },
    {
-    "id": "3n3-pla-500",
     "b": "3n3",
-    "n": "PLA 3n3 (500 g)",
-    "t": "PLA",
-    "p": 9,
-    "w": 500,
     "c": [
      "Amarillo",
      "Azul",
@@ -1694,18 +1700,18 @@
      "Rojo",
      "Verde Flúor"
     ],
+    "gone": false,
+    "id": "3n3-pla-500",
+    "n": "PLA 3n3 (500 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-3n3-175mm-500gr"
+    "p": 9,
+    "t": "PLA",
+    "url": "filamento-pla-3n3-175mm-500gr",
+    "w": 500
    },
    {
-    "id": "3n3-max-se",
     "b": "3n3",
-    "n": "PLA+ 3nMax SE (750 g)",
-    "t": "PLA+",
-    "p": 11.9,
-    "w": 750,
     "c": [
      "Amarillo",
      "Azul",
@@ -1721,18 +1727,18 @@
      "Rosa",
      "Verde"
     ],
+    "gone": false,
+    "id": "3n3-max-se",
+    "n": "PLA+ 3nMax SE (750 g)",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-3nmax-se-750g-175mm"
+    "p": 11.9,
+    "t": "PLA+",
+    "url": "filamento-pla-3nmax-se-750g-175mm",
+    "w": 750
    },
    {
-    "id": "3n3-max",
     "b": "3n3",
-    "n": "PLA+ 3nMax",
-    "t": "PLA+",
-    "p": 15.5,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -1749,18 +1755,18 @@
      "Uva",
      "Verde"
     ],
+    "gone": false,
+    "id": "3n3-max",
+    "n": "PLA+ 3nMax",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-3nmax-175mm-1kg"
+    "p": 15.5,
+    "t": "PLA+",
+    "url": "filamento-pla-3nmax-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "3n3-epet",
     "b": "3n3",
-    "n": "EPET 3n3",
-    "t": "PETG",
-    "p": 16,
-    "w": 1000,
     "c": [
      "Azul",
      "Blanco",
@@ -1769,18 +1775,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "3n3-epet",
+    "n": "EPET 3n3",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-epet-3n3-175mm-1kg"
+    "p": 16,
+    "t": "PETG",
+    "url": "filamento-epet-3n3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "3n3-pla",
     "b": "3n3",
-    "n": "PLA 3n3",
-    "t": "PLA",
-    "p": 16.5,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Amarillo Flúor",
@@ -1805,18 +1811,18 @@
      "Verde Flúor",
      "Violeta"
     ],
+    "gone": false,
+    "id": "3n3-pla",
+    "n": "PLA 3n3",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-3n3-175mm-1kg"
+    "p": 16.5,
+    "t": "PLA",
+    "url": "filamento-pla-3n3-175mm-1kg",
+    "w": 1000
    },
    {
-    "id": "3n3-petg",
     "b": "3n3",
-    "n": "PETG 3n3",
-    "t": "PETG",
-    "p": 18,
-    "w": 1000,
     "c": [
      "Azul",
      "Blanco",
@@ -1825,18 +1831,18 @@
      "Negro",
      "Rojo"
     ],
+    "gone": false,
+    "id": "3n3-petg",
+    "n": "PETG 3n3",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-petg-3n3-1kg-175mm"
+    "p": 18,
+    "t": "PETG",
+    "url": "filamento-petg-3n3-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "3n3-tpu-500",
     "b": "3n3",
-    "n": "TPU flexible 3n3 (500 g)",
-    "t": "TPU",
-    "p": 19,
-    "w": 500,
     "c": [
      "Azul",
      "Blanco",
@@ -1845,18 +1851,18 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "3n3-tpu-500",
+    "n": "TPU flexible 3n3 (500 g)",
     "old": 0,
     "out": true,
-    "gone": false,
-    "url": "filamento-flexible-tpu-3n3-500g-175mm"
+    "p": 19,
+    "t": "TPU",
+    "url": "filamento-flexible-tpu-3n3-500g-175mm",
+    "w": 500
    },
    {
-    "id": "3n3-silk",
     "b": "3n3",
-    "n": "PLA Silk 3n3",
-    "t": "PLA",
-    "p": 24,
-    "w": 1000,
     "c": [
      "Aluminio",
      "Cobre",
@@ -1864,18 +1870,18 @@
      "Papaya",
      "Rojo"
     ],
+    "gone": false,
+    "id": "3n3-silk",
+    "n": "PLA Silk 3n3",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-pla-silk-3n3-1kg-175mm"
+    "p": 24,
+    "t": "PLA",
+    "url": "filamento-pla-silk-3n3-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "3n3-flex",
     "b": "3n3",
-    "n": "PLA+ flexible 3nFlex",
-    "t": "TPU",
-    "p": 28,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul Prusia",
@@ -1891,18 +1897,18 @@
      "Verde",
      "Verde Manzana"
     ],
+    "gone": false,
+    "id": "3n3-flex",
+    "n": "PLA+ flexible 3nFlex",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-flexible-pla-3nflex-1kg-175mm"
+    "p": 28,
+    "t": "TPU",
+    "url": "filamento-flexible-pla-3nflex-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "md-adpetg-t",
     "b": "Mingda",
-    "n": "AdPETG Tough Translúcido",
-    "t": "PETG",
-    "p": 27,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -1921,18 +1927,18 @@
      "Verde",
      "Verde Menta"
     ],
+    "gone": false,
+    "id": "md-adpetg-t",
+    "n": "AdPETG Tough Translúcido",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-adpetg-tough-mingda-translucido-1kg-175mm"
+    "p": 27,
+    "t": "PETG",
+    "url": "filamento-adpetg-tough-mingda-translucido-1kg-175mm",
+    "w": 1000
    },
    {
-    "id": "md-adpetg-b",
     "b": "Mingda",
-    "n": "AdPETG Tough bloqueador de luz",
-    "t": "PETG",
-    "p": 27,
-    "w": 1000,
     "c": [
      "Amarillo",
      "Azul",
@@ -1943,310 +1949,363 @@
      "Rojo",
      "Verde"
     ],
+    "gone": false,
+    "id": "md-adpetg-b",
+    "n": "AdPETG Tough bloqueador de luz",
     "old": 0,
     "out": false,
-    "gone": false,
-    "url": "filamento-adpetg-tough-mingda-bloqueador-luz-1kg-175mm"
+    "p": 27,
+    "t": "PETG",
+    "url": "filamento-adpetg-tough-mingda-bloqueador-luz-1kg-175mm",
+    "w": 1000
    }
   ]
  },
  "printers": {
   "items": [
    {
-    "id": "bl-a1mini",
     "b": "Bambu Lab",
+    "id": "bl-a1mini",
     "n": "A1 mini",
     "p": 264,
-    "wt": 80,
-    "url": "impresora-3d-bambu-lab-a1-mini"
+    "url": "impresora-3d-bambu-lab-a1-mini",
+    "wt": 80
    },
    {
-    "id": "bl-a1mini-c",
     "b": "Bambu Lab",
+    "id": "bl-a1mini-c",
     "n": "A1 mini Combo (AMS Lite)",
     "p": 499,
-    "wt": 85,
-    "url": "impresora-3d-bambu-lab-a1-mini-combo-ams-lite"
+    "url": "impresora-3d-bambu-lab-a1-mini-combo-ams-lite",
+    "wt": 85
    },
    {
-    "id": "bl-a1",
     "b": "Bambu Lab",
+    "id": "bl-a1",
     "n": "A1",
     "p": 419,
-    "wt": 110,
-    "url": "impresora-3d-bambu-lab-a1"
+    "url": "impresora-3d-bambu-lab-a1",
+    "wt": 110
    },
    {
-    "id": "bl-a1-c",
     "b": "Bambu Lab",
+    "id": "bl-a1-c",
     "n": "A1 Combo (AMS Lite)",
     "p": 639,
-    "wt": 115,
-    "url": "impresora-3d-bambu-lab-a1-combo-ams-lite"
+    "url": "impresora-3d-bambu-lab-a1-combo-ams-lite",
+    "wt": 115
    },
    {
-    "id": "bl-a2l-c",
     "b": "Bambu Lab",
+    "id": "bl-a2l-c",
     "n": "A2L Combo",
     "p": 769,
-    "wt": 150,
-    "url": "impresora-3d-bambu-lab-a2l-combo"
+    "url": "impresora-3d-bambu-lab-a2l-combo",
+    "wt": 150
    },
    {
-    "id": "bl-p1p",
     "b": "Bambu Lab",
+    "id": "bl-p1p",
     "n": "P1P",
     "p": 599,
-    "wt": 120,
-    "url": "impresora-3d-bambu-lab-p1p"
+    "url": "impresora-3d-bambu-lab-p1p",
+    "wt": 120
    },
    {
-    "id": "bl-p1s",
     "b": "Bambu Lab",
+    "id": "bl-p1s",
     "n": "P1S",
     "p": 639,
-    "wt": 130,
-    "url": "impresora-3d-bambu-lab-p1s"
+    "url": "impresora-3d-bambu-lab-p1s",
+    "wt": 130
    },
    {
-    "id": "bl-p1s-c",
     "b": "Bambu Lab",
+    "id": "bl-p1s-c",
     "n": "P1S Combo (AMS)",
     "p": 859,
-    "wt": 135,
-    "url": "impresora-3d-bambu-lab-p1s-combo-ams"
+    "url": "impresora-3d-bambu-lab-p1s-combo-ams",
+    "wt": 135
    },
    {
-    "id": "bl-p2s",
     "b": "Bambu Lab",
+    "id": "bl-p2s",
     "n": "P2S",
     "p": 899,
-    "wt": 140,
-    "url": "impresora-3d-bambu-lab-p2s"
+    "url": "impresora-3d-bambu-lab-p2s",
+    "wt": 140
    },
    {
-    "id": "bl-x2d",
     "b": "Bambu Lab",
+    "id": "bl-x2d",
     "n": "X2D",
     "p": 1179,
-    "wt": 220,
-    "url": "impresoras-3d-bambu-lab-x2d"
+    "url": "impresoras-3d-bambu-lab-x2d",
+    "wt": 220
    },
    {
-    "id": "bl-x1c",
     "b": "Bambu Lab",
+    "id": "impresora-3d-bambu-lab-h2d-combo-ams2-pro",
+    "n": "H2D Combo AMS 2 Pro",
+    "p": 2899,
+    "url": "impresora-3d-bambu-lab-h2d-combo-ams2-pro",
+    "wt": 250
+   },
+   {
+    "b": "Bambu Lab",
+    "id": "impresora-3d-bambu-lab-h2s-laser-combo-ams2-pro",
+    "n": "H2S Laser Combo AMS 2 Pro",
+    "p": 3419,
+    "url": "impresora-3d-bambu-lab-h2s-laser-combo-ams2-pro",
+    "wt": 250
+   },
+   {
+    "b": "Bambu Lab",
+    "id": "impresora-3d-bambu-lab-h2d-laser-combo-ams2-pro",
+    "n": "H2D Laser Combo AMS 2 Pro",
+    "p": 3984,
+    "url": "impresora-3d-bambu-lab-h2d-laser-combo-ams2-pro",
+    "wt": 250
+   },
+   {
+    "b": "Bambu Lab",
+    "id": "impresoras-3d-bambu-lab-h2c-laser-10w-full-combo-ams-2-pro",
+    "n": "H2C Laser 10W Full Combo AMS 2 Pro",
+    "p": 4178,
+    "url": "impresoras-3d-bambu-lab-h2c-laser-10w-full-combo-ams-2-pro",
+    "wt": 250
+   },
+   {
+    "b": "Bambu Lab",
+    "id": "bl-x1c",
     "n": "X1 Carbon",
     "p": null,
-    "wt": 140,
-    "url": ""
+    "url": "",
+    "wt": 140
    },
    {
+    "b": "Bambu Lab",
     "id": "bl-h2d",
-    "b": "Bambu Lab",
     "n": "H2D",
-    "p": null,
-    "wt": 250,
-    "url": ""
+    "p": 2599,
+    "url": "impresora-3d-bambu-lab-h2d",
+    "wt": 250
    },
    {
-    "id": "bl-otra",
     "b": "Bambu Lab",
+    "id": "bl-otra",
     "n": "Otro modelo",
     "p": null,
-    "wt": 130,
-    "url": ""
+    "url": "",
+    "wt": 130
    },
    {
-    "id": "cr-e3v3se",
     "b": "Creality",
+    "id": "cr-e3v3se",
     "n": "Ender 3 V3 SE",
     "p": 236,
-    "wt": 110,
-    "url": ""
+    "url": "impresora-3d-creality-ender-3-v3-se",
+    "wt": 110
    },
    {
-    "id": "cr-e3v3ke",
     "b": "Creality",
+    "id": "cr-e3v3ke",
     "n": "Ender 3 V3 KE",
     "p": 338,
-    "wt": 120,
-    "url": "impresora-3d-creality-ender-3-v3-ke"
+    "url": "impresora-3d-creality-ender-3-v3-ke",
+    "wt": 120
    },
    {
-    "id": "cr-e3v3",
     "b": "Creality",
+    "id": "cr-e3v3",
     "n": "Ender 3 V3",
     "p": 410,
-    "wt": 130,
-    "url": "impresora-3d-creality-ender-3-v3"
+    "url": "impresora-3d-creality-ender-3-v3",
+    "wt": 130
    },
    {
-    "id": "cr-hi",
     "b": "Creality",
+    "id": "cr-hi",
     "n": "Hi",
     "p": 410,
-    "wt": 120,
-    "url": ""
+    "url": "impresora-3d-creality-hi",
+    "wt": 120
    },
    {
-    "id": "cr-hi-c",
     "b": "Creality",
+    "id": "cr-hi-c",
     "n": "Hi CFS Combo",
     "p": 652,
-    "wt": 125,
-    "url": "impresora-3d-creality-hi-cfs-combo"
+    "url": "impresora-3d-creality-hi-cfs-combo",
+    "wt": 125
    },
    {
-    "id": "cr-k2se",
     "b": "Creality",
+    "id": "cr-k2se",
     "n": "K2 SE",
     "p": 399,
-    "wt": 120,
-    "url": ""
+    "url": "impresora-3d-creality-k2-se",
+    "wt": 120
    },
    {
-    "id": "cr-k2se-c",
     "b": "Creality",
+    "id": "cr-k2se-c",
     "n": "K2 SE CFS Combo",
     "p": 629,
-    "wt": 125,
-    "url": "impresora-3d-creality-k2-se-cfs-combo"
+    "url": "impresora-3d-creality-k2-se-cfs-combo",
+    "wt": 125
    },
    {
-    "id": "cr-k1max",
     "b": "Creality",
+    "id": "cr-k1max",
     "n": "K1 Max",
     "p": 749,
-    "wt": 200,
-    "url": "impresora-3d-creality-k1-max"
+    "url": "impresora-3d-creality-k1-max",
+    "wt": 200
    },
    {
-    "id": "cr-k2",
     "b": "Creality",
+    "id": "cr-k2",
     "n": "K2",
     "p": 773,
-    "wt": 170,
-    "url": "impresora-3d-creality-k2"
+    "url": "impresora-3d-creality-k2",
+    "wt": 170
    },
    {
-    "id": "cr-k2-c",
     "b": "Creality",
+    "id": "cr-k2-c",
     "n": "K2 CFS Combo",
     "p": 1041,
-    "wt": 175,
-    "url": "impresora-3d-creality-k2-cfs-combo"
+    "url": "impresora-3d-creality-k2-cfs-combo",
+    "wt": 175
    },
    {
-    "id": "cr-e3v2",
     "b": "Creality",
+    "id": "impresora-3d-creality-sparkx-i7",
+    "n": "SparkX i7",
+    "p": 459,
+    "url": "impresora-3d-creality-sparkx-i7",
+    "wt": 110
+   },
+   {
+    "b": "Creality",
+    "id": "impresora-3d-creality-sparkx-i7-cfs-lite-combo",
+    "n": "SparkX i7 CFS Lite Combo",
+    "p": 574,
+    "url": "impresora-3d-creality-sparkx-i7-cfs-lite-combo",
+    "wt": 115
+   },
+   {
+    "b": "Creality",
+    "id": "cr-e3v2",
     "n": "Ender 3 V2",
     "p": null,
-    "wt": 110,
-    "url": ""
+    "url": "",
+    "wt": 110
    },
    {
-    "id": "cr-e3s1",
     "b": "Creality",
+    "id": "cr-e3s1",
     "n": "Ender 3 S1",
     "p": null,
-    "wt": 120,
-    "url": ""
+    "url": "",
+    "wt": 120
    },
    {
-    "id": "cr-e3v3plus",
     "b": "Creality",
+    "id": "cr-e3v3plus",
     "n": "Ender 3 V3 Plus",
     "p": null,
-    "wt": 160,
-    "url": ""
+    "url": "",
+    "wt": 160
    },
    {
-    "id": "cr-k1",
     "b": "Creality",
+    "id": "cr-k1",
     "n": "K1",
     "p": null,
-    "wt": 140,
-    "url": ""
+    "url": "",
+    "wt": 140
    },
    {
-    "id": "cr-k1c",
     "b": "Creality",
+    "id": "cr-k1c",
     "n": "K1C",
     "p": null,
-    "wt": 140,
-    "url": ""
+    "url": "",
+    "wt": 140
    },
    {
-    "id": "cr-k2plus",
     "b": "Creality",
+    "id": "cr-k2plus",
     "n": "K2 Plus",
     "p": null,
-    "wt": 250,
-    "url": ""
+    "url": "",
+    "wt": 250
    },
    {
-    "id": "cr-otra",
     "b": "Creality",
+    "id": "cr-otra",
     "n": "Otro modelo",
     "p": null,
-    "wt": 130,
-    "url": ""
+    "url": "",
+    "wt": 130
    },
    {
-    "id": "ff-ad5x",
     "b": "Flashforge",
+    "id": "ff-ad5x",
     "n": "AD5X",
     "p": 549,
-    "wt": 110,
-    "url": "impresora-3d-flashforge-ad5x"
+    "url": "impresora-3d-flashforge-ad5x",
+    "wt": 110
    },
    {
-    "id": "ff-ad5mpro",
     "b": "Flashforge",
+    "id": "ff-ad5mpro",
     "n": "Adventurer 5M Pro",
     "p": 554,
-    "wt": 120,
-    "url": "impresora-3d-flashforge-ad5m-pro"
+    "url": "impresora-3d-flashforge-ad5m-pro",
+    "wt": 120
    },
    {
-    "id": "ff-creator5",
     "b": "Flashforge",
+    "id": "ff-creator5",
     "n": "Creator 5",
     "p": 1139,
-    "wt": 180,
-    "url": "impresoras-3d-flashforge-creator-5"
+    "url": "impresoras-3d-flashforge-creator-5",
+    "wt": 180
    },
    {
-    "id": "ff-ad5m",
     "b": "Flashforge",
+    "id": "ff-ad5m",
     "n": "Adventurer 5M",
     "p": null,
-    "wt": 110,
-    "url": ""
+    "url": "",
+    "wt": 110
    },
    {
-    "id": "ff-ad4",
     "b": "Flashforge",
+    "id": "ff-ad4",
     "n": "Adventurer 4",
     "p": null,
-    "wt": 120,
-    "url": ""
+    "url": "",
+    "wt": 120
    },
    {
-    "id": "ff-ad3",
     "b": "Flashforge",
+    "id": "ff-ad3",
     "n": "Adventurer 3",
     "p": null,
-    "wt": 80,
-    "url": ""
+    "url": "",
+    "wt": 80
    },
    {
-    "id": "ff-otra",
     "b": "Flashforge",
+    "id": "ff-otra",
     "n": "Otro modelo",
     "p": null,
-    "wt": 130,
-    "url": ""
+    "url": "",
+    "wt": 130
    }
   ]
  }
