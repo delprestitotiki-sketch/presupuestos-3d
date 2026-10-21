@@ -1,16 +1,10 @@
 {
  "meta": {
   "changes": [
-   "Bambu Lab PLA Matte: termina la oferta (U$S 24, antes tachado U$S 27)",
-   "Grilon3 PLA Pro Hyper: U$S 25 → U$S 24",
-   "Bambu Lab H2D: vuelve a la venta (U$S 2.599)",
-   "Nueva impresora: Creality SparkX i7 (U$S 459)",
-   "Nueva impresora: Creality SparkX i7 CFS Lite Combo (U$S 574)",
-   "Nueva impresora: Bambu Lab H2D Combo AMS 2 Pro (U$S 2.899)",
-   "Nueva impresora: Bambu Lab H2S Laser Combo AMS 2 Pro (U$S 3.419)",
-   "Nueva impresora: Bambu Lab H2D Laser Combo AMS 2 Pro (U$S 3.984)",
-   "Nueva impresora: Bambu Lab H2C Laser 10W Full Combo AMS 2 Pro (U$S 4.178)",
-   "Dólar BROU: 40,13 → 40,08"
+   "Creality SparkX i7: U$S 459 → U$S 399",
+   "Nueva impresora: Bambu Lab P2S Combo AMS2 PRO (U$S 1.299)",
+   "Nueva impresora: Bambu Lab X2D Combo (U$S 1.639)",
+   "Nueva impresora: Creality K2 Pro (U$S 1.138)"
   ],
   "checked": "21/10/2026",
   "source": "https://www.macrotec.com.uy/filamentos",
@@ -2037,11 +2031,27 @@
    },
    {
     "b": "Bambu Lab",
+    "id": "impresora-3d-bambu-lab-p2s-combo-ams2-pro",
+    "n": "P2S Combo AMS2 PRO",
+    "p": 1299,
+    "url": "impresora-3d-bambu-lab-p2s-combo-ams2-pro",
+    "wt": 145
+   },
+   {
+    "b": "Bambu Lab",
     "id": "bl-x2d",
     "n": "X2D",
     "p": 1179,
     "url": "impresoras-3d-bambu-lab-x2d",
     "wt": 220
+   },
+   {
+    "b": "Bambu Lab",
+    "id": "impresora-3d-bambu-lab-x2d-combo",
+    "n": "X2D Combo",
+    "p": 1639,
+    "url": "impresora-3d-bambu-lab-x2d-combo",
+    "wt": 225
    },
    {
     "b": "Bambu Lab",
@@ -2181,9 +2191,17 @@
    },
    {
     "b": "Creality",
+    "id": "impresora-3d-creality-k2-pro",
+    "n": "K2 Pro",
+    "p": 1138,
+    "url": "impresora-3d-creality-k2-pro",
+    "wt": 220
+   },
+   {
+    "b": "Creality",
     "id": "impresora-3d-creality-sparkx-i7",
     "n": "SparkX i7",
-    "p": 459,
+    "p": 399,
     "url": "impresora-3d-creality-sparkx-i7",
     "wt": 110
    },
