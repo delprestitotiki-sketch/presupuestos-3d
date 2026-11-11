@@ -281,6 +281,25 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .members li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
 .members li span:first-child { overflow-wrap: anywhere; }
 
+/* Ganancia por botones */
+.tiers { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.tiers-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.tiers-head h3 { font-size: 16px; }
+.tiers-head .sub { margin: 0; }
+.tiers-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin-top: 12px; }
+.tier-btns { flex: 3 1 330px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.tier { display: grid; align-content: center; justify-items: start; gap: 1px; min-height: 72px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: 600 13.5px var(--body); text-align: left; cursor: pointer; transition: border-color .15s, background .15s; }
+.tier:hover { border-color: var(--mute); }
+.tier b { font: 700 24px/1.1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.tier small { font: 400 12px var(--mono); color: var(--mute); }
+.tier[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.tier[aria-pressed="true"] b { color: var(--accent); }
+.tier-custom { flex: 1 1 130px; align-self: stretch; padding: 10px 12px; border: 1px dashed var(--line); border-radius: 10px; }
+.tier-custom.on { border: 1px solid var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.tier-hint { margin: 10px 0 0; font-size: 13.5px; color: var(--mute); }
+.tier-hint b { color: var(--ink); }
+.tier-hint.err, .tier-hint.err b { color: var(--danger); }
+
 /* Macrotec */
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .seg { display: flex; gap: 6px; margin-top: 16px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
@@ -436,8 +455,16 @@ a.sp-name:hover { text-decoration: underline; text-underline-offset: 3px; }
       </section>
 
       <details class="panel" open>
-        <summary><h2>Costos y márgenes</h2></summary>
+        <summary><h2>Ganancia y costos</h2></summary>
         <div>
+          <div class="tiers" role="group" aria-labelledby="tiers-title">
+            <div class="tiers-head"><h3 id="tiers-title">Ganancia</h3><span class="sub">El precio de cada pieza es su costo multiplicado.</span></div>
+            <div class="tiers-row">
+              <div class="tier-btns" id="tier-btns"></div>
+              <label class="field tier-custom" id="tier-custom"><span>Otro porcentaje</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="markup" aria-describedby="tier-hint"><i>%</i></div></label>
+            </div>
+            <p class="tier-hint" id="tier-hint" role="status" aria-live="polite"></p>
+          </div>
           <div class="grid">
             <label class="field"><span>Moneda del presupuesto</span>
               <select id="currency" data-s="currency">
@@ -455,7 +482,6 @@ a.sp-name:hover { text-decoration: underline; text-underline-offset: 3px; }
             <label class="field"><span>Energía (<b data-cur></b> por kWh)</span><input type="number" inputmode="decimal" min="0" step="any" id="kwh" data-s="kwh"><small>UTE Residencial Simple 2026, tramo 101 a 600 kWh, con IVA: $ 10,3.</small></label>
             <label class="field"><span>Mano de obra (<b data-cur></b> por hora)</span><input type="number" inputmode="decimal" min="0" step="any" id="laborRate" data-s="laborRate"><small>Preparar, retirar, lijar, embalar.</small></label>
             <label class="field"><span>Merma y fallas</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="fail" data-s="fail"><i>%</i></div><small>Se suma al peso del material.</small></label>
-            <label class="field"><span>Margen de ganancia</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="margin" data-s="margin"><i>%</i></div><small>Sobre el costo de cada pieza.</small></label>
             <label class="field"><span>Descuento</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="discount" data-s="discount"><i>%</i></div></label>
             <label class="field"><span>IVA</span><div class="inp"><input type="number" inputmode="decimal" min="0" step="any" id="iva" data-s="iva"><i>%</i></div><small>Déjalo en 0 si no aplica.</small></label>
             <label class="field"><span>Envío y otros (<b data-cur></b>)</span><input type="number" inputmode="decimal" min="0" step="any" id="shipping" data-s="shipping"></label>
@@ -502,6 +528,7 @@ a.sp-name:hover { text-decoration: underline; text-underline-offset: 3px; }
         <div class="own">
           <div class="sum-label">Solo para ti, no sale en el PDF</div>
           <div class="rows">
+            <div class="row"><span>Precio</span><span data-bind="tier"></span></div>
             <div class="row"><span>Costo real</span><span data-bind="cost"></span></div>
             <div class="row"><span>Ganancia</span><span data-bind="profit"></span></div>
             <div class="row"><span>Filamento</span><span data-bind="matCost"></span></div>
@@ -1032,6 +1059,29 @@ function energyRate(s) {
   return (num(s.watts) / 1000) * num(s.kwh);
 }
 
+/* Precio de venta = costo × (ganancia / 100): 400% es ×4.
+   Los presupuestos guardados antes de los botones solo traen "margin" (ganancia sobre el costo: 40% = ×1,4). */
+const PRICE_TIERS = [
+  { id: 'minorista', label: 'Minorista', pct: 400 },
+  { id: 'mayorista', label: 'Mayorista', pct: 300 },
+  { id: 'llaveros', label: 'Llaveros', pct: 500 }
+];
+function markupOf(s) {
+  const v = s ? s.markup : undefined;
+  if (v !== undefined && v !== null && v !== '' && isFinite(Number(v))) return Math.max(0, Number(v));
+  return 100 + num(s && s.margin);
+}
+function tierOf(pct) {
+  return PRICE_TIERS.find(function (t) { return t.pct === pct; }) || null;
+}
+function factorText(pct) {
+  return '×' + String(Math.round(pct) / 100).replace('.', ',');
+}
+function priceLabel(pct) {
+  const t = tierOf(pct);
+  return (t ? t.label : 'Personalizado') + ' ' + factorText(pct);
+}
+
 function calcLine(s, l) {
   const info = matInfo(s, l);
   const hrs = num(l.h) + num(l.m) / 60;
@@ -1042,7 +1092,7 @@ function calcLine(s, l) {
   const labor = (num(l.labor) / 60) * num(s.laborRate);
   const extras = num(l.extras);
   const cost = mat + machine + energy + labor + extras;
-  let unit = cost * (1 + num(s.margin) / 100);
+  let unit = cost * markupOf(s) / 100;
   if (s.round) unit = Math.round(unit);
   const qty = Math.max(1, Math.round(num(l.qty)) || 1);
   return {
@@ -1284,7 +1334,7 @@ const SHOP_SEED = null;
 
   function defaults() {
     return {
-      currency: 'UYU', rates: {}, kwh: 10.3, laborRate: 300, fail: 5, margin: 40,
+      currency: 'UYU', rates: {}, kwh: 10.3, laborRate: 300, fail: 5,
       discount: 0, iva: 22, shipping: 0, round: true,
       printerBrand: 'Bambu Lab', printerModel: 'bl-p1s', printerPrice: 639, watts: 130, life: 5000, maint: 25,
       overrides: {},
@@ -1336,6 +1386,14 @@ const SHOP_SEED = null;
       state[k] = Array.isArray(state[k]) ? state[k].filter(function (x) { return x && typeof x === 'object'; }) : [];
     });
     state.order = state.order.filter(function (o) { return typeof o.key === 'string' && typeof o.id === 'string' && (o.t === 'fil' || o.t === 'shop'); });
+    /* Ganancia: antes era un margen sobre el costo (40% por defecto = ×1,4); ahora es el precio como % del costo (400% = ×4).
+       Quien nunca cambió el 40% pasa a Minorista; si lo había cambiado, se conserva su precio. */
+    const mk = state.markup;
+    if (mk === undefined || mk === null || mk === '' || !isFinite(Number(mk))) {
+      state.markup = state.margin === undefined || state.margin === null || num(state.margin) === 40 ? 400 : 100 + num(state.margin);
+    }
+    state.markup = Math.max(0, Number(state.markup));
+    state.margin = state.markup - 100;
   }
   normalizeState();
 
@@ -1391,6 +1449,40 @@ const SHOP_SEED = null;
     else state.rates[state.currency] = e.target.value;
     update();
   });
+
+  /* ---- Ganancia ---- */
+  $('#tier-btns').innerHTML = PRICE_TIERS.map(function (t) {
+    return '<button type="button" class="tier" data-tier="' + t.pct + '" aria-pressed="false">' + esc(t.label) +
+      '<b>' + esc(factorText(t.pct)) + '</b><small>' + t.pct + '%</small></button>';
+  }).join('');
+  function renderTiers() {
+    const pct = markupOf(state);
+    const t = tierOf(pct);
+    $$('[data-tier]').forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.tier) === pct)); });
+    $('#tier-custom').classList.toggle('on', !t);
+    const inp = $('#markup');
+    if (document.activeElement !== inp) inp.value = String(Math.round(pct * 100) / 100);
+    const hint = $('#tier-hint');
+    const low = pct < 100;
+    hint.className = 'tier-hint' + (low ? ' err' : '');
+    hint.innerHTML = low
+      ? 'Con <b>' + esc(pctText(pct) || '0') + '%</b> el precio queda por debajo del costo: vendes a pérdida.'
+      : '<b>' + esc(t ? t.label : 'Personalizado') + '</b>: el precio es el costo ' + esc(factorText(pct)) + ' (' + esc(pctText(pct)) + '%).';
+  }
+  function setMarkup(v) {
+    state.markup = Math.max(0, Math.round(v * 100) / 100);
+    state.margin = state.markup - 100;
+    update();
+  }
+  $('#tier-btns').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-tier]');
+    if (b) setMarkup(Number(b.dataset.tier));
+  });
+  $('#markup').addEventListener('input', function (e) {
+    if (String(e.target.value).trim() === '') return;
+    setMarkup(num(e.target.value));
+  });
+  $('#markup').addEventListener('blur', function () { renderTiers(); });
 
   /* ---- Impresora ---- */
   const pBrand = $('#printerBrand'), pModel = $('#printerModel');
@@ -1688,7 +1780,9 @@ const SHOP_SEED = null;
     bind('ivaNote', num(state.iva) > 0 ? 'Incluye IVA de ' + pctText(state.iva) + '%' : 'Sin IVA');
     bind('count', state.lines.length + (state.lines.length === 1 ? ' pieza, ' : ' piezas, ') + t.units + (t.units === 1 ? ' unidad' : ' unidades'));
     bind('cost', m(t.costTotal));
-    bind('profit', m(t.profit) + ' (' + Math.round(t.profitPct) + '%)');
+    bind('profit', m(t.profit) + ' (' + Math.round(t.profitPct) + '% del precio)');
+    bind('tier', priceLabel(markupOf(state)));
+    renderTiers();
     bind('matCost', money2(matCost));
     bind('hours', hoursText(t.hours));
     bind('grams', Math.round(t.grams).toLocaleString('es-UY') + ' g');
@@ -1872,7 +1966,7 @@ const SHOP_SEED = null;
 
   /* ================= Tu negocio ================= */
   const QUOTE_KEYS = ['client', 'clientContact', 'project', 'number', 'date', 'validity', 'notes', 'lines', 'currency', 'rates',
-    'kwh', 'laborRate', 'fail', 'margin', 'discount', 'iva', 'shipping', 'round',
+    'kwh', 'laborRate', 'fail', 'margin', 'markup', 'discount', 'iva', 'shipping', 'round',
     'printerBrand', 'printerModel', 'printerPrice', 'watts', 'life', 'maint', 'overrides', 'materials'];
   const KEEP_GLOBAL = ['rates', 'overrides', 'materials'];
   const JOB_STATES = [['hacer', 'Por hacer'], ['imprimiendo', 'Imprimiendo'], ['terminado', 'Terminado'], ['entregado', 'Entregado']];
@@ -1938,7 +2032,12 @@ const SHOP_SEED = null;
     });
     return o;
   }
-  function quoteSource(q) { return Object.assign({}, state, clone(q.snap)); }
+  function quoteSource(q) {
+    const s = q.snap || {};
+    const o = Object.assign({}, state, clone(s));
+    if (s.markup !== undefined || s.margin !== undefined) o.markup = markupOf(s);
+    return o;
+  }
 
   function saveQuote() {
     const t = calcTotals(state);
@@ -1981,7 +2080,7 @@ const SHOP_SEED = null;
         (canShareFiles ? '<button class="btn ghost sm" type="button" data-q="share">Enviar</button>' : '');
     return '<div class="item" data-quote="' + esc(q.id) + '">' +
       '<div class="item-head"><span class="item-title">' + esc(s.client || 'Sin cliente') + '</span><span class="item-amount">' + esc(moneyIn(q.currency, q.total, s.round)) + '</span></div>' +
-      '<div class="item-meta">' + esc([s.number, s.project, 'guardado el ' + isoToLocal(q.savedAt)].filter(Boolean).join(' · ')) + '</div>' +
+      '<div class="item-meta">' + esc([s.number, s.project, (s.markup !== undefined || s.margin !== undefined) ? priceLabel(markupOf(s)) : '', 'guardado el ' + isoToLocal(q.savedAt)].filter(Boolean).join(' · ')) + '</div>' +
       (tags ? '<div class="item-tags">' + tags + '</div>' : '') +
       '<div class="item-actions">' + actions + '</div></div>';
   }
@@ -2005,6 +2104,7 @@ const SHOP_SEED = null;
     if (calcHasWork() && !calcIsSaved() && !confirmTwice(btn, 'Toca de nuevo: reemplaza la calculadora')) return;
     const s = clone(q.snap) || {};
     QUOTE_KEYS.forEach(function (k) { if (KEEP_GLOBAL.indexOf(k) < 0 && s[k] !== undefined) state[k] = s[k]; });
+    if (s.markup !== undefined || s.margin !== undefined) { state.markup = markupOf(s); state.margin = state.markup - 100; }
     (s.materials || []).forEach(function (m) { if (!state.materials.some(function (x) { return x.id === m.id; })) state.materials.push(m); });
     if (!Array.isArray(state.lines) || !state.lines.length) state.lines = [blankLine()];
     syncFields(); renderPrinter(); renderMaterials(); renderLines(); update();
